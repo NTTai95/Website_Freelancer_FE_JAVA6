@@ -1,5 +1,5 @@
 import axios from 'axios';
 
-const API = axios.create({ baseURL: 'http://localhost:8080/demo' });
+const API = axios.create({ baseURL: 'https://e0c21987-e955-4814-88fa-ee71c91177d0.mock.pstmn.io' });
 
-export const fetchHello = () => API.get();
+export const fetchUsers = () => API.get("/users");
