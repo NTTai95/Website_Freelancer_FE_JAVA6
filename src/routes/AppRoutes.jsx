@@ -4,6 +4,7 @@ import MainLayout from "@layouts/mainLayout/MainLayout";
 import Header from "@components/header/Header";
 
 import Authentication from "@pages/authentication/Authentication";
+import About from "../pages/about/about";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -18,7 +19,17 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+
+      <Route
+        path="/about"
+        element={
+          <MainLayout>
+            <About/>
+          </MainLayout>
+        }
+      />
     </Routes>
+    
   );
 };
 
