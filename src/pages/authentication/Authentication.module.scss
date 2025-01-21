@@ -1,6 +1,9 @@
 @import "@assets/styles/variables";
+@import "@fontsource/rasa/index.css";
+@import "@fontsource/bebas-neue/index.css";
 
 .formLogin {
+  font-family: "rasa", sans-serif;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -12,6 +15,9 @@
     .title {
       text-align: center;
       margin-bottom: 50px;
+      h4 {
+        font-weight: bolder;
+      }
     }
     .text-right {
       display: flex;
@@ -19,7 +25,8 @@
       a {
         text-decoration: none;
         color: $color-black-50;
-        font-weight: bold;
+        font-weight: 900;
+        font-size: 17px;
         &:hover {
           color: $color-black-75;
         }
@@ -46,54 +53,74 @@
 }
 
 .bgLogin {
-  background-color: $color-green;
+  background: linear-gradient(to bottom, $color-soft-blue, $color-deep-blue);
   height: 100%;
-  .bg1 {
-    background-color: aquamarine;
-    height: 200px;
-    clip-path: polygon(
-      0% 0%,
-      0% 50%,
-      15% 100%,
-      35% 40%,
-      40% 75%,
-      50% 25%,
-      65% 85%,
-      80% 45%,
-      90% 70%,
-      100% 50%,
-      100% 0%
-    );
-  }
-  .logo{
-    position: absolute;
+  font-family: "rasa", sans-serif;
+  .logo {
     display: flex;
     justify-content: center;
-    align-items: center;
     width: 100%;
-    height: 150px;
-    z-index: 1;
-    img{
-        width: 70px;
-        height: 70px;
+    span{
+        margin-top: 50px;
+        font-family: 'bebas-neue', sans-serif;
+        font-weight: bolder;
+        font-size: 40px;
+        color: white;
     }
   }
-  .welcome{
-    position: absolute;
-    top: 150px;
-    right: 50px;
-    left: 50px;
+  .welcome {
     display: flex;
     text-align: center;
     justify-content: center;
     align-items: center;
     width: auto;
-    height: 100px;
     z-index: 1;
+    color: white;
+    padding: 0px 80px;
+    margin-top: 15px;
+    span{
+        font-weight: bolder;
+        font-size: 20px;
+    }
+  }
+  .gif {
+    position: absolute;
+    bottom: 0;
+    .img1 {
+      width: 100%;
+      height: 100%;
+      transform: scale(1.1);
+    }
+    .img2 {
+      width: 100%;
+      height: 100%;
+      clip-path: inset(2px 0 2px 0);
+      transform: scale(0.9);
+    }
+  }
+  .buttonChat {
+    display: flex;
+    justify-content: center;
+    margin-top: 40px;
   }
 }
 
+.font-rasa {
+  font-family: "rasa", sans-serif;
+}
+
+.btnAuthentication {
+  font-size: 17px;
+  font-weight: bolder;
+  font-family: "rasa", sans-serif;
+  &:hover {
+    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.25);
+    filter: brightness(1.1);
+  }
+  transition: all 0.3s ease;
+}
+
 .checkbox {
-  display: flex;
-  align-items: start;
+  font-family: "rasa", sans-serif;
+  font-size: 17px;
 }
