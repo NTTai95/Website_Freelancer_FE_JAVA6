@@ -1,9 +1,64 @@
+import { Col, Row, Button, Input, Select } from "antd";
+import scss from "./Header.module.scss";
+import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
+import { useNavigate } from "react-router-dom";
+const { Option } = Select;
+
 function Header() {
-    return (
-      <div>
-        <h1>--Header--</h1>
-      </div>
-    );
-  }
-  
-  export default Header;
+  const navigate = useNavigate();
+  const menuItemsFindWork = [
+    { name: "Tìm việc", link: "/find-jobs" },
+    { name: "Công việc đã lưu", link: "/saved-jobs" },
+  ];
+
+  const menuItemsRecruitment = [
+    { name: "Freelacner", link: "/find-jobs" },
+    { name: "Tạo bài tuyển dụng", link: "/saved-jobs" },
+  ];
+
+  const menuItemsHelp = [
+    { name: "Giới thiệu", link: "/find-jobs" },
+    { name: "Liên hệ", link: "/saved-jobs" },
+  ];
+
+  const selectAfter = (
+    <Select defaultValue="Tuyển dụng">
+      <Option value="tuyendung">tuyển dụng</Option>
+      <Option value="freelancer">Freelancer</Option>
+      <Option value="skills">kỹ năng</Option>
+    </Select>
+  );
+
+  return (
+    <Row className={scss.header}>
+      <Col className={scss.col1} span={5}>
+        <span>FREELANCER</span>
+      </Col>
+      <Col className={scss.col2} span={8}>
+        <span className={scss.link} onClick={() => navigate("/")}>
+          Trang chủ
+        </span>
+        <DropDownHeader menuItems={menuItemsFindWork} label="Tìm việc" />
+        <DropDownHeader menuItems={menuItemsRecruitment} label="Tuyển dụng" />
+        <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
+      </Col>
+      <Col className={scss.col3} span={6}>
+        <Input
+          addonAfter={selectAfter}
+          placeholder="Tìm kiếm..."
+           size="large"
+        />
+      </Col>
+      <Col className={scss.col4} span={5}>
+        <Button className={scss.button} color="primary" variant="outlined">
+          Đăng nhập
+        </Button>
+        <Button className={scss.button} color="primary" variant="solid">
+          Đăng ký
+        </Button>
+      </Col>
+    </Row>
+  );
+}
+
+export default Header;

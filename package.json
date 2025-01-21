@@ -12,6 +12,8 @@
   },
   "dependencies": {
     "@ant-design/icons": "^5.5.2",
+    "@fontsource/bebas-neue": "^5.1.1",
+    "@fontsource/rasa": "^5.1.1",
     "antd": "^5.23.1",
     "axios": "^1.7.9",
     "bootstrap": "^5.3.3",

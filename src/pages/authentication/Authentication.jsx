@@ -3,23 +3,45 @@ import { Col, Row, Button, ConfigProvider, Checkbox } from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "../../components/iu/input/FlInputText";
 import FlInputPassword from "../../components/iu/input/FlInputPassword";
+import ButtonChat from "../../components/iu/button/ButtonChat";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
-import { motion } from "motion/react";
-import { s } from "motion/react-client";
+import { delay, motion } from "motion/react";
+import { s, tr } from "motion/react-client";
 
 function Authentication() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showLogin, setShowLogin] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
+  const [imgGif, setImgGif] = useState("");
 
   useEffect(() => {
-    const timeout = setTimeout(() => {
+    const textTimeout = setTimeout(() => {
       setText(showLogin ? "Đăng nhập" : "Đăng ký");
     }, 1000);
 
-    return () => clearTimeout(timeout);
+    const gifTimeoutI = setTimeout(() => {
+      setImgGif(
+        showLogin
+          ? "src/assets/gif/3dfreelancerEdit2.gif"
+          : "src/assets/gif/3dfreelancerEdit.gif"
+      );
+    }, 1000);
+
+    const gifTimeout = setTimeout(() => {
+      setImgGif(
+        showLogin
+          ? "src/assets/gif/3dfreelancerEdit.gif"
+          : "src/assets/gif/3dfreelancerEdit2.gif"
+      );
+    }, 4000);
+
+    return () => {
+      clearTimeout(textTimeout);
+      clearTimeout(gifTimeout);
+      clearTimeout(gifTimeoutI);
+    };
   }, [showLogin]);
 
   return (
@@ -171,24 +193,29 @@ function Authentication() {
                       animate={{ display: showLogin ? "none" : "block" }}
                       transition={{ duration: 0, delay: 1 }}
                     >
-                      <Checkbox onChange={check}>
+                      <Checkbox className={scss.checkbox} onChange={check}>
                         Đồng ý với <a href="#">điều khoản</a> và
-                        <a href="#"> chính sách</a>.
+                        <a href="#"> chính sách</a>
                       </Checkbox>
                     </motion.div>
                     <ConfigProvider
                       theme={{
                         components: {
                           Button: {
-                            colorPrimary: "#5BC795",
-                            colorPrimaryHover: "#48A77A",
-                            colorPrimaryActive: "#3C8E6B",
-                            borderRadius: 0,
+                            colorPrimary: "#1493e2",
+                            colorPrimaryHover: "#1493e2",
+                            colorPrimaryActive: "#1493e2",
+                            borderRadius: 5,
                           },
                         },
                       }}
                     >
-                      <Button color="Primary" variant="solid" block>
+                      <Button
+                        className={scss.btnAuthentication}
+                        color="Primary"
+                        variant="solid"
+                        block
+                      >
                         <b>{text}</b>
                       </Button>
                     </ConfigProvider>
@@ -217,13 +244,92 @@ function Authentication() {
                     },
                   }}
                 >
-                  <div className={scss.logo}><img src={"src/assets/images/logo.png"}></img></div>
-                  <div className={scss.welcome}><h3>Tham gia cũng với chúng tôi</h3></div>
-                  <div className={scss.bg1}>
+                  <div className={scss.logo}>
+                    <span>FREELANCER</span>
                   </div>
-                  <Button style={{zIndex: 100}} onClick={() => setShowLogin(!showLogin)}>
-                      Đăng ký
-                    </Button>
+                  <motion.div
+                    className={scss.welcome}
+                    animate={{ opacity: [0, 1] }}
+                    transition={{ duration: 2 ,delay: 0.35}}
+                  >
+                    <span>
+                      {showLogin
+                        ? "Xin chào! Vui lòng đăng nhập để truy cập tài khoản của bạn và tiếp tục công việc."
+                        : "Chào mừng bạn đến với chúng tôi! Đăng ký ngay để khám phá và tận dụng mọi cơ hội."}
+                    </span>
+                  </motion.div>
+                  <motion.div
+                    className={scss.buttonChat}
+                    animate={{
+                      rotateZ: 360,
+                      transition: {
+                        duration: 0.65,
+                      },
+                    }}
+                  >
+                    <ButtonChat
+                      text={showLogin ? "Đăng ký" : "Đăng nhập"}
+                      onClick={() => setShowLogin(!showLogin)}
+                    ></ButtonChat>
+                  </motion.div>
+                  <motion.div
+                    className={scss.gif}
+                    initial={
+                      showLogin
+                        ? {
+                            x: "50%",
+                            opacity: 0,
+                            transition: { duration: 1, delay: 0.8 },
+                          }
+                        : { x: "0%", opacity: 1, transition: { duration: 1 } }
+                    }
+                    animate={
+                      showLogin
+                        ? {
+                            x: "0%",
+                            opacity: 1,
+                            transition: { duration: 1, delay: 0.8 },
+                          }
+                        : {
+                            x: "50%",
+                            opacity: 0,
+                            display: "none",
+                            transition: {
+                              duration: 1,
+                              display: {
+                                delay: 1,
+                              },
+                            },
+                          }
+                    }
+                  >
+                    <img
+                      className={scss.img1}
+                      src="src/assets/gif/FreelacerEdit.gif"
+                    />
+                  </motion.div>
+                  <motion.div
+                    className={scss.gif}
+                    initial={
+                      showLogin ? { opacity: 1 } : { opacity: 0, x: "-50%" }
+                    }
+                    animate={
+                      showLogin
+                        ? {
+                            opacity: 0,
+                            x: "-50%",
+                            display: "none",
+                            transition: { duration: 1, display: { delay: 1 } },
+                          }
+                        : {
+                            opacity: 1,
+                            x: "0%",
+                            transition: { duration: 1, delay: 0.8 },
+                          }
+                    }
+                  >
+                    <img className={scss.img2} src={imgGif} />
+                  </motion.div>
                 </motion.div>
               </Col>
             </Row>
