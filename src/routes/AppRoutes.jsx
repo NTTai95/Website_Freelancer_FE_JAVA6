@@ -1,6 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
+import PostDetail from '@pages/postdetail/PostDetail';
 import Header from "@components/header/Header";
 import Home from "@components/home/Home";
 
@@ -58,6 +59,14 @@ const AppRoutes = () => {
       />
 
       
+      <Route
+        path="/postdetail"
+        element={
+          <MainLayout>
+            <PostDetail />
+          </MainLayout>
+        }
+      />
     </Routes>
   );
 };
