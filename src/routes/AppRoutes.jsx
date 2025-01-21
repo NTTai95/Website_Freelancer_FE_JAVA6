@@ -4,7 +4,9 @@ import MainLayout from "@layouts/mainLayout/MainLayout";
 import Header from "@components/header/Header";
 
 import Authentication from "@pages/authentication/Authentication";
-import About from "../pages/about/about";
+import About from "@pages/about/about";
+import JobListing from "@components/recruitmentList/JobListing";
+import ProjectPage4 from "@components/ProjectPage/ProjectPage4";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -24,12 +26,27 @@ const AppRoutes = () => {
         path="/about"
         element={
           <MainLayout>
-            <About/>
+            <About />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/JobListing"
+        element={
+          <MainLayout>
+            <JobListing />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/ProjectPage4"
+        element={
+          <MainLayout>
+            <ProjectPage4 />
           </MainLayout>
         }
       />
     </Routes>
-    
   );
 };
 
