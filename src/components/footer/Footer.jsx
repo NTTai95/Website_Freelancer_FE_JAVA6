@@ -1,7 +1,8 @@
+import scss from "./Footer.module.scss";
 function Footer() {
     return (
-      <div>
-        <h1>--Footer--</h1>
+      <div className={scss.footer}>
+        <h2>@Copy me</h2>
       </div>
     );
   }

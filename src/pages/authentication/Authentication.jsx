@@ -11,7 +11,7 @@ import { s, tr } from "motion/react-client";
 function Authentication() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showLogin, setShowLogin] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
@@ -43,6 +43,10 @@ function Authentication() {
       clearTimeout(gifTimeoutI);
     };
   }, [showLogin]);
+
+  function handleLogin() {
+
+  }
 
   return (
     <div>
@@ -214,6 +218,7 @@ function Authentication() {
                         className={scss.btnAuthentication}
                         color="Primary"
                         variant="solid"
+                        onClick={handleLogin()}
                         block
                       >
                         <b>{text}</b>
