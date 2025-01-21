@@ -1,4 +1,4 @@
-import { Col, Row, Button, Input, Select } from "antd";
+import { Col, Row, Button, Input, Select, ConfigProvider } from "antd";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
 import { useNavigate } from "react-router-dom";
@@ -43,11 +43,12 @@ function Header() {
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
       </Col>
       <Col className={scss.col3} span={6}>
-        <Input
-          addonAfter={selectAfter}
-          placeholder="Tìm kiếm..."
-           size="large"
-        />
+          <Input
+          className={scss.search}
+            addonAfter={selectAfter}
+            placeholder="Tìm kiếm..."
+            size="large"
+          />
       </Col>
       <Col className={scss.col4} span={5}>
         <Button className={scss.button} color="primary" variant="outlined">
