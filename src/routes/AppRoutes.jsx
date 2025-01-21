@@ -2,6 +2,7 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import Header from "@components/header/Header";
+import Home from "@components/home/Home";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
@@ -46,6 +47,17 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+
+      <Route
+        path="/home"
+        element={
+          <MainLayout>
+            <Home/>
+          </MainLayout>
+        }
+      />
+
+      
     </Routes>
   );
 };
