@@ -1,60 +1,51 @@
 import React, { useState } from "react";
-import "/src/assets/styles/ProjectPage4.css";
+import styles from "./ProjectPage4.module.scss"; // Import đúng file SCSS
 
 const ProjectPage4 = () => {
   const [currentStep, setCurrentStep] = useState(3); // Bước hiện tại là bước 4
 
   return (
-    <div className="container mt-5">
-      {/* Thanh tiến trình */}
-      <div className="progress-bar-custom mb-4">
-        {[
-          "Tổng quan",
-          "Định giá",
-          "Thực hiện",
-          "Quy trình",
-          "Mở số",
-          "Đánh giá",
-        ].map((step, index) => (
-          <div
-            key={index}
-            className={`step ${index <= currentStep ? "completed" : ""} ${
-              index === currentStep ? "active" : ""
-            }`}
-          >
-            <div
-              className={`circle ${
-                index <= currentStep ? "completed-circle" : ""
-              }`}
-            >
-              <span>{index + 1}</span>
-            </div>
-            <div
-              className={`label ${
-                index <= currentStep ? "completed-label" : ""
-              }`}
-            >
-              {step}
-            </div>
-            {index < 5 && (
-              <div
-                className={`line ${
-                  index < currentStep ? "completed-line" : ""
-                }`}
-              ></div>
-            )}
-          </div>
-        ))}
+    <div className={styles.container}>
+      {/* Thanh tiến trình nằm trên đầu trang */}
+      <div className={styles.progressBar}>
+  {["Tổng quan", "Định giá", "Thực hiện", "Quy trình", "Mở số", "Đánh giá"].map(
+    (step, index) => (
+      <div
+        key={index}
+        className={`${styles.step} ${
+          index < currentStep
+            ? styles.completed
+            : index === currentStep
+            ? styles.active
+            : styles.incomplete
+        }`}
+      >
+        <div
+          className={`${styles.circle} ${
+            index < currentStep
+              ? styles.completedCircle
+              : index === currentStep
+              ? styles.activeCircle
+              : styles.incompleteCircle
+          }`}
+        >
+          {index + 1}
+        </div>
+        <div className={styles.label}>{step}</div> {/* Thay "Bước {index + 1}" bằng tên bước */}
+        {index < 5 && <div className={styles.border} />}
       </div>
+    )
+  )}
+</div>
+
 
       {/* Thanh chia đôi với border */}
-      <div className="row border-separator mb-4">
-        {/* Yêu cầu */}
-        <div className="col-lg-6 left-section">
-          <h5 className="mb-3">Yêu cầu và các bước</h5>
-          <p className="text-muted">Thông tin bạn cần từ khách hàng</p>
+      <div className={styles.mainContent}>
+        {/* Bên trái chiếm 7 phần */}
+        <div className={styles.leftColumn}>
+          <h5 className={styles.title}>Yêu cầu và các bước</h5>
+          <p className={styles.textMuted}>Thông tin bạn cần từ khách hàng</p>
           <form className="bg-light p-4 rounded">
-            {/* Textarea để nhập yêu cầu */}
             <div className="mb-3">
               <label htmlFor="request" className="form-label">
                 Yêu cầu từ khách hàng
@@ -67,8 +58,7 @@ const ProjectPage4 = () => {
               ></textarea>
             </div>
 
-            {/* Checkbox */}
-            <div className="form-check mb-4">
+            <div className="form-check">
               <input
                 className="form-check-input"
                 type="checkbox"
@@ -90,7 +80,6 @@ const ProjectPage4 = () => {
           </h5>
           <div className="p-4 bg-light rounded">
             <form>
-              {/* Phần nhập tiêu đề bước 1 */}
               <div className="mb-3">
                 <label htmlFor="stepTitle" className="form-label">
                   Tiêu đề bước 1
@@ -103,7 +92,6 @@ const ProjectPage4 = () => {
                 />
               </div>
 
-              {/* Phần nhập mô tả */}
               <div className="mb-3">
                 <label htmlFor="stepDescription" className="form-label">
                   Mô tả (tùy chọn)
@@ -121,23 +109,19 @@ const ProjectPage4 = () => {
           <button className="btn btn-link text-success">
             + Thêm một yêu cầu
           </button>
-          {/* Nút điều hướng */}
-          <div className="d-flex justify-content-between align-items-center mt-4">
-            {/* Nút Quay lại */}
-            <button className="btn btn-outline-secondary">Quay lại</button>
 
-            {/* Hai nút bên phải */}
+          {/* Phần hành động */}
+          <div className={styles.actions}>
+            <button className={styles.backButton}>Quay lại</button>
             <div>
-              <button className="btn btn-outline-success me-2">
-                Lưu & Thoát
-              </button>
-              <button className="btn btn-success">Lưu & Tiếp tục</button>
+              <button className={styles.saveButton}>Lưu & Sửa</button>
+              <button className={styles.saveButton}>Lưu & Tiếp tục</button>
             </div>
           </div>
         </div>
 
-        {/* Mẹo nếu bạn gặp khó khăn */}
-        <div className="col-lg-6 right-section">
+        {/* Bên phải chiếm 3 phần */}
+        <div className="col-4">
           <h5 className="mb-3">Mẹo nếu bạn gặp khó khăn</h5>
           <div className="bg-light p-3 rounded">
             <h6 className="mb-3">Yêu cầu</h6>
