@@ -7,12 +7,7 @@ import Home from "@pages/home/Home";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
-import JobListing from "@components/recruitmentList/JobListing";
-import ProjectPage4 from "@pages/ProjectPage/ProjectPage4";
-import ProjectPage5 from "@pages/ProjectPage/ProjectPage5";
-import Sidebar from "@pages/skills/Sidebar";
-import SkillTable from "@pages/skills/SkillTable";
-import EmployeeTable from "@pages/employeeTable/EmployeeTable";
+import Home from "@pages/home/home";
 
 const AppRoutes = () => {
   return (
@@ -110,6 +105,8 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+
+      
     </Routes>
   );
 };
