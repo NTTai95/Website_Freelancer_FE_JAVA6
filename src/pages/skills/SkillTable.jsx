@@ -2,15 +2,38 @@ import React, { useState } from "react";
 import styles from "../skills/SkillTable.module.scss";
 import { FaFilter } from "react-icons/fa";
 import { Dropdown, Pagination } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
 
 const SkillTable = () => {
+  const navgate = useNavigate();
+
   const skills = [
-    { id: 1, name: "Java", description: "Java is a popular programming language." },
-    { id: 2, name: "React", description: "React is a library for building UIs." },
+    {
+      id: 1,
+      name: "Java",
+      description: "Java is a popular programming language.",
+    },
+    {
+      id: 2,
+      name: "React",
+      description: "React is a library for building UIs.",
+    },
     { id: 3, name: "Copywriting", description: "Crafting persuasive content." },
-    { id: 4, name: "Copy & Paste", description: "The basic skill of every coder." },
-    { id: 5, name: "Array Programming", description: "Programming with arrays." },
-    { id: 6, name: "Python", description: "Python is known for its simplicity." },
+    {
+      id: 4,
+      name: "Copy & Paste",
+      description: "The basic skill of every coder.",
+    },
+    {
+      id: 5,
+      name: "Array Programming",
+      description: "Programming with arrays.",
+    },
+    {
+      id: 6,
+      name: "Python",
+      description: "Python is known for its simplicity.",
+    },
     { id: 7, name: "Node.js", description: "Server-side JavaScript runtime." },
     { id: 8, name: "JavaScript", description: "The language of the web." },
     { id: 9, name: "CSS", description: "Styling web pages beautifully." },
@@ -43,7 +66,6 @@ const SkillTable = () => {
           <tr>
             <th>Tên kỹ năng / Mô tả</th>
             <th>
-              
               <Dropdown>
                 <Dropdown.Toggle variant="link" id="dropdown-custom-components">
                   <FaFilter size={18} className={`${styles.filterIcon} ms-2`} />
@@ -66,7 +88,7 @@ const SkillTable = () => {
                 <p>{skill.description}</p>
               </td>
               <td>
-                <button className="btn btn-link">Chỉnh sửa</button>
+                <button onClick={() => navgate(`/admin/skills/edit`)} className="btn btn-link">Chỉnh sửa</button>
               </td>
             </tr>
           ))}
@@ -76,7 +98,7 @@ const SkillTable = () => {
 
       {/* Nút thêm kỹ năng và pagination */}
       <div className="d-flex justify-content-between align-items-center">
-        <button className="btn btn-success">+ Thêm kỹ năng</button>
+        <button onClick={() => navgate("/admin/skills/add")} className="btn btn-success">+ Thêm kỹ năng</button>
         <Pagination>
           <Pagination.Prev
             onClick={() => currentPage > 1 && paginate(currentPage - 1)}

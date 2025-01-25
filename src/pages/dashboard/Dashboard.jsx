@@ -143,7 +143,7 @@ function Dashboard() {
         },
     ];
 
-    return (<div className="d-flex"><div className={scss["w-250px"] + " " + scss["h-100vh"] + " bg-secondary"}></div>
+    return (<div className="d-flex">
         <div className="container mt-4">
             <div className="row">
                 <div className="col-4">

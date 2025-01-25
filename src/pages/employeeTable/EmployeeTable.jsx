@@ -39,7 +39,7 @@ const EmployeeTable = () => {
       render: (text, record) => (
         <a
           href=""
-          onClick={() => navigate(`/admin/employee/edit/${record.key}`)}
+          onClick={() => navigate(`/admin/employee/edit`)}
         >
           Chỉnh sửa
         </a>

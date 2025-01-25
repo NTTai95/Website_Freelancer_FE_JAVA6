@@ -81,11 +81,11 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/skillform"
+        path="/admin/skills/:mode"
         element={
-          <MainLayout>
+          <AdminLayout>
             <SkillForm />
-          </MainLayout>
+          </AdminLayout>
         }
       />
       <Route
@@ -97,7 +97,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/employetable"
+        path="/admin/staff"
         element={
           <AdminLayout>
             <EmployeeTable />
@@ -112,20 +112,12 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      {/* <Route
+      <Route
         path="/admin/dashboard"
         element={
           <AdminLayout>
             <Dashboard />
-          </AdminLayout>
-        }
-      /> */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <MainLayout>
-            <Dashboard />
-          </MainLayout>
+          </AdminLayout >
         }
       />
       <Route
@@ -137,11 +129,11 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/nvform"
+        path="/admin/employee/:mode"
         element={
-          <MainLayout>
+          <AdminLayout>
             <NVForm />
-          </MainLayout>
+          </AdminLayout>
         }
       />
     </Routes>

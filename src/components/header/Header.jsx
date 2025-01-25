@@ -18,7 +18,6 @@ function Header() {
 
   const menuItemsHelp = [
     { name: "Giới thiệu", link: "/about" },
-    { name: "Dashboard", link: "/Dashboard" },
   ];
 
   const selectAfter = (
