@@ -1,21 +1,10 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from "@pages/postdetail/PostDetail";
+import PostDetail from '@pages/postdetail/PostDetail';
+import Header from "@components/header/Header";
 
 import Authentication from "@pages/authentication/Authentication";
-import About from "@pages/about/about";
-import Home from "@pages/home/home";
-import JobListing from "@components/recruitmentList/JobListing";
-import Sidebar from "@pages/skills/Sidebar";
-import SkillTable from "@pages/skills/SkillTable";
-import EmployeeTable from "@pages/employeeTable/EmployeeTable";
-import ProjectPage from "../pages/ProjectPage/ProjectPage";
-import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import AdminLayout from "../layouts/AdminLayout/AdminLayout";
-
-import Profile from "@pages/profile/Profile";
-import Dashboard from "../pages/dashboard/Dashboard";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -67,62 +56,6 @@ const AppRoutes = () => {
         element={
           <MainLayout>
             <PostDetail />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/ProjectPage"
-        element={
-          <MainLayout>
-            <ProjectPage />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/admin/skills"
-        element={
-          <AdminLayout>
-            <SkillTable />
-          </AdminLayout>
-        }
-      />
-      <Route
-        path="/admin/employetable"
-        element={
-          <AdminLayout>
-            <EmployeeTable />
-          </AdminLayout>
-        }
-      />
-      <Route
-        path="/forgotpassword"
-        element={
-          <MainLayout>
-            <ForgotPassword />
-          </MainLayout>
-        }
-      />
-      {/* <Route
-        path="/admin/dashboard"
-        element={
-          <AdminLayout>
-            <Dashboard />
-          </AdminLayout>
-        }
-      /> */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <MainLayout>
-            <Dashboard />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/profile/:id" //import
-        element={
-          <MainLayout>
-            <Profile /> {/* import */}
           </MainLayout>
         }
       />
