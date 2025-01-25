@@ -14,6 +14,8 @@ import ProjectPage from "../pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 
+import Profile from "@pages/profile/Profile";
+import Dashboard from "../pages/dashboard/Dashboard";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -108,6 +110,22 @@ const AppRoutes = () => {
           </AdminLayout>
         }
       /> */}
+      <Route
+        path="/admin/dashboard"
+        element={
+          <MainLayout>
+            <Dashboard />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile/:id" //import
+        element={
+          <MainLayout>
+            <Profile /> {/* import */}
+          </MainLayout>
+        }
+      />
     </Routes>
   );
 };
