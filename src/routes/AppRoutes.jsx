@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import PostDetail from "@pages/postdetail/PostDetail";
 import Header from "@components/header/Header";
-import Home from "@pages/home/Home";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";

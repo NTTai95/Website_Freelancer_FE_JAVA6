@@ -1,8 +1,14 @@
 const CardHome = ({image }) => {
-    return (<div>
-        <img src={image} alt="example" />
+    return (<>
+        <div>
+            <img src={image} alt="example" />
         
-    </div>);
+        </div>
+        <div>
+            
+        </div>
+      </>
+    );
 
 };
 
