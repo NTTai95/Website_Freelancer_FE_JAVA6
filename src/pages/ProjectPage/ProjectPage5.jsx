@@ -6,41 +6,6 @@ import styles from "./ProjectPage5.module.scss";
 const ProjectPage5 = () => {
   return (
     <div className={styles.container}>
-      {/* Thanh tiến trình nằm trên đầu trang */}
-      <div className={styles.progressBar}>
-        {[
-          "Tổng quan",
-          "Định giá",
-          "Thực hiện",
-          "Quy trình",
-          "Mở số",
-          "Đánh giá",
-        ].map((step, index) => (
-          <div
-            key={index}
-            className={`${styles.step} ${
-              index < 4
-                ? styles.completed
-                : index === 4
-                ? styles.active
-                : index === 5
-                ? styles.whiteStep // Đặt màu trắng cho ô 6
-                : ""
-            }`}
-          >
-            <div
-              className={`${styles.circle} ${
-                index <= 4 ? styles.completedCircle : ""
-              }`}
-            >
-              {index + 1}
-            </div>
-            <div className={styles.label}>{step}</div>
-            {index < 5 && <div className={styles.border} />}
-          </div>
-        ))}
-      </div>
-
       {/* Nội dung chính */}
       <div className={styles.mainContent}>
         {/* Cột trái */}
@@ -70,15 +35,6 @@ const ProjectPage5 = () => {
               có thể hỏi. Thêm tối đa 5 câu hỏi.
             </p>
             <button className={styles.addButton}>+ Thêm câu hỏi</button>
-          </div>
-
-          {/* Phần hành động */}
-          <div className={styles.actions}>
-            <button className={styles.backButton}>Quay lại</button>
-            <div>
-              <button className={styles.saveButton}>Lưu & Sửa</button>
-              <button className={styles.saveButton}>Lưu & Tiếp tục</button>
-            </div>
           </div>
         </div>
 

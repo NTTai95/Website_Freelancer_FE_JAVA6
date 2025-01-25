@@ -6,39 +6,6 @@ const ProjectPage4 = () => {
 
   return (
     <div className={styles.container}>
-      {/* Thanh tiến trình nằm trên đầu trang */}
-      <div className={styles.progressBar}>
-  {["Tổng quan", "Định giá", "Thực hiện", "Quy trình", "Mở số", "Đánh giá"].map(
-    (step, index) => (
-      <div
-        key={index}
-        className={`${styles.step} ${
-          index < currentStep
-            ? styles.completed
-            : index === currentStep
-            ? styles.active
-            : styles.incomplete
-        }`}
-      >
-        <div
-          className={`${styles.circle} ${
-            index < currentStep
-              ? styles.completedCircle
-              : index === currentStep
-              ? styles.activeCircle
-              : styles.incompleteCircle
-          }`}
-        >
-          {index + 1}
-        </div>
-        <div className={styles.label}>{step}</div> {/* Thay "Bước {index + 1}" bằng tên bước */}
-        {index < 5 && <div className={styles.border} />}
-      </div>
-    )
-  )}
-</div>
-
-
       {/* Thanh chia đôi với border */}
       <div className={styles.mainContent}>
         {/* Bên trái chiếm 7 phần */}
@@ -108,16 +75,7 @@ const ProjectPage4 = () => {
 
           <button className="btn btn-link text-success">
             + Thêm một yêu cầu
-          </button>
-
-          {/* Phần hành động */}
-          <div className={styles.actions}>
-            <button className={styles.backButton}>Quay lại</button>
-            <div>
-              <button className={styles.saveButton}>Lưu & Sửa</button>
-              <button className={styles.saveButton}>Lưu & Tiếp tục</button>
-            </div>
-          </div>
+          </button>    
         </div>
 
         {/* Bên phải chiếm 3 phần */}

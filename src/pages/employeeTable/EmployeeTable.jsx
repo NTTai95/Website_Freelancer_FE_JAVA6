@@ -1,188 +1,245 @@
 import React, { useState } from "react";
 import styles from "./EmployeeTable.module.scss"; // Import SCSS module
-import { FaFilter } from "react-icons/fa"; // Import filter icon
-import { Pagination } from "react-bootstrap"; // Import Bootstrap Pagination component
+import { Breadcrumb, Button, Table } from "antd";
+import { useNavigate } from "react-router-dom";
+import { HomeOutlined, UserOutlined } from "@ant-design/icons";
 
 const EmployeeTable = () => {
-  const employees = [
+  const navigate = useNavigate();
+
+  const columns = [
     {
-      id: 1,
-      name: "John Doe",
-      position: "Developer",
-      department: "IT",
-      email: "john.doe@example.com",
-      joinDate: "2020-05-10",
-      salary: 1500,
+      title: "Họ tên",
+      dataIndex: "fullName",
+      sorter: (a, b) => a.fullName.length - b.fullName.length,
     },
     {
-      id: 2,
-      name: "Jane Smith",
-      position: "Designer",
-      department: "Marketing",
-      email: "jane.smith@example.com",
-      joinDate: "2021-07-15",
-      salary: 1200,
+      title: "Tuổi",
+      dataIndex: "age",
+      sorter: (a, b) => a.age - b.age,
     },
     {
-      id: 3,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
+      title: "Email",
+      dataIndex: "email",
+      sorter: (a, b) => a.email.length - b.email.length,
     },
     {
-      id: 4,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
+      title: "Số điện thoại",
+      dataIndex: "phone",
     },
     {
-      id: 5,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
+      title: "Trạng thái",
+      dataIndex: "status",
+      sorter: (a, b) => a.status.length - b.status.length,
     },
     {
-      id: 6,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
-    },
-    {
-      id: 7,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
-    },{
-      id: 8,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
-    },{
-      id: 9,
-      name: "Alice Brown",
-      position: "Manager",
-      department: "HR",
-      email: "alice.brown@example.com",
-      joinDate: "2019-03-20",
-      salary: 2000,
+      title: "",
+      dataIndex: "",
+      key: "x",
+      render: (text, record) => (
+        <a
+          href=""
+          onClick={() => navigate(`/admin/employee/edit/${record.key}`)}
+        >
+          Chỉnh sửa
+        </a>
+      ),
     },
   ];
 
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 7;
-
-  const indexOfLastEmployee = currentPage * itemsPerPage;
-  const indexOfFirstEmployee = indexOfLastEmployee - itemsPerPage;
-  const currentEmployees = employees.slice(
-    indexOfFirstEmployee,
-    indexOfLastEmployee
-  );
-
-  const paginate = (pageNumber) => setCurrentPage(pageNumber);
-
-  const emptyRows = Array.from(
-    { length: itemsPerPage - currentEmployees.length },
-    (_, index) => (
-      <tr key={`empty-${index}`}>
-        <td colSpan="8" style={{ height: "50px" }}></td>
-      </tr>
-    )
-  );
+  const data = [
+    {
+      key: "1",
+      fullName: "Nguyễn Văn An",
+      age: 25,
+      email: "nguyenvanan@example.com",
+      phone: "0987654321",
+      status: "Đang làm việc",
+    },
+    {
+      key: "2",
+      fullName: "Trần Thị Bích",
+      age: 30,
+      email: "tranthibich@example.com",
+      phone: "0912345678",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "3",
+      fullName: "Phạm Minh Huy",
+      age: 28,
+      email: "phamminhhuy@example.com",
+      phone: "0934567890",
+      status: "Đang làm việc",
+    },
+    {
+      key: "4",
+      fullName: "Lê Thị Thanh",
+      age: 26,
+      email: "lethithanh@example.com",
+      phone: "0976543210",
+      status: "Đang làm việc",
+    },
+    {
+      key: "5",
+      fullName: "Hoàng Văn Khánh",
+      age: 32,
+      email: "hoangvankhanh@example.com",
+      phone: "0908765432",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "6",
+      fullName: "Ngô Thị Hạnh",
+      age: 29,
+      email: "ngothihanh@example.com",
+      phone: "0912987654",
+      status: "Đang làm việc",
+    },
+    {
+      key: "7",
+      fullName: "Võ Minh Tâm",
+      age: 27,
+      email: "vominhtam@example.com",
+      phone: "0945678901",
+      status: "Đang làm việc",
+    },
+    {
+      key: "8",
+      fullName: "Đỗ Thị Ngọc",
+      age: 24,
+      email: "dothingoc@example.com",
+      phone: "0923456789",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "9",
+      fullName: "Bùi Văn Nam",
+      age: 33,
+      email: "buivannam@example.com",
+      phone: "0981234567",
+      status: "Đang làm việc",
+    },
+    {
+      key: "10",
+      fullName: "Đinh Thị Tuyết",
+      age: 31,
+      email: "dinhthituyet@example.com",
+      phone: "0912345678",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "11",
+      fullName: "Nguyễn Thị Lan",
+      age: 22,
+      email: "nguyenthilan@example.com",
+      phone: "0934567891",
+      status: "Đang làm việc",
+    },
+    {
+      key: "12",
+      fullName: "Trương Văn Quang",
+      age: 35,
+      email: "truongvanquang@example.com",
+      phone: "0909123456",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "13",
+      fullName: "Phan Thị Hà",
+      age: 29,
+      email: "phanthiha@example.com",
+      phone: "0912349876",
+      status: "Đang làm việc",
+    },
+    {
+      key: "14",
+      fullName: "Lý Minh Khang",
+      age: 26,
+      email: "lyminhkhang@example.com",
+      phone: "0987654322",
+      status: "Đang làm việc",
+    },
+    {
+      key: "15",
+      fullName: "Hồ Văn Hùng",
+      age: 28,
+      email: "hovanhung@example.com",
+      phone: "0908765433",
+      status: "Đang làm việc",
+    },
+    {
+      key: "16",
+      fullName: "Trần Thị Hương",
+      age: 30,
+      email: "tranthihoanghuong@example.com",
+      phone: "0912345643",
+      status: "Đã nghỉ việc",
+    },
+    {
+      key: "17",
+      fullName: "Nguyễn Văn Thắng",
+      age: 34,
+      email: "nguyenvanthang@example.com",
+      phone: "0934564321",
+      status: "Đang làm việc",
+    },
+    {
+      key: "18",
+      fullName: "Phạm Thị Mai",
+      age: 27,
+      email: "phamthimai@example.com",
+      phone: "0976541234",
+      status: "Đang làm việc",
+    },
+    {
+      key: "19",
+      fullName: "Trần Minh Hải",
+      age: 25,
+      email: "tranminhhai@example.com",
+      phone: "0909123465",
+      status: "Đang làm việc",
+    },
+    {
+      key: "20",
+      fullName: "Vũ Thị Yến",
+      age: 32,
+      email: "vuthiyen@example.com",
+      phone: "0923456123",
+      status: "Đã nghỉ việc",
+    },
+  ];
 
   return (
     <div className={`${styles.employeeTable} p-3`}>
-      <div className="table-container">
-        <table className="table">
-          <thead className="thead-light">
-            <tr>
-              <th>Mã nhân viên</th>
-              <th className={styles.filterHeader}>
-                Tên nhân viên
-                <FaFilter className={`${styles.filterIcon} ms-2`} />
-              </th>
-              <th>Vị trí</th>
-              <th className={styles.filterHeader}>
-                Phòng ban
-                <FaFilter className={`${styles.filterIcon} ms-2`} />
-              </th>
-              <th>Email</th>
-              <th>Ngày tham gia</th>
-              <th className={styles.filterHeader}>
-                Lương
-                <FaFilter className={`${styles.filterIcon} ms-2`} />
-              </th>
-              <th>Hành động</th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentEmployees.map((employee) => (
-              <tr key={employee.id}>
-                <td>{employee.id}</td>
-                <td>{employee.name}</td>
-                <td>{employee.position}</td>
-                <td>{employee.department}</td>
-                <td>{employee.email}</td>
-                <td>{employee.joinDate}</td>
-                <td>{employee.salary} USD</td>
-                <td className={styles.actionButtons}>
-                  <button
-                    className="btn btn-link"
-                    style={{ textDecoration: "none" }}
-                  >
-                    Chỉnh sửa
-                  </button>
-                  <button className="btn btn-danger">Xóa</button>
-                </td>
-              </tr>
-            ))}
-            {emptyRows}
-          </tbody>
-        </table>
-      </div>
+      <Breadcrumb
+        className={styles.breadcrumb}
+        items={[
+          {
+            href: "",
+            title: <HomeOutlined />,
+          },
+          {
+            href: "/admin/employee",
+            title: "Nhân viên",
+          }
+        ]}
+      />
 
-      <div className="d-flex justify-content-between align-items-center">
-        <button className="btn btn-success">+ Thêm nhân viên</button>
-        <Pagination>
-          <Pagination.Prev
-            onClick={() => currentPage > 1 && paginate(currentPage - 1)}
-          />
-          {[...Array(Math.ceil(employees.length / itemsPerPage))].map(
-            (_, index) => (
-              <Pagination.Item
-                key={index + 1}
-                active={index + 1 === currentPage}
-                onClick={() => paginate(index + 1)}
-              >
-                {index + 1}
-              </Pagination.Item>
-            )
-          )}
-          <Pagination.Next
-            onClick={() =>
-              currentPage < Math.ceil(employees.length / itemsPerPage) &&
-              paginate(currentPage + 1)
-            }
-          />
-        </Pagination>
-      </div>
+      <Table
+        columns={columns}
+        dataSource={data}
+        showSorterTooltip={{
+          target: "sorter-icon",
+        }}
+      />
+      <Button
+        type="primary"
+        onClick={() => navigate("/admin/employee/add")}
+        size="large"
+      >
+        Thêm nhân viên
+      </Button>
     </div>
   );
 };

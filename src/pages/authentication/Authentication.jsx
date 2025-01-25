@@ -5,8 +5,8 @@ import FlInputText from "../../components/iu/input/FlInputText";
 import FlInputPassword from "../../components/iu/input/FlInputPassword";
 import ButtonChat from "../../components/iu/button/ButtonChat";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
-import { delay, motion } from "motion/react";
-import { s, tr } from "motion/react-client";
+import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
 
 function Authentication({isLogin}) {
   const [email, setEmail] = useState("");
@@ -15,6 +15,8 @@ function Authentication({isLogin}) {
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const textTimeout = setTimeout(() => {
@@ -189,7 +191,7 @@ function Authentication({isLogin}) {
                       animate={{ display: showLogin ? "flex" : "none" }}
                       transition={{ duration: 0, delay: 1 }}
                     >
-                      <a href="#">Quên mật khẩu?</a>
+                      <a href="#" onClick={() => navigate("/forgotpassword")}>Quên mật khẩu?</a>
                     </motion.div>
                     <motion.div
                       className={scss.mb30px}

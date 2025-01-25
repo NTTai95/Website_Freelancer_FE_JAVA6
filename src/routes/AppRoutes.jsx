@@ -2,17 +2,17 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import PostDetail from "@pages/postdetail/PostDetail";
-import Header from "@components/header/Header";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
 import JobListing from "@components/recruitmentList/JobListing";
-import ProjectPage4 from "@pages/ProjectPage/ProjectPage4";
-import ProjectPage5 from "@pages/ProjectPage/ProjectPage5";
 import Sidebar from "@pages/skills/Sidebar";
 import SkillTable from "@pages/skills/SkillTable";
 import EmployeeTable from "@pages/employeeTable/EmployeeTable";
+import ProjectPage from "../pages/ProjectPage/ProjectPage";
+import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
+import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 
 const AppRoutes = () => {
   return (
@@ -61,14 +61,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/ProjectPage4"
-        element={
-          <MainLayout>
-            <ProjectPage4 />
-          </MainLayout>
-        }
-      />
-      <Route
         path="/postdetail"
         element={
           <MainLayout>
@@ -77,41 +69,45 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/ProjectPage5"
+        path="/ProjectPage"
         element={
           <MainLayout>
-            <ProjectPage5 />
+            <ProjectPage />
           </MainLayout>
         }
       />
       <Route
-        path="/Skills"
+        path="/admin/skills"
         element={
-          <MainLayout>
-            <div className="d-flex">
-              <Sidebar />
-              <div className="flex-grow-1">
-                <SkillTable />
-              </div>
-            </div>
-          </MainLayout>
+          <AdminLayout>
+            <SkillTable />
+          </AdminLayout>
         }
       />
       <Route
-        path="/EmployeeTable"
+        path="/admin/employetable"
+        element={
+          <AdminLayout>
+            <EmployeeTable />
+          </AdminLayout>
+        }
+      />
+      <Route
+        path="/forgotpassword"
         element={
           <MainLayout>
-            <div className="d-flex">
-              <Sidebar />
-              <div className="flex-grow-1">
-                <EmployeeTable />
-              </div>
-            </div>
+            <ForgotPassword />
           </MainLayout>
         }
       />
-
-      
+      {/* <Route
+        path="/admin/dashboard"
+        element={
+          <AdminLayout>
+            <Dashboard />
+          </AdminLayout>
+        }
+      /> */}
     </Routes>
   );
 };

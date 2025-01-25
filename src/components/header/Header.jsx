@@ -13,7 +13,7 @@ function Header() {
 
   const menuItemsRecruitment = [
     // { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/ProjectPage4" },
+    { name: "Tạo bài tuyển dụng", link: "/ProjectPage" },
   ];
 
   const menuItemsHelp = [
