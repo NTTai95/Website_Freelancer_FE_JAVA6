@@ -8,10 +8,10 @@ import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { delay, motion } from "motion/react";
 import { s, tr } from "motion/react-client";
 
-function Authentication() {
+function Authentication({isLogin}) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [showLogin, setShowLogin] = useState(true);
+  const [showLogin, setShowLogin] = useState(isLogin);
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");

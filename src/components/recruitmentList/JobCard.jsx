@@ -1,6 +1,9 @@
 import React from "react";
 import "/src/assets/styles/jobCard.css";
+import { useNavigate } from "react-router-dom";
 const JobCard = ({ title, company, location, time, type, description }) => {
+  const navigate = useNavigate();
+  
   return (
     <div className="card mb-4 border-0 shadow-sm job-card">
       <div className="row g-0">
@@ -8,7 +11,7 @@ const JobCard = ({ title, company, location, time, type, description }) => {
           <div className="card-body d-flex justify-content-between align-items-center">
            
             <div>
-              <h5 className="card-title mb-2 text-primary">{title}</h5>
+              <h5 style={{cursor:"pointer"}} onClick={() => navigate("/postdetail")} className="card-title mb-2 text-primary">{title}</h5>
               <p className="card-text text-muted mb-2">
                 <i className="fas fa-building me-2 text-secondary"></i>
                 <strong>{company}</strong>

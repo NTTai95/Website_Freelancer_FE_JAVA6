@@ -1,9 +1,9 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from '@pages/postdetail/PostDetail';
+import PostDetail from "@pages/postdetail/PostDetail";
 import Header from "@components/header/Header";
-import Home from "@components/home/Home";
+import Home from "@pages/home/Home";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
@@ -13,13 +13,28 @@ const AppRoutes = () => {
   return (
     <Routes>
       {/* Routes với MainLayout */}
-      <Route path="/" element={<MainLayout></MainLayout>} />
-
       <Route
-        path="/authentication"
+        path="/"
         element={
           <MainLayout>
-            <Authentication />
+            <Home />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          <MainLayout>
+            <Authentication isLogin={true} />
+          </MainLayout>
+        }
+      />
+
+      <Route
+        path="/register"
+        element={
+          <MainLayout>
+            <Authentication isLogin={false} />
           </MainLayout>
         }
       />
@@ -33,7 +48,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/JobListing"
+        path="/joblisting"
         element={
           <MainLayout>
             <JobListing />
@@ -48,17 +63,6 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-
-      <Route
-        path="/home"
-        element={
-          <MainLayout>
-            <Home/>
-          </MainLayout>
-        }
-      />
-
-      
       <Route
         path="/postdetail"
         element={

@@ -7,18 +7,18 @@ const { Option } = Select;
 function Header() {
   const navigate = useNavigate();
   const menuItemsFindWork = [
-    { name: "Tìm việc", link: "/find-jobs" },
-    { name: "Công việc đã lưu", link: "/saved-jobs" },
+    { name: "Tìm việc", link: "/joblisting" },
+    // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
   const menuItemsRecruitment = [
-    { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/saved-jobs" },
+    // { name: "Freelacner", link: "/find-jobs" },
+    { name: "Tạo bài tuyển dụng", link: "/ProjectPage4" },
   ];
 
   const menuItemsHelp = [
-    { name: "Giới thiệu", link: "/find-jobs" },
-    { name: "Liên hệ", link: "/saved-jobs" },
+    { name: "Giới thiệu", link: "/about" },
+    { name: "Dashboard", link: "/Dashboard" },
   ];
 
   const selectAfter = (
@@ -32,7 +32,7 @@ function Header() {
   return (
     <Row className={scss.header}>
       <Col className={scss.col1} span={5}>
-        <span>FREELANCER</span>
+        <span className={scss["cusros-pointer"]} onClick={() => navigate("/")}>FREELANCER</span>
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
@@ -51,10 +51,10 @@ function Header() {
           />
       </Col>
       <Col className={scss.col4} span={5}>
-        <Button className={scss.button} color="primary" variant="outlined">
+        <Button className={scss.button} color="primary" variant="outlined" onClick={() => navigate("/login")}>
           Đăng nhập
         </Button>
-        <Button className={scss.button} color="primary" variant="solid">
+        <Button className={scss.button} color="primary" variant="solid" onClick={() => navigate("/register")}>
           Đăng ký
         </Button>
       </Col>
