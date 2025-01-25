@@ -1,7 +1,8 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from "@pages/postdetail/PostDetail";
+import PostDetail from '@pages/postdetail/PostDetail';
+import Header from "@components/header/Header";
 
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";

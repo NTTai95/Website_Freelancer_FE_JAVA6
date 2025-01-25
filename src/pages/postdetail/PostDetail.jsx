@@ -1,4 +1,4 @@
-import { h1 } from "motion/react-client";
+
 import scss from "./PostDetail";
 import { ClockCircleOutlined, DollarOutlined, UserSwitchOutlined  } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
