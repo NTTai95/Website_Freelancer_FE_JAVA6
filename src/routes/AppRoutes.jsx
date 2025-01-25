@@ -3,7 +3,6 @@ import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import PostDetail from '@pages/postdetail/PostDetail';
 import Header from "@components/header/Header";
-
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
@@ -17,6 +16,8 @@ import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 
 import Profile from "@pages/profile/Profile";
 import Dashboard from "../pages/dashboard/Dashboard";
+import SkillForm from "../pages/form/SkillForm";
+import NVForm from "../pages/form/NVForm";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -80,6 +81,14 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/skillform"
+        element={
+          <MainLayout>
+            <SkillForm />
+          </MainLayout>
+        }
+      />
+      <Route
         path="/admin/skills"
         element={
           <AdminLayout>
@@ -124,6 +133,14 @@ const AppRoutes = () => {
         element={
           <MainLayout>
             <Profile /> {/* import */}
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/nvform"
+        element={
+          <MainLayout>
+            <NVForm />
           </MainLayout>
         }
       />
