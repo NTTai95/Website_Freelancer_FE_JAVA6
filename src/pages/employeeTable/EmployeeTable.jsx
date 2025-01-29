@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styles from "./EmployeeTable.module.scss"; // Import SCSS module
 import { Breadcrumb, Button, Table } from "antd";
 import { useNavigate } from "react-router-dom";
-import { HomeOutlined, UserOutlined } from "@ant-design/icons";
+import { HomeOutlined } from "@ant-design/icons";
 
 const EmployeeTable = () => {
   const navigate = useNavigate();

@@ -8,7 +8,7 @@ import { icon } from "@fortawesome/fontawesome-svg-core";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 
-function MenuAdmin() {
+function MenuAdmin({ active }) {
   const navgate = useNavigate();
 
   const items = [
@@ -61,7 +61,7 @@ function MenuAdmin() {
     },
   ];
 
-  return <Menu defaultSelectedKeys={["home"]} mode="inline" items={items} />;
+  return <Menu defaultSelectedKeys={[active]} mode="inline" items={items} />;
 }
 
 export default MenuAdmin;

@@ -8,16 +8,16 @@ import { FloatButton, Tooltip } from "antd";
 import { RetweetOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 
-const AdminLayout = ({ children }) => {
+const AdminLayout = ({ children, active }) => {
   const navgate = useNavigate();
   return (
     <>
       <Header />
       <Row className={scss["container-main"]}>
-        <Col span={4}>
-          <MenuAdmin></MenuAdmin>
+        <Col className={scss["menu-admin"]} span={4}>
+          <MenuAdmin active={active}></MenuAdmin>
         </Col>
-        <Col span={20}>{children}</Col>
+        <Col className={scss.content} span={20}>{children}</Col>
       </Row>
       <div className={scss["float-button"]}>
         <Tooltip title="Chuyển đổi sang giao diện của người dùng">

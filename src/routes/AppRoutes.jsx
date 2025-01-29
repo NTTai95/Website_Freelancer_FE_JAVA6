@@ -2,12 +2,10 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import PostDetail from '@pages/postdetail/PostDetail';
-import Header from "@components/header/Header";
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
 import JobListing from "@components/recruitmentList/JobListing";
-import Sidebar from "@pages/skills/Sidebar";
 import SkillTable from "@pages/skills/SkillTable";
 import EmployeeTable from "@pages/employeeTable/EmployeeTable";
 import ProjectPage from "../pages/ProjectPage/ProjectPage";
@@ -81,9 +79,9 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/skills/:mode"
+        path="/admin/skill/:mode"
         element={
-          <AdminLayout>
+          <AdminLayout active="skills">
             <SkillForm />
           </AdminLayout>
         }
@@ -91,7 +89,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/skills"
         element={
-          <AdminLayout>
+          <AdminLayout active="skills">
             <SkillTable />
           </AdminLayout>
         }
@@ -99,7 +97,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/staff"
         element={
-          <AdminLayout>
+          <AdminLayout active="staff">
             <EmployeeTable />
           </AdminLayout>
         }
@@ -115,7 +113,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/dashboard"
         element={
-          <AdminLayout>
+          <AdminLayout active="home">
             <Dashboard />
           </AdminLayout >
         }
@@ -131,7 +129,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/employee/:mode"
         element={
-          <AdminLayout>
+          <AdminLayout active="staff">
             <NVForm />
           </AdminLayout>
         }
