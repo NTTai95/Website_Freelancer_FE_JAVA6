@@ -11,9 +11,10 @@
   .col1 {
     display: flex;
     justify-content: center;
-    span {
+    .logo {
       font-size: 25px;
       font-weight: bolder;
+      cursor: pointer;
     }
   }
   .col2 {

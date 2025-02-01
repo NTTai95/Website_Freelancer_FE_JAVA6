@@ -7,15 +7,15 @@ import About from "@pages/about/about";
 import Home from "@pages/home/home";
 import JobListing from "@components/recruitmentList/JobListing";
 import SkillTable from "@pages/skills/SkillTable";
-import EmployeeTable from "@pages/employeeTable/EmployeeTable";
-import ProjectPage from "../pages/ProjectPage/ProjectPage";
+import StaffTable from "@pages/StaffTable/StaffTable";
+import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import AdminLayout from "../layouts/AdminLayout/AdminLayout";
+import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 
 import Profile from "@pages/profile/Profile";
-import Dashboard from "../pages/dashboard/Dashboard";
-import SkillForm from "../pages/form/SkillForm";
-import NVForm from "../pages/form/NVForm";
+import Dashboard from "@pages/dashboard/Dashboard";
+import SkillForm from "@pages/form/SkillForm";
+import StaffForm from "@pages/form/StaffForm";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -79,9 +79,9 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/skill/:mode"
+        path="/admin/skills/:mode/:id?"
         element={
-          <AdminLayout active="skills">
+          <AdminLayout active="skills" breadcrumb="Kỹ năng">
             <SkillForm />
           </AdminLayout>
         }
@@ -89,7 +89,7 @@ const AppRoutes = () => {
       <Route
         path="/admin/skills"
         element={
-          <AdminLayout active="skills">
+          <AdminLayout active="skills" breadcrumb="Kỹ năng">
             <SkillTable />
           </AdminLayout>
         }
@@ -97,8 +97,8 @@ const AppRoutes = () => {
       <Route
         path="/admin/staff"
         element={
-          <AdminLayout active="staff">
-            <EmployeeTable />
+          <AdminLayout active="staff" breadcrumb="Nhân viên">
+            <StaffTable />
           </AdminLayout>
         }
       />
@@ -127,10 +127,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/employee/:mode"
+        path="/admin/staff/:mode/:id?"
         element={
-          <AdminLayout active="staff">
-            <NVForm />
+          <AdminLayout active="staff" breadcrumb="Nhân viên">
+            <StaffForm />
           </AdminLayout>
         }
       />

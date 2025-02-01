@@ -1,10 +1,10 @@
 import React, { useState } from "react";
-import styles from "./EmployeeTable.module.scss"; // Import SCSS module
+import scss from "./StaffTable.module.scss";
 import { Breadcrumb, Button, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import { HomeOutlined } from "@ant-design/icons";
 
-const EmployeeTable = () => {
+const StaffTable = () => {
   const navigate = useNavigate();
 
   const columns = [
@@ -37,10 +37,7 @@ const EmployeeTable = () => {
       dataIndex: "",
       key: "x",
       render: (text, record) => (
-        <a
-          href=""
-          onClick={() => navigate(`/admin/employee/edit`)}
-        >
+        <a href="" onClick={() => navigate(`/admin/staff/edit/${record.key}`)}>
           Chỉnh sửa
         </a>
       ),
@@ -211,21 +208,15 @@ const EmployeeTable = () => {
   ];
 
   return (
-    <div className={`${styles.employeeTable} p-3`}>
-      <Breadcrumb
-        className={styles.breadcrumb}
-        items={[
-          {
-            href: "",
-            title: <HomeOutlined />,
-          },
-          {
-            href: "/admin/employee",
-            title: "Nhân viên",
-          }
-        ]}
-      />
-
+    <div className={`${scss.employeeTable} p-3`}>
+      <Button
+      className={"mb-3 float-end"}
+        type="primary"
+        onClick={() => navigate("/admin/staff/add")}
+        size="large"
+      >
+        Thêm nhân viên
+      </Button>
       <Table
         columns={columns}
         dataSource={data}
@@ -233,15 +224,8 @@ const EmployeeTable = () => {
           target: "sorter-icon",
         }}
       />
-      <Button
-        type="primary"
-        onClick={() => navigate("/admin/employee/add")}
-        size="large"
-      >
-        Thêm nhân viên
-      </Button>
     </div>
   );
 };
 
-export default EmployeeTable;
+export default StaffTable;

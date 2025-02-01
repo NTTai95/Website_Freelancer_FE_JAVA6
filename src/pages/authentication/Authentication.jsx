@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { Col, Row, Button, ConfigProvider, Checkbox } from "antd";
 import scss from "./Authentication.module.scss";
-import FlInputText from "../../components/iu/input/FlInputText";
-import FlInputPassword from "../../components/iu/input/FlInputPassword";
-import ButtonChat from "../../components/iu/button/ButtonChat";
+import FlInputText from "@components/iu/input/FlInputText";
+import FlInputPassword from "@components/iu/input/FlInputPassword";
+import ButtonChat from "@components/iu/button/ButtonChat";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";

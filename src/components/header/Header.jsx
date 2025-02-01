@@ -2,6 +2,7 @@ import { Col, Row, Button, Input, Select, ConfigProvider } from "antd";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
 import { useNavigate } from "react-router-dom";
+import FancyText from "@carefully-coded/react-text-gradient";
 const { Option } = Select;
 
 function Header() {
@@ -16,9 +17,7 @@ function Header() {
     { name: "Tạo bài tuyển dụng", link: "/ProjectPage" },
   ];
 
-  const menuItemsHelp = [
-    { name: "Giới thiệu", link: "/about" },
-  ];
+  const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
 
   const selectAfter = (
     <Select defaultValue="Tuyển dụng">
@@ -31,7 +30,14 @@ function Header() {
   return (
     <Row className={scss.header}>
       <Col className={scss.col1} span={5}>
-        <span className={scss["cusros-pointer"]} onClick={() => navigate("/")}>FREELANCER</span>
+        <FancyText className={scss.logo}
+          gradient={{ from: "#b5ebf4", to: "#0468de", type: "linear" }}
+          animateTo={{ from: "#0468de", to: "#b5ebf4" }}
+          animateDuration={2000}
+          onClick={() => navigate("/")}
+        >
+          FREELANCER
+        </FancyText>
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
@@ -42,18 +48,28 @@ function Header() {
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
       </Col>
       <Col className={scss.col3} span={6}>
-          <Input
+        <Input
           className={scss.search}
-            addonAfter={selectAfter}
-            placeholder="Tìm kiếm..."
-            size="large"
-          />
+          addonAfter={selectAfter}
+          placeholder="Tìm kiếm..."
+          size="large"
+        />
       </Col>
       <Col className={scss.col4} span={5}>
-        <Button className={scss.button} color="primary" variant="outlined" onClick={() => navigate("/login")}>
+        <Button
+          className={scss.button}
+          color="primary"
+          variant="outlined"
+          onClick={() => navigate("/login")}
+        >
           Đăng nhập
         </Button>
-        <Button className={scss.button} color="primary" variant="solid" onClick={() => navigate("/register")}>
+        <Button
+          className={scss.button}
+          color="primary"
+          variant="solid"
+          onClick={() => navigate("/register")}
+        >
           Đăng ký
         </Button>
       </Col>
