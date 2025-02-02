@@ -1,80 +1,114 @@
 import scss from "./SkillForm.module.scss";
-import { Button, Form, Input, notification } from "antd";
-import { useState } from "react";
+import { Button, Form, Input, notification, Spin } from "antd";
+import { useEffect, useState } from "react";
 import { motion } from "motion/react";
+import skillApi from "../../api/skillApi";
+import { useParams } from "react-router-dom";
 
 function SkillForm() {
-  const [api, contextHolder] = notification.useNotification();
+  const { mode, id } = useParams();
+
+  const [messageApi, contextHolder] = notification.useNotification();
+  const [callAping, setCallAping] = useState(false);
+
+  const [initialValues, setInitialValues] = useState({
+    id: "",
+    name: "",
+    description: "",
+  });
+
+  useEffect(() => {
+    if (mode === "edit" && id) {
+      setCallAping(true);
+      skillApi.getById(id).then((response) => {
+        setInitialValues(response.data);
+        setCallAping(false);
+      });
+    }
+  },[]);
+
   const onFinish = (values) => {
-    api["success"]({
-      message: "Thêm kỹ năng thành công!",
-      description: (
-        <div>
-          <b>Tên kỹ năng:</b> <span>{values.name}</span>
-          <br />
-          <b>Mô tả:</b> <span>{values.description}</span>
-        </div>
-      ),
-      showProgress: true,
+    setCallAping(true);
+    const skill = {
+      name: values.name,
+      description: values.description,
+    };
+
+    skillApi.add(skill).then(() => {
+      messageApi["success"]({
+        message: "Thêm kỹ năng thành công!",
+        showProgress: true,
+      });
+      setCallAping(false);
     });
   };
 
   return (
-    <motion.div
-      className={scss["container-form"]}
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 20 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-    >
-      {contextHolder}
-      <Form
-        layout="vertical"
-        name="basic"
-        autoComplete="off"
-        onFinish={onFinish}
+    <Spin spinning={callAping}>
+      <motion.div
+        className={scss["container-form"]}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 20 }}
+        transition={{ duration: 0.6, ease: "easeOut" }}
       >
-        <Form.Item
-          label={<b>Tên kỹ năng</b>}
-          name="name"
-          rules={[{ required: true, message: "Vui lòng nhập tên kỹ năng!" }]}
+        {contextHolder}
+        <Form
+          layout="vertical"
+          name="basic"
+          autoComplete="off"
+          onFinish={onFinish}
         >
-          <div>
-            <p className={scss["text-help"]}>
-              Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
-            </p>
-            <Input type="text" placeholder="Tên hiển thị kỹ năng..." />
-          </div>
-        </Form.Item>
-        <Form.Item
-          label={<b>Mô tả</b>}
-          name="description"
-          rules={[
-            {
-              required: true,
-              message: "Vui lòng nhập mô tả!",
-            },
-          ]}
-        >
-          <div>
-            <p className={scss["text-help"]}>
-              Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
-            </p>
-            <Input.TextArea
-              rows={5}
-              placeholder="Mô tả chi tiết về kỹ năng..."
-              showCount
-              maxLength={10000}
-            />
-          </div>
-        </Form.Item>
-        <Form.Item label={null}>
-          <Button type="primary" htmlType="submit">
-            Thêm kỹ năng
-          </Button>
-        </Form.Item>
-      </Form>
-    </motion.div>
+          <Form.Item
+            label={<b>Tên kỹ năng</b>}
+            name="name"
+            rules={[{ required: true, message: "Vui lòng nhập tên kỹ năng!" }]}
+          >
+            <div>
+              <p className={scss["text-help"]}>
+                Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
+              </p>
+              <Input
+                value={initialValues.name}
+                type="text"
+                placeholder="Tên hiển thị kỹ năng..."
+              />
+            </div>
+          </Form.Item>
+          <Form.Item
+            label={<b>Mô tả</b>}
+            name="description"
+            rules={[
+              {
+                required: true,
+                message: "Vui lòng nhập mô tả!",
+              },
+            ]}
+          >
+            <div>
+              <p className={scss["text-help"]}>
+                Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
+              </p>
+              <Input.TextArea
+                rows={5}
+                placeholder="Mô tả chi tiết về kỹ năng..."
+                showCount
+                maxLength={10000}
+                value={initialValues.description}
+              />
+            </div>
+          </Form.Item>
+          <Form.Item label={null} className="d-flex justify-content-end">
+            <Button type="primary" htmlType="submit">
+              {mode === "add" ? "Thêm" : "Cập nhật"} kỹ năng
+            </Button>
+            <Button className={"ms-3"} type="default" htmlType="reset">
+              đặt lại
+            </Button>
+          </Form.Item>
+        </Form>
+      </motion.div>
+    </Spin>
   );
 }
 

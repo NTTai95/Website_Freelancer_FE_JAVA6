@@ -2,7 +2,7 @@ import axios from 'axios';
 
 // Cấu hình Axios
 const apiClient = axios.create({
-  baseURL: 'http://localhost:8080', // URL cơ bản của backend
+  baseURL: "https://e0c21987-e955-4814-88fa-ee71c91177d0.mock.pstmn.io", //'http://localhost:8080', // URL cơ bản của backend
   timeout: 10000, // Thời gian chờ request (10 giây)
   headers: {
     'Content-Type': 'application/json', // Loại dữ liệu gửi lên server
@@ -22,7 +22,6 @@ apiClient.interceptors.request.use(
 // Middleware xử lý sau khi nhận response
 apiClient.interceptors.response.use(
   (response) => {
-    console.log(`Response:`, response.data); // Log dữ liệu response (tùy chọn)
     return response;
   },
   (error) => {

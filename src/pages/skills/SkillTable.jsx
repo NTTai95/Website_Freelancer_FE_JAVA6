@@ -5,7 +5,7 @@ import { Table, Button, Breadcrumb, Tooltip, Input, Space } from "antd";
 import { HomeOutlined, UserOutlined, SearchOutlined } from "@ant-design/icons";
 import { motion, AnimatePresence, delay } from "framer-motion";
 import Highlighter from "react-highlight-words";
-import accountApi from "@api/accountApi";
+import skillApi from "../../api/skillApi";
 
 const SkillTable = () => {
   const navigate = useNavigate();
@@ -13,6 +13,14 @@ const SkillTable = () => {
 
   const [searchText, setSearchText] = useState("");
   const searchInput = useRef(null);
+
+  const [skills, setSkills] = useState([]);
+
+  useEffect(() => {
+    skillApi.getAll().then((response) => {
+      setSkills(response.data.map((item) => ({ ...item, key: item.id })));
+    });
+  }, []);
 
   const handleSearch = (selectedKeys, confirm) => {
     confirm();
@@ -87,153 +95,6 @@ const SkillTable = () => {
         .includes(value.toLowerCase()),
   });
 
-  const data = [
-    {
-      key: "1",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "2",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "3",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "4",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "5",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "6",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "7",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "8",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "9",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "10",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "11",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "12",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "13",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "14",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "15",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "16",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "17",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "18",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "19",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "20",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "21",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-    {
-      key: "22",
-      name: "Lập trình JavaScript",
-      description:
-        "Khả năng viết mã JavaScript hiệu quả và tối ưu hóa hiệu suất của ứng dụng web.",
-    },
-    {
-      key: "23",
-      name: "Thiết kế UI/UX",
-      description:
-        "Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. Thiết kế giao diện người dùng thân thiện, trải nghiệm người dùng mượt mà và tối ưu trên mọi thiết bị. ",
-    },
-    {
-      key: "24",
-      name: "Quản lý dự án",
-      description:
-        "Lập kế hoạch, phân công công việc và giám sát tiến độ dự án một cách hiệu quả.",
-    },
-  ];
-
   const columns = [
     {
       title: "Tên kỹ năng & Mô tả",
@@ -303,7 +164,7 @@ const SkillTable = () => {
   return (
     <div className={`${scss.employeeTable} p-3`}>
       <Button
-      className={"mb-3 float-end"}
+        className={"mb-3 float-end"}
         type="primary"
         onClick={() => navigate("/admin/skills/add")}
         size="large"
@@ -311,8 +172,10 @@ const SkillTable = () => {
         Thêm kỹ năng
       </Button>
       <Table
+        pagination={{ defaultPageSize: 10 }}
         columns={columns}
-        dataSource={data}
+        dataSource={skills}
+        loading={skills.length === 0}
         showSorterTooltip={{
           target: "sorter-icon",
         }}
