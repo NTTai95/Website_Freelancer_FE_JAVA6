@@ -45,11 +45,10 @@ function Header() {
   return (
     <Row className={scss.header}>
       <Col className={scss.col1} span={5}>
-        <FancyText
-          className={scss.logo}
-          gradient={{ from: "#b5ebf4", to: "#0468de", type: "linear" }}
-          animateTo={{ from: "#0468de", to: "#b5ebf4" }}
-          animateDuration={2000}
+        <FancyText className={scss.logo}
+          gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
+          animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
+          animateDuration={1500}
           onClick={() => navigate("/")}
         >
           FREELANCER

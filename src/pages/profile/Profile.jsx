@@ -84,17 +84,24 @@ function Profile() {
                         <Tag className={scss.tag} color="purple">HTML</Tag>
                     </div>
                 </div>
+                <div className='text-end'>
+                    <Button type="primary" ghost style={{ width: "100px" }}>
+                        Chỉnh sửa
+                    </Button>
+                </div>
             </div>
-            <div className={"col-3 "+scss.col3}>
+            <div className={"col-3 " + scss.col3}>
                 <Card className={scss.card} title="Hồ sơ của tôi">
                     <Progress percent={50} size={{ height: 25 }} />
-                    <p>Bạn muốn khách hàng chú ý đến hồ sơ của bạn hơn? Hãy tham khảo<a href='#' onClick={() =>{navigator("/")}}> gợi ý của chúng tôi.</a></p>
+                    <p>Bạn muốn khách hàng chú ý đến hồ sơ của bạn hơn? Hãy tham khảo<a href='#' onClick={() => { navigator("/") }}> gợi ý của chúng tôi.</a></p>
                 </Card>
                 <Card className={scss.card} title="Tóm lược">
                     <Progress percent={50} size={{ height: 25 }} />
-                    <p>Bạn muốn khách hàng chú ý đến hồ sơ của bạn hơn? Hãy tham khảo<a href='#' onClick={() =>{navigator("/")}}> gợi ý của chúng tôi.</a></p>
+                    <p>Bạn muốn khách hàng chú ý đến hồ sơ của bạn hơn? Hãy tham khảo<a href='#' onClick={() => { navigator("/") }}> gợi ý của chúng tôi.</a></p>
                 </Card>
+
             </div>
+
         </div>
 
     </div>);

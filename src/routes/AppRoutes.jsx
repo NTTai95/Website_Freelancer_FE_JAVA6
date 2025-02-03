@@ -16,6 +16,7 @@ import Profile from "@pages/profile/Profile";
 import Dashboard from "@pages/dashboard/Dashboard";
 import SkillForm from "@pages/form/SkillForm";
 import StaffForm from "@pages/form/StaffForm";
+import ProfileFreelancers from "../pages/profileFreelancers/profileFreelancers";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -119,19 +120,19 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/profile/:id" //import
-        element={
-          <MainLayout>
-            <Profile /> {/* import */}
-          </MainLayout>
-        }
-      />
-      <Route
         path="/admin/staff/:mode/:id?"
         element={
           <AdminLayout active="staff" breadcrumb="Nhân viên">
             <StaffForm />
           </AdminLayout>
+        }
+      />
+      <Route
+        path="/profile/freelancer"
+        element={
+          <MainLayout>
+            <ProfileFreelancers/>
+          </MainLayout>
         }
       />
     </Routes>
