@@ -2,17 +2,21 @@ import React, { useState } from "react";
 import scss from "./FlInput.module.scss"; // Tùy chọn: Thêm file CSS để chỉnh kiểu dáng
 import { EyeInvisibleOutlined, EyeOutlined } from "@ant-design/icons";
 
-const FlInputPassword = ({ icon, label, onChange }) => {
+const FlInputTooltip = ({ icon, label, value, onChange, rules = [] }) => {
   const [isFocused, setIsFocused] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const [value, setValue] = useState("");
 
-  function handleOnChange(e) {
-    setValue(e.target.value);
-    if (onChange) {
-      onChange(e);
+  const [error, setError] = useState("");
+
+  const validate = (val) => {
+    for (let rule of rules) {
+      if (rule.required && !val) {
+        setError(rule.message || "Trường này không được bỏ trống!");
+        return;
+      }
     }
-  }
+    setError("");
+  };
 
   return (
     <div>
@@ -28,8 +32,12 @@ const FlInputPassword = ({ icon, label, onChange }) => {
             type={showPassword ? "text" : "password"}
             className={scss["input-field"]}
             value={value}
-            onChange={handleOnChange}
             autoComplete="off"
+            onChange={(e) => {
+              const val = e.target.value;
+              onChange(e);
+              validate(val);
+            }}
             onFocus={() => setIsFocused(true)}
             onBlur={() => setIsFocused(false)}
           />
@@ -46,8 +54,9 @@ const FlInputPassword = ({ icon, label, onChange }) => {
           )}
         </div>
       </div>
+      <p className={scss["error-text"]}>{error}</p>
     </div>
   );
 };
 
-export default FlInputPassword;
+export default FlInputTooltip;

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Button, ConfigProvider, Checkbox } from "antd";
+import { Col, Row, Button, ConfigProvider, Checkbox, Form, message } from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
 import FlInputPassword from "@components/iu/input/FlInputPassword";
@@ -7,14 +7,16 @@ import ButtonChat from "@components/iu/button/ButtonChat";
 import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
+import loginApi from "../../api/loginApi";
 
-function Authentication({isLogin}) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
+  const [messageApi, contextHolder] = message.useMessage();
+
+  const [form] = Form.useForm();
 
   const navigate = useNavigate();
 
@@ -46,12 +48,26 @@ function Authentication({isLogin}) {
     };
   }, [showLogin]);
 
-  function handleLogin() {
-
+  function onFinish(values) {
+    if(showLogin){
+      loginApi.login(values.email, values.password).then((response) => {
+        if(response.data != -1){
+          sessionStorage.setItem("user", JSON.stringify(response.data));
+          navigate("/");
+          window.location.reload();
+        }else{
+          messageApi.open({
+            type: 'error',
+            content: 'Tài khoản không đúng!',
+          });
+        }
+      });
+    }
   }
 
   return (
     <div>
+      {contextHolder}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -69,7 +85,7 @@ function Authentication({isLogin}) {
               >
                 <motion.div
                   className={scss.formLogin}
-                  key={showLogin ? "login" : "register"}
+                  key={showLogin ? "cardLogin" : "cardRegister"}
                   initial={{ x: showLogin ? "100%" : "-100%" }}
                   animate={{
                     x: showLogin
@@ -95,10 +111,16 @@ function Authentication({isLogin}) {
                         {text.toUpperCase()}
                       </motion.h4>
                     </div>
-                    <form autoComplete="off">
+                    <Form
+                      autoComplete="off"
+                      style={{ fontFamily: "rasa" }}
+                      name="basic"
+                      form={form}
+                      onFinish={onFinish}
+                    >
                       <motion.div
                         className={scss.mb15px}
-                        key={showLogin ? "login" : "register"}
+                        key={showLogin ? "fullNameLogin" : "fullNameRegister"}
                         initial={{ display: showLogin ? "block" : "none" }}
                         animate={{
                           display: showLogin ? "none" : "block",
@@ -117,15 +139,25 @@ function Authentication({isLogin}) {
                           },
                         }}
                       >
-                        <FlInputText
-                          label="Họ tên"
-                          value={email}
-                          icon={<UserOutlined />}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <Form.Item
+                          name="fullName"
+                          rules={
+                            showLogin
+                              ? []
+                              : [
+                                  {
+                                    required: true,
+                                    message: "Vui lòng nhập họ tên!",
+                                  },
+                                ]
+                          }
+                        >
+                          <FlInputText label="Họ tên" icon={<UserOutlined />} />
+                        </Form.Item>
                       </motion.div>
                       <motion.div
                         className={scss.mb15px}
+                        key={showLogin ? "emailLogin" : "emailRegister"}
                         animate={{
                           x: showLogin
                             ? ["0%", "20%", "0%"]
@@ -133,15 +165,19 @@ function Authentication({isLogin}) {
                         }}
                         transition={{ duration: 1, delay: 0.2 }}
                       >
-                        <FlInputText
-                          label="Email"
-                          value={email}
-                          icon={<MailOutlined />}
-                          onChange={(e) => setEmail(e.target.value)}
-                        />
+                        <Form.Item
+                          name="email"
+                          rules={[
+                            { required: true, message: "Vui lòng nhập email!" },
+                            { type: "email", message: "Email không hợp lệ!" },
+                          ]}
+                        >
+                          <FlInputText label="Email" icon={<MailOutlined />} />
+                        </Form.Item>
                       </motion.div>
                       <motion.div
                         className={scss.mb15px}
+                        key={showLogin ? "passwordLogin" : "passwordRegister"}
                         animate={{
                           x: showLogin
                             ? ["0%", "20%", "0%"]
@@ -149,16 +185,36 @@ function Authentication({isLogin}) {
                         }}
                         transition={{ duration: 1, delay: 0.3 }}
                       >
-                        <FlInputPassword
-                          label="Mật khẩu"
-                          value={password}
-                          icon={<LockOutlined />}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <Form.Item
+                          name="password"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Vui lòng nhập mật khẩu!",
+                            },
+                            {
+                              min: 8,
+                              message: "Mật khẩu tối thiểu 8 kí tự!",
+                            },
+                            {
+                              max: 50,
+                              message: "Mật khẩu tối đa 50 kí tự!",
+                            },
+                          ]}
+                        >
+                          <FlInputPassword
+                            label="Mật khẩu"
+                            icon={<LockOutlined />}
+                          />
+                        </Form.Item>
                       </motion.div>
                       <motion.div
                         className={scss.mb15px}
-                        key={showLogin ? "login" : "register"}
+                        key={
+                          showLogin
+                            ? "confirmPasswordLogin"
+                            : "confirmPasswordRegister"
+                        }
                         initial={{ display: showLogin ? "block" : "none" }}
                         animate={{
                           display: showLogin ? "none" : "block",
@@ -177,55 +233,82 @@ function Authentication({isLogin}) {
                           },
                         }}
                       >
-                        <FlInputPassword
-                          label="Xác nhận mật khẩu"
-                          value={password}
-                          icon={<LockOutlined />}
-                          onChange={(e) => setPassword(e.target.value)}
-                        />
+                        <Form.Item
+                          name="confirmPassword"
+                          rules={
+                            showLogin
+                              ? []
+                              : [
+                                  {
+                                    required: true,
+                                    message: "Vui lòng xác nhận mật khẩu!",
+                                  },
+                                  ({ getFieldValue }) => ({
+                                    validator(_, value) {
+                                      if (
+                                        !value ||
+                                        getFieldValue("password") === value
+                                      ) {
+                                        return Promise.resolve();
+                                      }
+                                      return Promise.reject(
+                                        new Error("Mật khẩu không khớp!")
+                                      );
+                                    },
+                                  }),
+                                ]
+                          }
+                        >
+                          <FlInputPassword
+                            label="Xác nhận mật khẩu"
+                            icon={<LockOutlined />}
+                          />
+                        </Form.Item>
                       </motion.div>
-                    </form>
-                    <motion.div
-                      className={scss["text-right"] + " " + scss.mb30px}
-                      initial={{ display: showLogin ? "none" : "flex" }}
-                      animate={{ display: showLogin ? "flex" : "none" }}
-                      transition={{ duration: 0, delay: 1 }}
-                    >
-                      <a href="#" onClick={() => navigate("/forgotpassword")}>Quên mật khẩu?</a>
-                    </motion.div>
-                    <motion.div
-                      className={scss.mb30px}
-                      initial={{ display: showLogin ? "block" : "none" }}
-                      animate={{ display: showLogin ? "none" : "block" }}
-                      transition={{ duration: 0, delay: 1 }}
-                    >
-                      <Checkbox className={scss.checkbox} onChange={check}>
-                        Đồng ý với <a href="#">điều khoản</a> và
-                        <a href="#"> chính sách</a>
-                      </Checkbox>
-                    </motion.div>
-                    <ConfigProvider
-                      theme={{
-                        components: {
-                          Button: {
-                            colorPrimary: "#1493e2",
-                            colorPrimaryHover: "#1493e2",
-                            colorPrimaryActive: "#1493e2",
-                            borderRadius: 5,
-                          },
-                        },
-                      }}
-                    >
-                      <Button
-                        className={scss.btnAuthentication}
-                        color="Primary"
-                        variant="solid"
-                        onClick={handleLogin()}
-                        block
+                      <motion.div
+                        className={scss["text-right"] + " " + scss.mb30px}
+                        initial={{ display: showLogin ? "none" : "flex" }}
+                        animate={{ display: showLogin ? "flex" : "none" }}
+                        transition={{ duration: 0, delay: 1 }}
                       >
-                        <b>{text}</b>
-                      </Button>
-                    </ConfigProvider>
+                        <a href="#" onClick={() => navigate("/forgotpassword")}>
+                          Quên mật khẩu?
+                        </a>
+                      </motion.div>
+                      <motion.div
+                        className={scss.mb30px}
+                        initial={{ display: showLogin ? "block" : "none" }}
+                        animate={{ display: showLogin ? "none" : "block" }}
+                        transition={{ duration: 0, delay: 1 }}
+                      >
+                        <Checkbox className={scss.checkbox} onChange={check}>
+                          Đồng ý với <a href="#">điều khoản</a> và
+                          <a href="#"> chính sách</a>
+                        </Checkbox>
+                      </motion.div>
+                      <ConfigProvider
+                        theme={{
+                          components: {
+                            Button: {
+                              colorPrimary: "#1493e2",
+                              colorPrimaryHover: "#1493e2",
+                              colorPrimaryActive: "#1493e2",
+                              borderRadius: 5,
+                            },
+                          },
+                        }}
+                      >
+                        <Button
+                          className={scss.btnAuthentication}
+                          color="Primary"
+                          variant="solid"
+                          htmlType="submit"
+                          block
+                        >
+                          <b>{text}</b>
+                        </Button>
+                      </ConfigProvider>
+                    </Form>
                   </div>
                 </motion.div>
               </Col>
@@ -238,7 +321,7 @@ function Authentication({isLogin}) {
               >
                 <motion.div
                   className={scss.bgLogin}
-                  key={showLogin ? "login" : "register"}
+                  key={showLogin ? "bannerLogin" : "bannerRegister"}
                   initial={{ x: showLogin ? "-100%" : "100%" }}
                   animate={{
                     x: showLogin
@@ -257,7 +340,7 @@ function Authentication({isLogin}) {
                   <motion.div
                     className={scss.welcome}
                     animate={{ opacity: [0, 1] }}
-                    transition={{ duration: 2 ,delay: 0.35}}
+                    transition={{ duration: 2, delay: 0.35 }}
                   >
                     <span>
                       {showLogin
