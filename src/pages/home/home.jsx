@@ -7,25 +7,28 @@ import { CheckCircleOutlined } from "@ant-design/icons";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import { Button, Carousel } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
+
 function Home() {
   return (
     <>
       <Carousel className={scss.banner} arrows autoplay infinite={true}>
         <div>
-          <img src="src/assets/images/v.jpg" />
+          <img src="src/assets/images/header1.jpg" />
         </div>
         <div>
-          <img src="src/assets/images/v.jpg" />
+          <img src="src/assets/images/header2.jpg" />
         </div>
         <div>
-          <img src="src/assets/images/v.jpg" />
+          <img src="src/assets/images/header3.jpg" />
         </div>
         <div>
           <img src="src/assets/images/v.jpg" />
         </div>
       </Carousel>
+
+
       <div className="container">
-        <div
+        <div className={scss.listjobs}
           style={{
             backgroundColor: "red",
             marginBottom: "20px",
@@ -74,7 +77,7 @@ function Home() {
           </div>
         </div>
 
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "20px" }} className={scss.suite}>
           <Row>
             <Col
               span={12}
@@ -142,11 +145,11 @@ function Home() {
           </Row>
         </div>
 
-        <div style={{ marginBottom: "20px" }}>
+        <div style={{ marginBottom: "20px" }} className={scss.clients}>
           <Row>
             <Col span={24}>
               <img
-                src="src/assets/images/ft9.jpg"
+                src="src/assets/images/contain4.jpg"
                 alt=""
                 style={{
                   width: "100%",
@@ -246,11 +249,12 @@ function Home() {
             </Col>
           </Row>
         </div>
-        <div style={{ marginTop: "100px" }}>
+
+        <div style={{ marginTop: "100px" }} className={scss.talent}>
           <Row>
             <Col span={12}>
               <img
-                src="src/assets/images/img2.jpg"
+                src="src/assets/images/contain3.jpg"
                 alt=""
                 style={{ width: "100%", float: "left", height: "450px" }}
               />
