@@ -1,0 +1,11 @@
+import apiClient from './index';
+
+const accountApi = {
+  getAll: () => apiClient.get('/accounts'), // Lấy danh sách user
+  getById: (id) => apiClient.get(`/accounts/${id}`), // Lấy thông tin user theo ID
+  create: (accountData) => apiClient.post('/accounts', accountData), // Tạo user mới
+  update: (id, accountData) => apiClient.put(`/accounts/${id}`, accountData), // Cập nhật user
+  delete: (id) => apiClient.delete(`/accounts/${id}`), // Xóa user
+};
+
+export default accountApi;

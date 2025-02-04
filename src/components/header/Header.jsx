@@ -1,25 +1,45 @@
-import { Col, Row, Button, Input, Select, ConfigProvider } from "antd";
+import { Col, Row, Button, Input, Select, Avatar, Dropdown } from "antd";
+import { UserOutlined } from "@ant-design/icons";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
+import DropDownLogined from "../iu/dropdown/DropDownLogined";
 import { useNavigate } from "react-router-dom";
+import FancyText from "@carefully-coded/react-text-gradient";
+import { useState, useEffect } from "react";
+import profileApi from "../../api/profileApi";
 const { Option } = Select;
 
 function Header() {
   const navigate = useNavigate();
+
+  const [profile, setProfile] = useState(null);
+  const [staff, setStaff] = useState(null);
+
+  useEffect(() => {
+    const logined = JSON.parse(sessionStorage.getItem("logined"));
+    if (logined) {
+      if (logined.type) {
+      } else {
+        profileApi.getByAccountId(logined.id).then((response) => {
+          if (response.status == 200) {
+            setProfile(response.data);
+          }
+        });
+      }
+    }
+  }, []);
+
   const menuItemsFindWork = [
-    { name: "Tìm việc", link: "/find-jobs" },
-    { name: "Công việc đã lưu", link: "/saved-jobs" },
+    { name: "Tìm việc", link: "/joblisting" },
+    // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
   const menuItemsRecruitment = [
-    { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/saved-jobs" },
+    // { name: "Freelacner", link: "/find-jobs" },
+    { name: "Tạo bài tuyển dụng", link: "/ProjectPage" },
   ];
 
-  const menuItemsHelp = [
-    { name: "Giới thiệu", link: "/find-jobs" },
-    { name: "Liên hệ", link: "/saved-jobs" },
-  ];
+  const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
 
   const selectAfter = (
     <Select defaultValue="Tuyển dụng">
@@ -32,7 +52,15 @@ function Header() {
   return (
     <Row className={scss.header}>
       <Col className={scss.col1} span={5}>
-        <span>FREELANCER</span>
+        <FancyText
+          className={scss.logo}
+          gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
+          animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
+          animateDuration={1500}
+          onClick={() => navigate("/")}
+        >
+          FREELANCER
+        </FancyText>
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
@@ -43,20 +71,38 @@ function Header() {
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
       </Col>
       <Col className={scss.col3} span={6}>
-          <Input
+        <Input
           className={scss.search}
-            addonAfter={selectAfter}
-            placeholder="Tìm kiếm..."
-            size="large"
-          />
+          addonAfter={selectAfter}
+          placeholder="Tìm kiếm..."
+          size="large"
+        />
       </Col>
       <Col className={scss.col4} span={5}>
-        <Button className={scss.button} color="primary" variant="outlined">
-          Đăng nhập
-        </Button>
-        <Button className={scss.button} color="primary" variant="solid">
-          Đăng ký
-        </Button>
+        {profile && (
+          <DropDownLogined profile={profile} />
+        )}
+        {staff && <p>{staff.fullName}</p>}{" "}
+        {!profile && !staff && (
+          <>
+            <Button
+              className={scss.button}
+              color="primary"
+              variant="outlined"
+              onClick={() => navigate("/login")}
+            >
+              Đăng nhập
+            </Button>
+            <Button
+              className={scss.button}
+              color="primary"
+              variant="solid"
+              onClick={() => navigate("/register")}
+            >
+              Đăng ký
+            </Button>
+          </>
+        )}
       </Col>
     </Row>
   );
