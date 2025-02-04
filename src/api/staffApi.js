@@ -1,7 +1,7 @@
 import apiClient from './index';
 
-const accountApi = {
-  getById: () => apiClient.get('/staffs/${id}'),
+const staffApi = {
+    getAll: () => apiClient.get('/staffs')
 };
 
-export default accountApi;
+export default staffApi;
