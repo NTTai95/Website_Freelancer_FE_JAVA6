@@ -54,57 +54,59 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className={"container mt-5 "+ scss["view"]}>
+      <div className={"container mt-5 " + scss["view"]}>
         <div className={scss.card}>
           <Row>
             <Col span={10}>
-              <h2 style={{ color: "#FF6666" }}>Bộ Doanh Nghiệp</h2>
-              <br />
-              <h3 style={{ color: "#FFFFCC" }}>
-                Đây là cách mà những công ty tốt tìm được những người đồng hành
-                tốt.
-              </h3>
-              <br />
-              <h6 style={{ color: "white" }}>
-                Tiếp cận nhóm 1% nhân tài hàng đầu trên Upwork và toàn bộ bộ
-                công cụ quản lý lực lượng lao động kết hợp. Đây chính là cách
-                đổi mới hoạt động ngày nay.
-              </h6>
-              <br />
-              <p style={{ color: "white" }}>
-                {" "}
-                <BookOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />{" "}
-                Tiếp cận nhân tài chuyên môn để lấp đầy những khoảng trống về kỹ
-                năng của bạn.
-              </p>
-              <p style={{ color: "white" }}>
-                {" "}
-                <CheckCircleOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Kiểm soát quy trình làm việc của bạn: tuyển dụng, phân loại và
-                trả lương cho nhân tài của bạn.
-              </p>
-              <p style={{ color: "white" }}>
-                {" "}
-                <AppstoreAddOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Hợp tác với Upwork để nhận hỗ trợ toàn diện từ đầu đến cuối.
-              </p>
-              <Button
-                type="primary"
-                style={{
-                  width: "40%",
-                  height: "40px",
-                  backgroundColor: "#33FF00",
-                  color: "black",
-                }}
-              >
-                Xem Thêm
-              </Button>
+              <div className={""}>
+                <h2 style={{ color: "#FF6666" }}>Bộ Doanh Nghiệp</h2>
+                <br />
+                <h3 style={{ color: "#FFFFCC" }}>
+                  Đây là cách mà những công ty tốt tìm được những người đồng
+                  hành tốt.
+                </h3>
+                <br />
+                <h6 style={{ color: "white" }}>
+                  Tiếp cận nhóm 1% nhân tài hàng đầu trên Upwork và toàn bộ bộ
+                  công cụ quản lý lực lượng lao động kết hợp. Đây chính là cách
+                  đổi mới hoạt động ngày nay.
+                </h6>
+                <br />
+                <p style={{ color: "white" }}>
+                  {" "}
+                  <BookOutlined
+                    style={{ color: "#99FF00", marginRight: "5px" }}
+                  />{" "}
+                  Tiếp cận nhân tài chuyên môn để lấp đầy những khoảng trống về
+                  kỹ năng của bạn.
+                </p>
+                <p style={{ color: "white" }}>
+                  {" "}
+                  <CheckCircleOutlined
+                    style={{ color: "#99FF00", marginRight: "5px" }}
+                  />
+                  Kiểm soát quy trình làm việc của bạn: tuyển dụng, phân loại và
+                  trả lương cho nhân tài của bạn.
+                </p>
+                <p style={{ color: "white" }}>
+                  {" "}
+                  <AppstoreAddOutlined
+                    style={{ color: "#99FF00", marginRight: "5px" }}
+                  />
+                  Hợp tác với Upwork để nhận hỗ trợ toàn diện từ đầu đến cuối.
+                </p>
+                <Button
+                  type="primary"
+                  style={{
+                    width: "40%",
+                    height: "40px",
+                    backgroundColor: "#33FF00",
+                    color: "black",
+                  }}
+                >
+                  Xem Thêm
+                </Button>
+              </div>
             </Col>
             <Col span={14}>
               <img
