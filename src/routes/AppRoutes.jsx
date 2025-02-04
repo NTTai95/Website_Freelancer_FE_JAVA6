@@ -1,7 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from '@pages/postdetail/PostDetail';
+import PostDetail from "@pages/postdetail/PostDetail";
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
@@ -12,17 +12,25 @@ import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 
-import Profile from "@pages/profile/Profile";
-import Dashboard from "@pages/dashboard/Dashboard";
-import SkillForm from "@pages/form/SkillForm";
-import StaffForm from "@pages/form/StaffForm";
-import ProfileFreelancers from "../pages/profileFreelancers/profileFreelancers";
+import Dashboard from "../pages/dashboard/Dashboard";
+import SkillForm from "../pages/form/SkillForm";
+import StaffForm from "../pages/form/StaffForm";
+import ProfileFreelancers from "../pages/profileFreelancers/ProfileFreelancers";
+import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 const AppRoutes = () => {
   return (
     <Routes>
       {/* Routes với MainLayout */}
       <Route
         path="/"
+        element={
+          <MainLayout>
+            <Home />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/home"
         element={
           <MainLayout>
             <Home />
@@ -116,7 +124,7 @@ const AppRoutes = () => {
         element={
           <AdminLayout active="home">
             <Dashboard />
-          </AdminLayout >
+          </AdminLayout>
         }
       />
       <Route
@@ -131,10 +139,20 @@ const AppRoutes = () => {
         path="/profile/freelancer"
         element={
           <MainLayout>
-            <ProfileFreelancers/>
+            <ProfileLayout active="freelancer" >
+              <ProfileFreelancers />
+            </ProfileLayout>
           </MainLayout>
         }
       />
+      {/* <Route
+        path="/admin/employee/:mode"
+        element={
+          <MainLayout>
+            <ProfileFreelancers/>
+          </MainLayout>
+        }
+      /> */}
     </Routes>
   );
 };

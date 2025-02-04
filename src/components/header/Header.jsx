@@ -1,26 +1,33 @@
-import { Col, Row, Button, Input, Select, Avatar } from "antd";
+import { Col, Row, Button, Input, Select, Avatar, Dropdown } from "antd";
 import { UserOutlined } from "@ant-design/icons";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
+import DropDownLogined from "../iu/dropdown/DropDownLogined";
 import { useNavigate } from "react-router-dom";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useState, useEffect } from "react";
-import accountApi from "../../api/accountApi";
+import profileApi from "../../api/profileApi";
 const { Option } = Select;
 
 function Header() {
   const navigate = useNavigate();
 
-  const [account, setAccount] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [staff, setStaff] = useState(null);
 
   useEffect(() => {
-    const accountId = sessionStorage.getItem("user");
-    if (accountId) {
-      accountApi.getById(accountId).then((response) => {
-        setAccount(response.data);
-      });
+    const logined = JSON.parse(sessionStorage.getItem("logined"));
+    if (logined) {
+      if (logined.type) {
+      } else {
+        profileApi.getByAccountId(logined.id).then((response) => {
+          if (response.status == 200) {
+            setProfile(response.data);
+          }
+        });
+      }
     }
-  });
+  }, []);
 
   const menuItemsFindWork = [
     { name: "Tìm việc", link: "/joblisting" },
@@ -45,7 +52,8 @@ function Header() {
   return (
     <Row className={scss.header}>
       <Col className={scss.col1} span={5}>
-        <FancyText className={scss.logo}
+        <FancyText
+          className={scss.logo}
           gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
           animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
           animateDuration={1500}
@@ -71,9 +79,11 @@ function Header() {
         />
       </Col>
       <Col className={scss.col4} span={5}>
-        {account ? (
-          <Avatar icon={<UserOutlined />} />
-        ) : (
+        {profile && (
+          <DropDownLogined profile={profile} />
+        )}
+        {staff && <p>{staff.fullName}</p>}{" "}
+        {!profile && !staff && (
           <>
             <Button
               className={scss.button}

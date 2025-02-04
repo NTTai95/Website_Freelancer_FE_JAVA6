@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Col, Row, Button, ConfigProvider, Checkbox, Form, message } from "antd";
+import {
+  Col,
+  Row,
+  Button,
+  ConfigProvider,
+  Checkbox,
+  Form,
+  message,
+} from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
 import FlInputPassword from "@components/iu/input/FlInputPassword";
@@ -49,19 +57,22 @@ function Authentication({ isLogin }) {
   }, [showLogin]);
 
   function onFinish(values) {
-    if(showLogin){
-      loginApi.login(values.email, values.password).then((response) => {
-        if(response.data != -1){
-          sessionStorage.setItem("user", JSON.stringify(response.data));
-          navigate("/");
-          window.location.reload();
-        }else{
+    if (showLogin) {
+      loginApi
+        .login(values.email, values.password)
+        .then((response) => {
+          if (response.status == 200) {
+            sessionStorage.setItem("logined", JSON.stringify(response.data));
+            navigate("/home");
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
           messageApi.open({
-            type: 'error',
-            content: 'Tài khoản không đúng!',
+            type: "error",
+            content: error.response.data,
           });
-        }
-      });
+        });
     }
   }
 

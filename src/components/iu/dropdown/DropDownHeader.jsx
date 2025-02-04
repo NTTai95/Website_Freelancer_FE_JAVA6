@@ -4,7 +4,7 @@ import { CaretDownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import scss from "./DropDownHeader.module.scss";
 
-const CustomDropdown = ({ menuItems, label }) => {
+const DropDownHeader = ({ menuItems, label }) => {
   const navigate = useNavigate();
 
   const menu = (
@@ -26,4 +26,4 @@ const CustomDropdown = ({ menuItems, label }) => {
   );
 };
 
-export default CustomDropdown;
+export default DropDownHeader;

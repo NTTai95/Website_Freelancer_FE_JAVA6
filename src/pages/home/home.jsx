@@ -1,92 +1,63 @@
 import CardHome from "@components/card/home";
 import scss from "./home.module.scss";
-import { Row, Col } from "antd";
+import { Row, Col, Divider, Card } from "antd";
 import { StarOutlined } from "@ant-design/icons";
 import { BookOutlined } from "@ant-design/icons";
 import { CheckCircleOutlined } from "@ant-design/icons";
 import { AppstoreAddOutlined } from "@ant-design/icons";
 import { Button, Carousel } from "antd";
 import { CaretRightOutlined } from "@ant-design/icons";
-
+import FancyText from "@carefully-coded/react-text-gradient";
 function Home() {
   return (
     <>
-      <Carousel className={scss.banner} arrows autoplay infinite={true}>
-        <div>
-          <img src="src/assets/images/header1.jpg" />
-        </div>
-        <div>
-          <img src="src/assets/images/header2.jpg" />
-        </div>
-        <div>
-          <img src="src/assets/images/header3.jpg" />
-        </div>
-        <div>
-          <img src="src/assets/images/v.jpg" />
-        </div>
-      </Carousel>
-
-
-      <div className="container">
-        <div className={scss.listjobs}
-          style={{
-            backgroundColor: "red",
-            marginBottom: "20px",
-            paddingBottom: "10px",
-          }}
-        >
-          <h1 style={{ textAlign: "center", color: "#FFFFCC" }}>
-            Duyệt Nhân Tài Theo Danh Mục
-          </h1>
-
-          <div
-            style={{
-              display: "flex",
-              flexWrap: "wrap",
-              gap: "16px",
-              marginLeft: "100px",
-            }}
-          >
-            {Array.from({ length: 8 }).map((_, index) => (
-              <Col
-                key={index}
-                span={5}
-                style={{
-                  backgroundColor: "#DDDDDD",
-                  borderRadius: "10px",
-                  padding: "16px",
-                }}
-              >
-                <strong>
-                  <p>Phát triển & CNTT</p>
-                </strong>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                  }}
-                >
-                  <p>
-                    <StarOutlined /> 4.85/5
-                  </p>
-                  <p style={{ marginLeft: "20px" }}>1853 kỹ năng</p>
-                </div>
-              </Col>
-            ))}
+      <div className="position-relative">
+        <Carousel className={scss.banner} arrows autoplay infinite={true}>
+          <div>
+            <video className={scss.video} autoPlay loop muted playsInline>
+              <source src="src/assets/video/banner.mp4" type="video/mp4" />
+              Trình duyệt của bạn không hỗ trợ video.
+            </video>
+          </div>
+          <div>
+            <img src="src/assets/images/v.jpg" />
+          </div>
+          <div>
+            <img src="src/assets/images/v.jpg" />
+          </div>
+          <div>
+            <img src="src/assets/images/v.jpg" />
+          </div>
+        </Carousel>
+        <div className={scss["context-banner"]}>
+          <div className={scss["container-banner"]}>
+            <FancyText
+              className={scss.logo}
+              gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
+              animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
+              animateDuration={1500}
+            >
+              FREELANCER
+            </FancyText>
+            <h3>
+              Chào mừng đến với{" "}
+              <span className={scss.highlight}>Freelancer</span> Nền tảng kết
+              nối <span className={scss.highlight}>chuyên gia</span> và
+              <span className={scss.highlight}> doanh nghiệp</span> hàng đầu. Dù
+              bạn là freelancer tìm kiếm cơ hội mới hay nhà tuyển dụng muốn hợp
+              tác với những tài năng xuất sắc, chúng tôi mang đến một không gian{" "}
+              <span className={scss.highlight}>chuyên nghiệp, linh hoạt</span>{" "}
+              và <span className={scss.highlight}>hiệu quả</span>. <br />
+              Hãy bắt đầu hành trình của bạn ngay hôm nay và tạo dựng dấu ấn
+              mạnh mẽ trong lĩnh vực của mình!
+            </h3>
           </div>
         </div>
-
-        <div style={{ marginBottom: "20px" }} className={scss.suite}>
+      </div>
+      <div className={"container mt-5 "+ scss["view"]}>
+        <div className={scss.card}>
           <Row>
-            <Col
-              span={12}
-              style={{
-                backgroundColor: "rgb(64, 207, 174)",
-                paddingLeft: "20px",
-                paddingTop: "10px",
-              }}
-            >
+            <Col span={10}>
               <h2 style={{ color: "#FF6666" }}>Bộ Doanh Nghiệp</h2>
               <br />
               <h3 style={{ color: "#FFFFCC" }}>
@@ -135,7 +106,7 @@ function Home() {
                 Xem Thêm
               </Button>
             </Col>
-            <Col span={12}>
+            <Col span={14}>
               <img
                 src="src/assets/images/ft7.jpg"
                 alt=""

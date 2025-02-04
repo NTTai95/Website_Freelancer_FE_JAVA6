@@ -2,7 +2,7 @@ import apiClient from './index';
 
 const loginApi = {
     login: (email, password) =>
-        apiClient.post('/login', null, { params: { email, password } }),
+        apiClient.post('/login', { email, password }),
 };
 
 
