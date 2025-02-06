@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
 import JobCard from "./JobCard";
 import SidebarFilter from "./SidebarFilter";
+import accountApi from "../../api/accountApi";
 
 const JobListing = () => {
-  const [isScrollVisible, setIsScrollVisible] = useState(false);
-
   const filters = {
     "Ngày đăng": [
       "Trong vòng 1 giờ",
@@ -21,7 +20,7 @@ const JobListing = () => {
       "IT Contractor",
     ],
     "Kinh nghiệm": ["Tất cả", "1 năm", "3 năm", "5 năm", "Trên 5 năm"],
-    "Lương": ["Tất cả", "2 triệu", "4 triệu", "6 triệu", "Trên 8 triệu"],
+    Lương: ["Tất cả", "2 triệu", "4 triệu", "6 triệu", "Trên 8 triệu"],
     "Cấp bậc": [
       "Tất cả",
       "Nhân viên",
@@ -39,7 +38,8 @@ const JobListing = () => {
       location: "Candlebriar Drive, Portland, NY 13679",
       time: "3 phút trước",
       type: "Toàn thời gian",
-      description: "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
+      description:
+        "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
     },
     {
       title: "PHP Developer, Team of PHP & IT Co",
@@ -55,7 +55,8 @@ const JobListing = () => {
       location: "Carolina Avenue, Richland, TX 78978",
       time: "5 phút trước",
       type: "Toàn thời gian",
-      description: "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
+      description:
+        "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
     },
     {
       title: "Thiết kế Web, Thiết kế đồ họa, UI/UX Designer & Nghệ thuật",
@@ -63,7 +64,8 @@ const JobListing = () => {
       location: "Candlebriar Drive, Portland, NY 13679",
       time: "3 phút trước",
       type: "Toàn thời gian",
-      description: "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
+      description:
+        "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
     },
     {
       title: "PHP Developer, Team of PHP & IT Co",
@@ -79,47 +81,34 @@ const JobListing = () => {
       location: "Carolina Avenue, Richland, TX 78978",
       time: "5 phút trước",
       type: "Toàn thời gian",
-      description: "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
+      description:
+        "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
     },
   ];
 
+  const [accounts, setAccounts] = useState([]);
+
   useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 200) {
-        setIsScrollVisible(true);
-      } else {
-        setIsScrollVisible(false);
-      }
-    };
-
-    window.addEventListener("scroll", handleScroll);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
+    accountApi.getAll().then((response) => {
+      setAccounts(response.data);
+    });
   }, []);
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
 
   return (
     <div className="container my-5">
       <h1 className="mb-5 text-center">Danh sách công việc</h1>
 
       <div className="row">
-        
         <aside className="col-md-3">
           {Object.keys(filters).map((key) => (
             <SidebarFilter key={key} title={key} options={filters[key]} />
           ))}
         </aside>
-        
+
         <main className="col-md-9">
           <div className="d-flex justify-content-between align-items-center mb-3">
             <p>Hiển thị kết quả 0-20</p>
 
-            
             <div>
               <label htmlFor="results-select" className="mr-2">
                 Hiển thị:
@@ -135,25 +124,18 @@ const JobListing = () => {
           {jobs.map((job, index) => (
             <JobCard key={index} {...job} />
           ))}
+          {accounts.map((account) => {
+            return (
+              <div>
+                <p>Id: {account.id}</p>
+                <p>Email: {account.email}</p>
+                <p>Password: {account.password}</p>
+                <p>Type: {account.type ? "admin" : "staff"}</p>
+              </div>
+            );
+          })}
         </main>
       </div>
-
-      
-      {isScrollVisible && (
-        <button
-          onClick={scrollToTop}
-          className="btn btn-primary position-fixed"
-          style={{
-            bottom: "20px",
-            right: "20px",
-            zIndex: 1000,
-            borderRadius: "50%",
-            padding: "10px 20px",
-          }}
-        >
-          ↑
-        </button>
-      )}
     </div>
   );
 };

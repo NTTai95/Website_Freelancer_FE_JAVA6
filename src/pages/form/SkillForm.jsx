@@ -25,7 +25,7 @@ function SkillForm() {
         setCallAping(false);
       });
     }
-  },[]);
+  }, []);
 
   const onFinish = (values) => {
     setCallAping(true);
@@ -43,6 +43,14 @@ function SkillForm() {
     });
   };
 
+  function handleReset(){
+    setInitialValues({
+      id: "",
+      name: "",
+      description: "",
+    });
+  }
+
   return (
     <Spin spinning={callAping}>
       <motion.div
@@ -58,6 +66,7 @@ function SkillForm() {
           name="basic"
           autoComplete="off"
           onFinish={onFinish}
+          initialValues={initialValues}
         >
           <Form.Item
             label={<b>Tên kỹ năng</b>}
@@ -70,6 +79,9 @@ function SkillForm() {
               </p>
               <Input
                 value={initialValues.name}
+                onChange={(e) =>
+                  setInitialValues({ ...initialValues, name: e.target.value })
+                }
                 type="text"
                 placeholder="Tên hiển thị kỹ năng..."
               />
@@ -95,6 +107,12 @@ function SkillForm() {
                 showCount
                 maxLength={10000}
                 value={initialValues.description}
+                onChange={(e) =>
+                  setInitialValues({
+                    ...initialValues,
+                    description: e.target.value,
+                  })
+                }
               />
             </div>
           </Form.Item>
@@ -102,7 +120,7 @@ function SkillForm() {
             <Button type="primary" htmlType="submit">
               {mode === "add" ? "Thêm" : "Cập nhật"} kỹ năng
             </Button>
-            <Button className={"ms-3"} type="default" htmlType="reset">
+            <Button className={"ms-3"} type="default" htmlType="reset" onClick={() => handleReset()}>
               đặt lại
             </Button>
           </Form.Item>

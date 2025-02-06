@@ -12,10 +12,11 @@ import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
 import FlInputPassword from "@components/iu/input/FlInputPassword";
 import ButtonChat from "@components/iu/button/ButtonChat";
-import { MailOutlined, LockOutlined, UserOutlined } from "@ant-design/icons";
+import { MailOutlined, LockOutlined, UserOutlined, CalendarOutlined } from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import loginApi from "../../api/loginApi";
+import loginApi from "../../api/authenticationApi";
+import FlCalendar from "@components/iu/input/FlCalendar";
 
 function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
@@ -73,6 +74,7 @@ function Authentication({ isLogin }) {
             content: error.response.data,
           });
         });
+    } else {
     }
   }
 
@@ -130,42 +132,128 @@ function Authentication({ isLogin }) {
                       onFinish={onFinish}
                     >
                       <motion.div
-                        className={scss.mb15px}
-                        key={showLogin ? "fullNameLogin" : "fullNameRegister"}
-                        initial={{ display: showLogin ? "block" : "none" }}
-                        animate={{
-                          display: showLogin ? "none" : "block",
-                          x: showLogin
-                            ? ["0%", "20%", "0%"]
-                            : ["0%", "-20%", "0%"],
-                        }}
-                        transition={{
-                          display: {
-                            duration: 0,
-                            delay: 1,
-                          },
-                          x: {
-                            duration: 1,
-                            delay: 0.1,
-                          },
-                        }}
-                      >
-                        <Form.Item
-                          name="fullName"
-                          rules={
-                            showLogin
-                              ? []
-                              : [
-                                  {
-                                    required: true,
-                                    message: "Vui lòng nhập họ tên!",
-                                  },
-                                ]
-                          }
-                        >
-                          <FlInputText label="Họ tên" icon={<UserOutlined />} />
-                        </Form.Item>
-                      </motion.div>
+                            className={scss.mb15px}
+                            key={
+                              showLogin ? "fullNameLogin" : "fullNameRegister"
+                            }
+                            initial={{ display: showLogin ? "block" : "none" }}
+                            animate={{
+                              display: showLogin ? "none" : "block",
+                              x: showLogin
+                                ? ["0%", "20%", "0%"]
+                                : ["0%", "-20%", "0%"],
+                            }}
+                            transition={{
+                              display: {
+                                duration: 0,
+                                delay: 1,
+                              },
+                              x: {
+                                duration: 1,
+                                delay: 0.1,
+                              },
+                            }}
+                          >
+                            <Form.Item
+                              name="fullName"
+                              rules={
+                                showLogin
+                                  ? []
+                                  : [
+                                      {
+                                        required: true,
+                                        message: "Vui lòng nhập họ tên!",
+                                      },
+                                    ]
+                              }
+                            >
+                              <FlInputText
+                                label="Họ tên"
+                                icon={<UserOutlined />}
+                              />
+                            </Form.Item>
+                          </motion.div>
+                      <Row gutter={16}>
+                        <Col span={12}>
+                          <motion.div
+                            className={scss.mb15px}
+                            key={
+                              showLogin ? "fullNameLogin" : "fullNameRegister"
+                            }
+                            initial={{ display: showLogin ? "block" : "none" }}
+                            animate={{
+                              display: showLogin ? "none" : "block",
+                              x: showLogin
+                                ? ["0%", "20%", "0%"]
+                                : ["0%", "-20%", "0%"],
+                            }}
+                            transition={{
+                              display: {
+                                duration: 0,
+                                delay: 1,
+                              },
+                              x: {
+                                duration: 1,
+                                delay: 0.1,
+                              },
+                            }}
+                          >
+                            <Form.Item
+                              name="fullName"
+                              
+                            >
+                              <FlCalendar
+                                label="Ngày sinh"
+                                icon={<CalendarOutlined />}
+                              />
+                            </Form.Item>
+                          </motion.div>
+                        </Col>
+                        <Col span={12}>
+                          <motion.div
+                            className={scss.mb15px}
+                            key={
+                              showLogin ? "fullNameLogin" : "fullNameRegister"
+                            }
+                            initial={{ display: showLogin ? "block" : "none" }}
+                            animate={{
+                              display: showLogin ? "none" : "block",
+                              x: showLogin
+                                ? ["0%", "20%", "0%"]
+                                : ["0%", "-20%", "0%"],
+                            }}
+                            transition={{
+                              display: {
+                                duration: 0,
+                                delay: 1,
+                              },
+                              x: {
+                                duration: 1,
+                                delay: 0.1,
+                              },
+                            }}
+                          >
+                            <Form.Item
+                              name="fullName"
+                              rules={
+                                showLogin
+                                  ? []
+                                  : [
+                                      {
+                                        required: true,
+                                        message: "Vui lòng nhập họ tên!",
+                                      },
+                                    ]
+                              }
+                            >
+                              <FlInputText
+                                label="Số điện thoại"
+                                icon={<UserOutlined />}
+                              />
+                            </Form.Item>
+                          </motion.div>
+                        </Col>
+                      </Row>
                       <motion.div
                         className={scss.mb15px}
                         key={showLogin ? "emailLogin" : "emailRegister"}

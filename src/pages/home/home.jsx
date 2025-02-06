@@ -1,12 +1,16 @@
 import CardHome from "@components/card/home";
 import scss from "./home.module.scss";
-import { Row, Col, Divider, Card } from "antd";
-import { StarOutlined } from "@ant-design/icons";
-import { BookOutlined } from "@ant-design/icons";
-import { CheckCircleOutlined } from "@ant-design/icons";
-import { AppstoreAddOutlined } from "@ant-design/icons";
-import { Button, Carousel } from "antd";
-import { CaretRightOutlined } from "@ant-design/icons";
+import { Row, Col, Button, Carousel } from "antd";
+import {
+  CustomerServiceFilled,
+  CarryOutFilled,
+  FundFilled,
+  PieChartFilled,
+  TrademarkCircleFilled,
+  CaretRightOutlined,
+  ProjectFilled,
+  SafetyCertificateFilled
+} from "@ant-design/icons";
 import FancyText from "@carefully-coded/react-text-gradient";
 function Home() {
   return (
@@ -54,64 +58,57 @@ function Home() {
           </div>
         </div>
       </div>
-      <div className={"container mt-5 "+ scss["view"]}>
+      <div className={"container mt-5 " + scss["view"]}>
         <div className={scss.card}>
           <Row>
             <Col span={10}>
-              <h2 style={{ color: "#FF6666" }}>Bộ Doanh Nghiệp</h2>
-              <br />
-              <h3 style={{ color: "#FFFFCC" }}>
-                Đây là cách mà những công ty tốt tìm được những người đồng hành
-                tốt.
-              </h3>
-              <br />
-              <h6 style={{ color: "white" }}>
-                Tiếp cận nhóm 1% nhân tài hàng đầu trên Upwork và toàn bộ bộ
-                công cụ quản lý lực lượng lao động kết hợp. Đây chính là cách
-                đổi mới hoạt động ngày nay.
-              </h6>
-              <br />
-              <p style={{ color: "white" }}>
-                {" "}
-                <BookOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />{" "}
-                Tiếp cận nhân tài chuyên môn để lấp đầy những khoảng trống về kỹ
-                năng của bạn.
-              </p>
-              <p style={{ color: "white" }}>
-                {" "}
-                <CheckCircleOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Kiểm soát quy trình làm việc của bạn: tuyển dụng, phân loại và
-                trả lương cho nhân tài của bạn.
-              </p>
-              <p style={{ color: "white" }}>
-                {" "}
-                <AppstoreAddOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Hợp tác với Upwork để nhận hỗ trợ toàn diện từ đầu đến cuối.
-              </p>
-              <Button
-                type="primary"
-                style={{
-                  width: "40%",
-                  height: "40px",
-                  backgroundColor: "#33FF00",
-                  color: "black",
-                }}
-              >
-                Xem Thêm
-              </Button>
+              <div className={scss.cardContent}>
+                <p className={scss.title}>Doanh Nghiệp</p>
+                <p className={scss.title2}>
+                  Tìm <span className={scss.highlight}>nhân tài</span> xuất sắc
+                  dễ dàng hơn bao giờ hết. Hợp tác cùng
+                  <span className={scss.highlight}> chuyên gia</span> để bứt phá
+                  <span className={scss.highlight}> doanh nghiệp.</span>
+                </p>
+                <div className={scss.item}>
+                  <PieChartFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Kết nối với nhóm 1% nhân tài hàng đầu trên{" "}
+                    <span className={scss.name}> Freelancer </span>và tận dụng
+                    trọn bộ công cụ quản lý nhân sự hiện đại.
+                  </p>
+                </div>
+                <div className={scss.item}>
+                  <FundFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Lấp đầy mọi khoảng trống kỹ năng với các chuyên gia phù hợp,
+                    giúp doanh nghiệp vận hành hiệu quả hơn.
+                  </p>
+                </div>
+                <div className={scss.item}>
+                  <CarryOutFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Kiểm soát toàn bộ quy trình làm việc – từ tuyển dụng, phân
+                    công nhiệm vụ đến quản lý thanh toán, tất cả trong một nền
+                    tảng.
+                  </p>
+                </div>
+                <div className={scss.item}>
+                  <CustomerServiceFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Đồng hành cùng{" "}
+                    <span className={scss.name}> Freelancer </span> để nhận hỗ
+                    trợ toàn diện, giúp bạn tối ưu hóa nguồn lực và tập trung
+                    vào phát triển chiến lược.
+                  </p>
+                </div>
+                <Button className={scss.btn}>Xem Thêm</Button>
+              </div>
             </Col>
             <Col span={14}>
-              <img
-                src="src/assets/images/ft7.jpg"
-                alt=""
-                style={{ width: "100%", float: "left" }}
-              />
+              <div className={scss.cardImg}>
+                <img src="src/assets/images/ft7.jpg" alt="image" />
+              </div>
             </Col>
           </Row>
         </div>
@@ -221,60 +218,46 @@ function Home() {
           </Row>
         </div>
 
-        <div style={{ marginTop: "100px" }} className={scss.talent}>
+        <div className={scss.card}>
           <Row>
-            <Col span={12}>
-              <img
-                src="src/assets/images/contain3.jpg"
-                alt=""
-                style={{ width: "100%", float: "left", height: "450px" }}
-              />
+            <Col span={14}>
+              <div className={scss.cardImg}>
+                <img src="src/assets/images/ft7.jpg" alt="image" />
+              </div>
             </Col>
-
-            <Col
-              span={12}
-              style={{
-                backgroundColor: "#00CCFF",
-                paddingLeft: "20px",
-                paddingTop: "10px",
-              }}
-            >
-              <h2 style={{ color: "#FFCC00" }}>Dành Cho Nhân Tài</h2>
-              <br />
-              <h3 style={{ color: "#FFFFCC" }}>Tìm công việc tuyệt vời</h3>
-              <br />
-              <h6 style={{ color: "white" }}>
-                Gặp gỡ những khách hàng mà bạn mong muốn được hợp tác và đưa sự
-                nghiệp hoặc doanh nghiệp của bạn lên tầm cao mới.
-              </h6>
-              <br />
-              <hr />
-              <p style={{ color: "white" }}>
-                {" "}
-                <BookOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Tìm kiếm công việc từ những ngành nghề và dự án đang mở.
-              </p>
-              <p style={{ color: "white" }}>
-                {" "}
-                <CheckCircleOutlined
-                  style={{ color: "#99FF00", marginRight: "5px" }}
-                />
-                Kiểm soát quy trình làm việc của bạn: tuyển dụng, phân loại và
-                trả lương cho nhân tài của bạn.
-              </p>
-              <Button
-                type="primary"
-                style={{
-                  width: "40%",
-                  height: "40px",
-                  backgroundColor: "#33FF00",
-                  color: "black",
-                }}
-              >
-                Tìm kiếm cơ hội
-              </Button>
+            <Col span={10}>
+              <div className={scss.cardContent}>
+                <p className={scss.title}>Freelancer</p>
+                <p className={scss.title2}>
+                  Chinh phục sự nghiệp{" "}
+                  <span className={scss.highlight}>tự do</span> với các dự án{" "}
+                  <span className={scss.highlight}>chất lượng</span> cao, thu
+                  nhập <span className={scss.highlight}>ổn định và cơ hội</span>{" "}
+                  phát triển không giới hạn.
+                </p>
+                <div className={scss.item}>
+                  <TrademarkCircleFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Làm việc với khách hàng hàng đầu – Cơ hội hợp tác với những
+                    thương hiệu lớn, mở rộng tầm ảnh hưởng.
+                  </p>
+                </div>
+                <div className={scss.item}>
+                  <ProjectFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Chọn dự án phù hợp – Chủ động thời gian và công việc bạn yêu
+                    thích.
+                  </p>
+                </div>
+                <div className={scss.item}>
+                  <SafetyCertificateFilled className={scss.icon} />
+                  <p className={scss.text}>
+                    Thanh toán nhanh chóng, bảo vệ quyền lợi – Hệ thống thanh
+                    toán minh bạch, an toàn.
+                  </p>
+                </div>
+                <Button className={scss.btn}>Xem Thêm</Button>
+              </div>
             </Col>
           </Row>
         </div>
