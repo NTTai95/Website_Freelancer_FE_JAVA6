@@ -17,8 +17,8 @@ const SkillTable = () => {
   useEffect(() => {
     skillApi.getAll().then((res) => {
       setData(
-        res.data.map((skill, index) => ({
-          key: index,  
+        res.data.map((skill) => ({
+          key: skill.id,  
           name: skill.name,
           description: skill.description,
         }))

@@ -10,11 +10,12 @@
   height: 100%;
   .base {
     display: block;
-    padding: 40px;
+    padding-left: 40px;
+    padding-right: 40px;
     width: 100%;
     .title {
       text-align: center;
-      margin-bottom: 50px;
+      margin-bottom: 10px;
       h4 {
         font-weight: bolder;
       }

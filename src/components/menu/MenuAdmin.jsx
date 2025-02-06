@@ -59,6 +59,17 @@ function MenuAdmin({ active }) {
         },
       ],
     },
+    {
+      type: "divider",
+    },
+    {
+      key: "changePassword",
+      label: "Đổi mật khẩu",
+      icon: <UserOutlined />,
+      onClick: () => {
+        navgate("/admin/staff");
+      },
+    },
   ];
 
   return <Menu defaultSelectedKeys={[active]} mode="inline" items={items} />;

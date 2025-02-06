@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import scss from "./StaffTable.module.scss";
-import { Breadcrumb, Button, Table } from "antd";
+import { Button, Table } from "antd";
 import { useNavigate } from "react-router-dom";
-import { HomeOutlined } from "@ant-design/icons";
 import staffApi from "../../api/staffApi";
 
 const StaffTable = () => {
@@ -45,10 +44,10 @@ const StaffTable = () => {
     },
     {
       title: "",
-      dataIndex: "",
-      key: "x",
+      dataIndex: "id",
+      key: "id",
       render: (text, record) => (
-        <a href="" onClick={() => navigate(`/admin/staff/edit/${record.key}`)}>
+        <a href="" onClick={() => navigate(`/admin/staff/edit/${record.id}`)}>
           Chỉnh sửa
         </a>
       ),
@@ -62,6 +61,7 @@ const StaffTable = () => {
       setData(
         res.data.map((staff) => {
           return {
+            id: staff.id,
             fullName: staff.fullName,
             birthday: formatDate(staff.birthday),
             email: staff.account.email,
@@ -86,6 +86,10 @@ const StaffTable = () => {
       <Table
         columns={columns}
         dataSource={data}
+        loading={!data || data.length === 0}
+        onChange={(e) => {
+          window.scrollTo(0, 0);
+        }}
         showSorterTooltip={{
           target: "sorter-icon",
         }}
