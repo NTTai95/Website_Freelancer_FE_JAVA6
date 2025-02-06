@@ -8,7 +8,7 @@ const JobCard = ({ title, company, location, time, type, description }) => {
     <div className="card mb-4 border-0 shadow-sm job-card">
       <div className="row g-0">
         <div className="col-md-12">
-          <div className="card-body d-flex justify-content-between align-items-center">
+          <div className="card-body d-flex justify-content-between align-items-center border">
            
             <div>
               <h5 style={{cursor:"pointer"}} onClick={() => navigate("/postdetail")} className="card-title mb-2 text-primary">{title}</h5>
