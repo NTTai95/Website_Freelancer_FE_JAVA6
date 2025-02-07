@@ -11,10 +11,7 @@ const CardAbout = ({ image, context, context1 }) => {
                     <img src={image} />
                 </div>
                 <strong className={scss.title}><Card.Meta title={context} style={{ textAlign: 'center', marginTop: '100px' }}></Card.Meta></strong>
-                <p style={{ textAlign: 'center' }}>{context1}</p>
-                <Button color="primary" className={"mx-auto d-block"} variant="dashed">
-                    Dashed
-                </Button>          
+                <p style={{ textAlign: 'center' }}>{context1}</p>        
                 </Card>
         </>);
 };
