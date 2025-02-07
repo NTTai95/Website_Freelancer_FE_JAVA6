@@ -1,5 +1,4 @@
-import { Col, Row, Button, Input, Select, Avatar, Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Col, Row, Button, Input, Select } from "antd";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
 import DropDownLogined from "../iu/dropdown/DropDownLogined";

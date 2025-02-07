@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import scss from "./StaffTable.module.scss";
-import { Button, Table } from "antd";
+import { Button, Table, Input, Space } from "antd";
 import { useNavigate } from "react-router-dom";
 import staffApi from "../../api/staffApi";
+import { SearchOutlined } from "@ant-design/icons";
+import SearchTable from "@components/iu/input/SearchTable";
 
 const StaffTable = () => {
   const navigate = useNavigate();
@@ -22,6 +24,7 @@ const StaffTable = () => {
       title: "Họ tên",
       dataIndex: "fullName",
       sorter: (a, b) => a.fullName.length - b.fullName.length,
+      ...SearchTable("fullName")
     },
     {
       title: "Ngày sinh",
@@ -32,10 +35,12 @@ const StaffTable = () => {
       title: "Email",
       dataIndex: "email",
       sorter: (a, b) => a.email.length - b.email.length,
+      ...SearchTable("email")
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
+      ...SearchTable("phone")
     },
     {
       title: "Trạng thái",
@@ -90,9 +95,7 @@ const StaffTable = () => {
         onChange={(e) => {
           window.scrollTo(0, 0);
         }}
-        showSorterTooltip={{
-          target: "sorter-icon",
-        }}
+        showSorterTooltip={false}
       />
     </div>
   );
