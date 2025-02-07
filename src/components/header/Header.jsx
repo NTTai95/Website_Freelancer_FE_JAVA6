@@ -39,12 +39,11 @@ function Header() {
   ];
 
   const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
-
   const selectAfter = (
     <Select defaultValue="Tuyển dụng">
-      <Option value="tuyendung">tuyển dụng</Option>
+      <Option value="tuyendung">Tuyển dụng</Option>
       <Option value="freelancer">Freelancer</Option>
-      <Option value="skills">kỹ năng</Option>
+      <Option value="skills">Kỹ năng</Option>
     </Select>
   );
 
@@ -55,7 +54,7 @@ function Header() {
           className={scss.logo}
           gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
           animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
-          animateDuration={1500}
+          animateDuration={1700}
           onClick={() => navigate("/")}
         >
           FREELANCER
@@ -63,8 +62,7 @@ function Header() {
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
-          Trang chủ
-        </span>
+          Trang chủ        </span>
         <DropDownHeader menuItems={menuItemsFindWork} label="Tìm việc" />
         <DropDownHeader menuItems={menuItemsRecruitment} label="Tuyển dụng" />
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />

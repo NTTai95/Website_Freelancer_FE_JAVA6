@@ -15,7 +15,7 @@ import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 import Dashboard from "../pages/dashboard/Dashboard";
 import SkillForm from "../pages/form/SkillForm";
 import StaffForm from "../pages/form/StaffForm";
-import ProfileFreelancers from "../pages/profileFreelancers/ProfileFreelancers";
+import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 const AppRoutes = () => {
   return (
