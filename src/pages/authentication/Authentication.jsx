@@ -7,16 +7,24 @@ import {
   Checkbox,
   Form,
   message,
+  Spin,
 } from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
 import FlInputPassword from "@components/iu/input/FlInputPassword";
 import ButtonChat from "@components/iu/button/ButtonChat";
-import { MailOutlined, LockOutlined, UserOutlined, CalendarOutlined } from "@ant-design/icons";
+import {
+  MailOutlined,
+  LockOutlined,
+  UserOutlined,
+  CalendarOutlined,
+  LoadingOutlined,
+} from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import loginApi from "../../api/authenticationApi";
+import loginApi from "@api/authenticationApi";
 import FlCalendar from "@components/iu/input/FlCalendar";
+import formValidator from "@utils/formValidator";
 
 function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
@@ -24,10 +32,36 @@ function Authentication({ isLogin }) {
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
   const [messageApi, contextHolder] = message.useMessage();
+  const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
+  const [errorEmailLoading, setErrorEmailLoading] = useState(false);
 
   const [form] = Form.useForm();
 
   const navigate = useNavigate();
+
+  const initialInput = () => {
+    return { display: showLogin ? "block" : "none" };
+  };
+
+  const animateInput = (alwaysShow = false) => {
+    return {
+      display: showLogin && !alwaysShow ? "none" : "block",
+      x: showLogin ? ["0%", "20%", "0%"] : ["0%", "-20%", "0%"],
+    };
+  };
+
+  const transitionInput = (delay = 0) => {
+    return {
+      display: {
+        duration: 0,
+        delay: 1.05,
+      },
+      x: {
+        duration: 1,
+        delay: delay,
+      },
+    };
+  };
 
   useEffect(() => {
     const textTimeout = setTimeout(() => {
@@ -132,75 +166,33 @@ function Authentication({ isLogin }) {
                       onFinish={onFinish}
                     >
                       <motion.div
-                            className={scss.mb15px}
-                            key={
-                              showLogin ? "fullNameLogin" : "fullNameRegister"
-                            }
-                            initial={{ display: showLogin ? "block" : "none" }}
-                            animate={{
-                              display: showLogin ? "none" : "block",
-                              x: showLogin
-                                ? ["0%", "20%", "0%"]
-                                : ["0%", "-20%", "0%"],
-                            }}
-                            transition={{
-                              display: {
-                                duration: 0,
-                                delay: 1,
-                              },
-                              x: {
-                                duration: 1,
-                                delay: 0.1,
-                              },
-                            }}
-                          >
-                            <Form.Item
-                              name="fullName"
-                              rules={
-                                showLogin
-                                  ? []
-                                  : [
-                                      {
-                                        required: true,
-                                        message: "Vui lòng nhập họ tên!",
-                                      },
-                                    ]
-                              }
-                            >
-                              <FlInputText
-                                label="Họ tên"
-                                icon={<UserOutlined />}
-                              />
-                            </Form.Item>
-                          </motion.div>
+                        className={scss.mb15px}
+                        key={showLogin ? "fullNameLogin" : "fullNameRegister"}
+                        initial={initialInput}
+                        animate={animateInput}
+                        transition={transitionInput(0.1)}
+                      >
+                        <Form.Item
+                          name="fullName"
+                          rules={showLogin ? [] : formValidator.fullName()}
+                        >
+                          <FlInputText label="Họ tên" icon={<UserOutlined />} />
+                        </Form.Item>
+                      </motion.div>
                       <Row gutter={16}>
                         <Col span={12}>
                           <motion.div
                             className={scss.mb15px}
                             key={
-                              showLogin ? "fullNameLogin" : "fullNameRegister"
+                              showLogin ? "birthdayLogin" : "birthdayRegister"
                             }
-                            initial={{ display: showLogin ? "block" : "none" }}
-                            animate={{
-                              display: showLogin ? "none" : "block",
-                              x: showLogin
-                                ? ["0%", "20%", "0%"]
-                                : ["0%", "-20%", "0%"],
-                            }}
-                            transition={{
-                              display: {
-                                duration: 0,
-                                delay: 1,
-                              },
-                              x: {
-                                duration: 1,
-                                delay: 0.1,
-                              },
-                            }}
+                            initial={initialInput}
+                            animate={animateInput}
+                            transition={transitionInput(0.2)}
                           >
                             <Form.Item
-                              name="fullName"
-                              
+                              name="birthday"
+                              rules={formValidator.birthday(14)}
                             >
                               <FlCalendar
                                 label="Ngày sinh"
@@ -212,38 +204,25 @@ function Authentication({ isLogin }) {
                         <Col span={12}>
                           <motion.div
                             className={scss.mb15px}
-                            key={
-                              showLogin ? "fullNameLogin" : "fullNameRegister"
-                            }
-                            initial={{ display: showLogin ? "block" : "none" }}
-                            animate={{
-                              display: showLogin ? "none" : "block",
-                              x: showLogin
-                                ? ["0%", "20%", "0%"]
-                                : ["0%", "-20%", "0%"],
-                            }}
-                            transition={{
-                              display: {
-                                duration: 0,
-                                delay: 1,
-                              },
-                              x: {
-                                duration: 1,
-                                delay: 0.1,
-                              },
-                            }}
+                            key={showLogin ? "phoneLogin" : "phoneRegister"}
+                            initial={initialInput}
+                            animate={animateInput}
+                            transition={transitionInput(0.2)}
                           >
                             <Form.Item
-                              name="fullName"
+                              name="phone"
+                              help={
+                                errorPhoneLoading ? (
+                                  <Spin
+                                    indicator={<LoadingOutlined spin />}
+                                    size="small"
+                                  />
+                                ) : null
+                              }
                               rules={
                                 showLogin
                                   ? []
-                                  : [
-                                      {
-                                        required: true,
-                                        message: "Vui lòng nhập họ tên!",
-                                      },
-                                    ]
+                                  : formValidator.phone(setErrorPhoneLoading)
                               }
                             >
                               <FlInputText
@@ -257,19 +236,16 @@ function Authentication({ isLogin }) {
                       <motion.div
                         className={scss.mb15px}
                         key={showLogin ? "emailLogin" : "emailRegister"}
-                        animate={{
-                          x: showLogin
-                            ? ["0%", "20%", "0%"]
-                            : ["0%", "-20%", "0%"],
-                        }}
-                        transition={{ duration: 1, delay: 0.2 }}
+                        animate={animateInput(true)}
+                        transition={transitionInput(showLogin ? 0.3 : 0.1)}
                       >
                         <Form.Item
                           name="email"
-                          rules={[
-                            { required: true, message: "Vui lòng nhập email!" },
-                            { type: "email", message: "Email không hợp lệ!" },
-                          ]}
+                          rules={formValidator.email(
+                            setErrorEmailLoading,
+                            "",
+                            !showLogin
+                          )}
                         >
                           <FlInputText label="Email" icon={<MailOutlined />} />
                         </Form.Item>
@@ -277,29 +253,12 @@ function Authentication({ isLogin }) {
                       <motion.div
                         className={scss.mb15px}
                         key={showLogin ? "passwordLogin" : "passwordRegister"}
-                        animate={{
-                          x: showLogin
-                            ? ["0%", "20%", "0%"]
-                            : ["0%", "-20%", "0%"],
-                        }}
-                        transition={{ duration: 1, delay: 0.3 }}
+                        animate={animateInput(true)}
+                        transition={transitionInput(showLogin ? 0.4 : 0.2)}
                       >
                         <Form.Item
                           name="password"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Vui lòng nhập mật khẩu!",
-                            },
-                            {
-                              min: 8,
-                              message: "Mật khẩu tối thiểu 8 kí tự!",
-                            },
-                            {
-                              max: 50,
-                              message: "Mật khẩu tối đa 50 kí tự!",
-                            },
-                          ]}
+                          rules={showLogin ? [] : formValidator.password()}
                         >
                           <FlInputPassword
                             label="Mật khẩu"
@@ -314,23 +273,9 @@ function Authentication({ isLogin }) {
                             ? "confirmPasswordLogin"
                             : "confirmPasswordRegister"
                         }
-                        initial={{ display: showLogin ? "block" : "none" }}
-                        animate={{
-                          display: showLogin ? "none" : "block",
-                          x: showLogin
-                            ? ["0%", "20%", "0%"]
-                            : ["0%", "-20%", "0%"],
-                        }}
-                        transition={{
-                          display: {
-                            duration: 0,
-                            delay: 1,
-                          },
-                          x: {
-                            duration: 1,
-                            delay: 0.4,
-                          },
-                        }}
+                        initial={initialInput}
+                        animate={animateInput}
+                        transition={transitionInput(0.5)}
                       >
                         <Form.Item
                           name="confirmPassword"
@@ -380,10 +325,21 @@ function Authentication({ isLogin }) {
                         animate={{ display: showLogin ? "none" : "block" }}
                         transition={{ duration: 0, delay: 1 }}
                       >
-                        <Checkbox className={scss.checkbox} onChange={check}>
-                          Đồng ý với <a href="#">điều khoản</a> và
-                          <a href="#"> chính sách</a>
-                        </Checkbox>
+                        <Form.Item
+                          name="agree"
+                          valuePropName="checked"
+                          rules={[
+                            {
+                              required: true,
+                              message: "Bạn cần đồng ý với các điều khoản!",
+                            },
+                          ]}
+                        >
+                          <Checkbox className={scss.checkbox}>
+                            Đồng ý với <a href="#">điều khoản</a> và
+                            <a href="#"> chính sách</a>
+                          </Checkbox>
+                        </Form.Item>
                       </motion.div>
                       <ConfigProvider
                         theme={{

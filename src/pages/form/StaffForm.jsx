@@ -24,15 +24,28 @@ import viVN from "antd/locale/vi_VN";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import { motion } from "motion/react";
-import permissionApi from "../../api/permissionApi";
-import checkApi from "../../api/checkApi";
-import staffApi from "../../api/staffApi";
+import permissionApi from "@api/permissionApi";
+import staffApi from "@api/staffApi";
 import { useParams } from "react-router-dom";
 import utc from "dayjs/plugin/utc";
-import moment from "moment/moment";
+import formValidator from "@utils/formValidator";
 
 dayjs.extend(utc);
 dayjs.locale("vi");
+
+const currentDate = new Date();
+const fomatDate = "YYYY-MM-DD";
+const maxDate = new Date(
+  currentDate.getFullYear() - 18,
+  currentDate.getMonth(),
+  currentDate.getDate()
+);
+const minDate = new Date(
+  currentDate.getFullYear() - 100,
+  currentDate.getMonth(),
+  currentDate.getDate()
+);
+
 function SkillForm() {
   const [form] = Form.useForm();
 
@@ -96,28 +109,6 @@ function SkillForm() {
       });
     }
   }, []);
-
-  const checkEmailExists = async (email) => {
-    setErrorEmailLoading(true);
-    const response = await checkApi.checkEmailExists(email);
-    setErrorEmailLoading(false);
-    if (response.status == 200 && response.data) {
-      return true;
-    }
-
-    return false;
-  };
-
-  const checkPhoneExists = async (phone) => {
-    setErrorPhoneLoading(true);
-    const response = await checkApi.checkPhoneExists(phone);
-    setErrorPhoneLoading(false);
-
-    if (response.status === 200 && response.data) {
-      return true;
-    }
-    return false;
-  };
 
   const onFinish = (values) => {
     setCallAping(true);
@@ -184,9 +175,7 @@ function SkillForm() {
               <Form.Item
                 label={<b>Tên nhân viên</b>}
                 name="fullName"
-                rules={[
-                  { required: true, message: "Vui lòng nhập tên nhân viên!" },
-                ]}
+                rules={formValidator.fullName()}
               >
                 <Input type="text" placeholder="VD: Nguyễn Văn A" />
               </Form.Item>
@@ -197,34 +186,14 @@ function SkillForm() {
                   label={<b>Ngày sinh</b>}
                   name="birthday"
                   required
-                  rules={[
-                    () => ({
-                      validator(_, value) {
-                        if (!value)
-                          return Promise.reject("Vui lòng chọn ngày sinh!");
-
-                        const today = dayjs();
-                        const age = today.diff(value, "year");
-
-                        if (value.isAfter(today, "day")) {
-                          return Promise.reject("Ngày sinh không hợp lệ!");
-                        }
-
-                        if (age < 18) {
-                          return Promise.reject(
-                            "Nhân viên phải từ 18 tuổi trở lên!"
-                          );
-                        }
-
-                        return Promise.resolve();
-                      },
-                    }),
-                  ]}
+                  rules={formValidator.birthday()}
                 >
                   <DatePicker
                     style={{ width: "100%" }}
                     format="DD/MM/YYYY"
                     placeholder="VD: 01/01/2000"
+                    minDate={dayjs(minDate.toISOString(), fomatDate)}
+                    maxDate={dayjs(maxDate.toISOString(), fomatDate)}
                   />
                 </Form.Item>
               </ConfigProvider>
@@ -239,27 +208,10 @@ function SkillForm() {
                   ) : null
                 }
                 required
-                rules={[
-                  () => ({
-                    async validator(_, value) {
-                      if (!value)
-                        return Promise.reject("Vui lòng nhập số điện thoại!");
-                      else if (!/^[0-9]+$/.test(value))
-                        return Promise.reject("Số điện thoại không hợp lệ!");
-                      else if (value.length !== 10)
-                        return Promise.reject(
-                          "Số điện thoại phải có 10 chữ số!"
-                        );
-                      else if (
-                        (await checkPhoneExists(value)) &&
-                        value !== initialValues.phone
-                      )
-                        return Promise.reject("Số điện thoại đã được sử dụng!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.phone(
+                  setErrorPhoneLoading,
+                  initialValues.phone
+                )}
               >
                 <Input type="text" placeholder="VD: 099999999" />
               </Form.Item>
@@ -275,26 +227,10 @@ function SkillForm() {
                     <Spin indicator={<LoadingOutlined spin />} size="small" />
                   ) : null
                 }
-                rules={[
-                  () => ({
-                    async validator(_, value) {
-                      if (!value) return Promise.reject("Vui lòng nhập email!");
-                      else if (
-                        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                          value
-                        )
-                      )
-                        return Promise.reject("Email không đúng định dạng!");
-                      else if (
-                        (await checkEmailExists(value)) &&
-                        value !== initialValues.email
-                      )
-                        return Promise.reject("Email đã được sử dụng!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.email(
+                  setErrorEmailLoading,
+                  initialValues.email
+                )}
               >
                 <Input placeholder="VD: example@gmail.com" />
               </Form.Item>
@@ -304,20 +240,7 @@ function SkillForm() {
                 label={<b>Mật khẩu</b>}
                 name="password"
                 required
-                rules={[
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value)
-                        return Promise.reject("Vui lòng nhập mật khẩu!");
-                      else if (value.length < 8)
-                        return Promise.reject("Mật khẩu tối thiểu 8 kí tự!");
-                      else if (value.length > 50)
-                        return Promise.reject("Mật khẩu tối đa 50 kí tự!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.password()}
               >
                 <Input.Password
                   placeholder="VD: 12345678"

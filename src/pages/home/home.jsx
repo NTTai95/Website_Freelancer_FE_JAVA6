@@ -29,13 +29,13 @@ function Home() {
             </video>
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/header2.jpg" />
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/header3.jpg" />
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/banner1.jpg" />
           </div>
         </Carousel>
         <div className={scss["context-banner"]}>
@@ -63,6 +63,7 @@ function Home() {
           </div>
         </div>
       </div>
+
       <div className={"container mt-5 " + scss["view"]}>
         <div className={scss.card2}>
           <p className={scss.title}>Nâng Tầm Công Việc Của Bạn</p>

@@ -10,7 +10,7 @@ const FlInputText = ({ icon, label, onChange }) => {
   function handleOnChange(date, dateString) {
     setValue(date);
     if (onChange) {
-      onChange(e);
+      onChange(date, dateString);
     }
   }
 
@@ -33,7 +33,7 @@ const FlInputText = ({ icon, label, onChange }) => {
           placeholder=""
           format={"DD/MM/YYYY"}
           suffixIcon={
-            <CloseCircleFilled 
+            <CloseCircleFilled
               style={{
                 display: value ? "block" : "none",
                 fontSize: "14px",
