@@ -1,4 +1,5 @@
 import scss from "./Footer.module.scss";
+import FancyText from "@carefully-coded/react-text-gradient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
@@ -13,16 +14,25 @@ function Footer() {
         <div className={scss.row}>
           {/* Single Widget */}
           <div className={`${scss.col} ${scss.colLg4}`}>
+            <FancyText
+              className={scss.logo}
+              gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
+              animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
+              animateDuration={1500}
+              onClick={() => navigate("/")}
+            >
+              FREELANCER
+            </FancyText>
             <div
               className={`${scss.single_footer_widget} ${scss.section_padding}`}
             >
               <div className={scss.footer_logo}></div>
               <p>
-              Freelancer là trang website hoàn toàn sáng tạo, nhẹ nhàng và sạch sẽ.
+              Freelancer là nền tảng kết nối giữa doanh nghiệp và freelancer, mang đến cơ hội việc làm đa dạng,<br /> minh bạch và an toàn.
               </p>
               <div className={scss.copywrite_text}>
                 <p>
-                Được thực hiện bởi
+                  Được thực hiện bởi
                   <a href="https://wrapbootstrap.com/user/DesigningWorld">
                     Bug-free Zone
                   </a>
@@ -78,7 +88,6 @@ function Footer() {
               <h5 className={scss.widget_title}>Hỗ trợ</h5>
               <div className={scss.footer_menu}>
                 <ul>
-                  
                   <li>
                     <a href="#">Chính sách bảo mật</a>
                   </li>

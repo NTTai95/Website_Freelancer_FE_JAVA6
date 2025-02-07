@@ -61,7 +61,7 @@ function PostDetail() {
               <UserSwitchOutlined
                 style={{ fontSize: "25px", marginRight: "10px" }}
               />
-              <span>Mức độ đầu vào</span>
+              <span>Yêu cầu</span>
               <p>
                 Tôi đang cần tìm kiếm những người làm việc tự do với mức giá
                 thấp nhất
