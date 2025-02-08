@@ -23,25 +23,44 @@ function SkillForm() {
       skillApi.getById(id).then((response) => {
         setInitialValues(response.data);
         setCallAping(false);
+      }).catch(() => {
+        messageApi["error"]({
+          message: "Không tìm thấy kỹ năng!",
+        });
+        setCallAping(false);
       });
     }
-  }, []);
+
+    
+  }, [mode, id]);
+  
 
   const onFinish = (values) => {
     setCallAping(true);
     const skill = {
+      id: id ? id : null, // Nếu có id, sử dụng id, nếu không thì tạo mới
       name: values.name,
       description: values.description,
     };
-
-    skillApi.add(skill).then(() => {
-      messageApi["success"]({
-        message: "Thêm kỹ năng thành công!",
-        showProgress: true,
+  
+    const apiCall = mode === "edit" ? skillApi.update(id, skill) : skillApi.add(skill);
+  
+    apiCall
+      .then(() => {
+        messageApi["success"]({
+          message: mode === "edit" ? "Cập nhật kỹ năng thành công!" : "Thêm kỹ năng thành công!",
+          showProgress: true,
+        });
+        setCallAping(false);
+      })
+      .catch(() => {
+        messageApi["error"]({
+          message: "Có lỗi xảy ra!",
+        });
+        setCallAping(false);
       });
-      setCallAping(false);
-    });
   };
+  
 
   function handleReset(){
     setInitialValues({
