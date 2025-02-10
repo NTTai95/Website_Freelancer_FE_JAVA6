@@ -17,6 +17,7 @@ import SkillForm from "../pages/form/SkillForm";
 import StaffForm from "../pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import Profile from "@pages/profile/Profile";
+import ProfileRecruiters from "../pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 const AppRoutes = () => {
   return (
@@ -147,11 +148,11 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/profile"
+        path="/profile/recruiters"
         element={
           <MainLayout>
-            <ProfileLayout active="profile">
-              <Profile />
+            <ProfileLayout active="recruiters" >
+              <ProfileRecruiters />
             </ProfileLayout>
           </MainLayout>
         }

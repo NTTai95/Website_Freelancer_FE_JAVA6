@@ -64,9 +64,9 @@ const ProfileLayout = ({ children, active }) => {
               Freelancer
             </Menu.Item>
             <Menu.Item
-              key="recruiter"
+              key="recruiters"
               icon={<ApartmentOutlined />}
-              onClick={() => nagivate("/profile/recruiter")}
+              onClick={() => nagivate("/profile/recruiters")}
             >
               Nhà tuyển dụng
             </Menu.Item>

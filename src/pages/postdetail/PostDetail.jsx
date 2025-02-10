@@ -1,7 +1,7 @@
 import scss from "./PostDetail";
 import {
   ClockCircleOutlined,
-  DollarOutlined,
+  TransactionOutlined,
   UserSwitchOutlined,
   PhoneOutlined,
   BankOutlined,
@@ -51,10 +51,10 @@ function PostDetail() {
           <h5>Ngân sách</h5>
           <div className={scss.ThongTin + " d-flex"}>
             <div className="me-5">
-              <DollarOutlined
+              <TransactionOutlined
                 style={{ fontSize: "25px", marginRight: "10px" }}
               />
-              <span>100.000/Giờ</span>
+              <span>100.000đ/Giờ</span>
               <p>Có thể thương lượng</p>
             </div>
             <div>
