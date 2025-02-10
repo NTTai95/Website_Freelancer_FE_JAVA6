@@ -8,6 +8,7 @@ import {
   Form,
   message,
   Spin,
+  notification,
 } from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
@@ -19,21 +20,24 @@ import {
   UserOutlined,
   CalendarOutlined,
   LoadingOutlined,
+  PhoneOutlined,
 } from "@ant-design/icons";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import loginApi from "@api/authenticationApi";
+import authenticationApi from "@api/authenticationApi";
 import FlCalendar from "@components/iu/input/FlCalendar";
 import formValidator from "@utils/formValidator";
 
 function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
-  const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
+
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
+
+  const [messageApi, contextHolder] = message.useMessage();
+  const [api, contextHolder2] = notification.useNotification();
 
   const [form] = Form.useForm();
 
@@ -64,6 +68,8 @@ function Authentication({ isLogin }) {
   };
 
   useEffect(() => {
+    form.resetFields();
+
     const textTimeout = setTimeout(() => {
       setText(showLogin ? "Đăng nhập" : "Đăng ký");
     }, 1000);
@@ -93,7 +99,7 @@ function Authentication({ isLogin }) {
 
   function onFinish(values) {
     if (showLogin) {
-      loginApi
+      authenticationApi
         .login(values.email, values.password)
         .then((response) => {
           if (response.status == 200) {
@@ -109,12 +115,34 @@ function Authentication({ isLogin }) {
           });
         });
     } else {
+      if (!values.agree) {
+        api.warning({
+          message: "Thông báo!",
+          description:
+            "Vui lòng đồng ý với các điều khoản và chính sách của chúng tôi.",
+          showProgress: true,
+        });
+        return;
+      }
+      authenticationApi.register(values).then((response) => {
+        if (response.status == 200) {
+          sessionStorage.setItem("logined", JSON.stringify(response.data));
+          navigate("/home");
+          window.location.reload();
+        }
+      }).catch((error) => {
+        messageApi.open({
+          type: "error",
+          content: error.response.data,
+        });
+      });
     }
   }
 
   return (
     <div>
       {contextHolder}
+      {contextHolder2}
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -192,7 +220,9 @@ function Authentication({ isLogin }) {
                           >
                             <Form.Item
                               name="birthday"
-                              rules={formValidator.birthday(14)}
+                              rules={
+                                showLogin ? [] : formValidator.birthday(14)
+                              }
                             >
                               <FlCalendar
                                 label="Ngày sinh"
@@ -227,7 +257,7 @@ function Authentication({ isLogin }) {
                             >
                               <FlInputText
                                 label="Số điện thoại"
-                                icon={<UserOutlined />}
+                                icon={<PhoneOutlined rotate={90} />}
                               />
                             </Form.Item>
                           </motion.div>
@@ -241,6 +271,14 @@ function Authentication({ isLogin }) {
                       >
                         <Form.Item
                           name="email"
+                          help={
+                            errorEmailLoading ? (
+                              <Spin
+                                indicator={<LoadingOutlined spin />}
+                                size="small"
+                              />
+                            ) : null
+                          }
                           rules={formValidator.email(
                             setErrorEmailLoading,
                             "",
@@ -325,16 +363,7 @@ function Authentication({ isLogin }) {
                         animate={{ display: showLogin ? "none" : "block" }}
                         transition={{ duration: 0, delay: 1 }}
                       >
-                        <Form.Item
-                          name="agree"
-                          valuePropName="checked"
-                          rules={[
-                            {
-                              required: true,
-                              message: "Bạn cần đồng ý với các điều khoản!",
-                            },
-                          ]}
-                        >
+                        <Form.Item name="agree" valuePropName="checked">
                           <Checkbox className={scss.checkbox}>
                             Đồng ý với <a href="#">điều khoản</a> và
                             <a href="#"> chính sách</a>

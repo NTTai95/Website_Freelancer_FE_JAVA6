@@ -1,16 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Card, Menu, Skeleton, Button, Image } from "antd";
+import { Row, Col, Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 import profileApi from "../../api/profileApi";
-import moment from "moment/moment";
 import {
   UserOutlined,
   ApartmentOutlined,
   BarChartOutlined,
   RetweetOutlined,
   LogoutOutlined,
+  IdcardOutlined,
 } from "@ant-design/icons";
 import MenuItem from "antd/es/menu/MenuItem";
+import CardUpLoadImage from "@components/card/CardUploadImage";
 
 const ProfileLayout = ({ children, active }) => {
   const [profile, setProfile] = useState(null);
@@ -41,54 +42,20 @@ const ProfileLayout = ({ children, active }) => {
     <div className="container">
       <Row>
         <Col span={6} className={"container border-end"}>
-          <Card
-            className="overflow-hidden"
-            hoverable
-            cover={
-              profile?.freelancer?.avatar ? (
-                <Image
-                  src={profile?.freelancer?.avatar}
-                  alt="Cloudinary Image"
-                />
-              ) : (
-                <Skeleton.Image
-                  style={{ width: "100%", height: "200px" }}
-                  active
-                ></Skeleton.Image>
-              )
-            }
-          >
-            <Skeleton active loading={!profile}>
-              <div>
-                <b>Họ tên: </b>
-                <span>{profile?.fullName}</span>
-              </div>
-              <div>
-                <b>Ngày sinh: </b>
-                <span>
-                  {profile?.birthday
-                    ? moment(profile.birthday).format("DD/MM/YYYY")
-                    : "Chưa có"}
-                </span>
-              </div>
-              <div>
-                <b>Email: </b>
-                <span>{profile?.account?.email}</span>
-              </div>
-              <div>
-                <b>Di động: </b>
-                <span>{profile?.phone}</span>
-              </div>
-            </Skeleton>
-            <Button className="mt-3 w-100" type="primary">
-              Chỉnh sửa
-            </Button>
-          </Card>
+          <CardUpLoadImage profile={profile}></CardUpLoadImage>
+
           <Menu
             mode="inline"
-            defaultSelectedKeys={active}
+            selectedKeys={[active]}
             style={{ height: "100%", borderRight: 0, marginTop: "20px" }}
           >
+            <Menu.Item
+              key="profile"
+              icon={<IdcardOutlined />}
+              onClick={() => nagivate("/profile")}
+            >
+              Thông tin
+            </Menu.Item>
             <Menu.Item
               key="freelancer"
               icon={<UserOutlined />}

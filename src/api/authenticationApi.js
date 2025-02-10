@@ -1,10 +1,10 @@
 import apiClient from './index';
 
-const loginApi = {
+const authenticationApi = {
     login: (email, password) =>
         apiClient.post('/login', { email, password }),
-    register: (email, password) => apiClient.post('/register', { email, password }),
+    register: (res) => apiClient.post('/register', res),
 };
 
 
-export default loginApi;
+export default authenticationApi;
