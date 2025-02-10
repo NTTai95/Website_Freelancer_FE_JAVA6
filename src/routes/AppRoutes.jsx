@@ -156,6 +156,16 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+      <Route
+        path="/profile/recruiters"
+        element={
+          <MainLayout>
+            <ProfileLayout active="recruiters">
+              <ProfileRecruiters />
+            </ProfileLayout>
+          </MainLayout>
+        }
+      />
       {/* <Route
         path="/admin/employee/:mode"
         element={
