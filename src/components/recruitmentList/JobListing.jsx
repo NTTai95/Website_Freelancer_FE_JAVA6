@@ -43,7 +43,7 @@ const JobListing = () => {
     total: 0,
   });
 
-  const fetchData = async () => {
+  useEffect(async () => {
     await jobspostApi
       .getAll({ page: pagination.current, size: pagination.pageSize })
       .then((response) => {
@@ -54,10 +54,6 @@ const JobListing = () => {
           total: response.data.totalElements,
         }));
       });
-  };
-
-  useEffect(() => {
-    fetchData();
   }, []);
 
   return (
@@ -81,7 +77,7 @@ const JobListing = () => {
           {jobs.map((job, index) => (
             <JobCard key={index} {...job} />
           ))}
-          {accounts.map((account) => {
+          {/* {accounts.map((account) => {
             return (
               <div>
                 <p>Id: {account.id}</p>
@@ -90,7 +86,7 @@ const JobListing = () => {
                 <p>Type: {account.type ? "admin" : "staff"}</p>
               </div>
             );
-          })}
+          })} */}
         </main>
       </div>
     </div>

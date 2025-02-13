@@ -1,8 +1,11 @@
 import apiClient from './index';
 
-const jobpostsApi = {
-  getAll: () => apiClient.get('/jobposts'),
+const jobspostApi = {
+    getAll: ({ page, size }) => apiClient.get('/jobposts', { params: { page, size } }),
+    getById: (id) => apiClient.get(`/staffs/${id}`),
+    add: (staff) => apiClient.post('/staffs', staff),
+    update: (id, staff) => apiClient.put(`/staffs/${id}`, staff),
+    delete: (id) => apiClient.delete(`/staffs/${id}`),
 };
 
-export default jobpostsApi;
-
+export default jobspostApi;
