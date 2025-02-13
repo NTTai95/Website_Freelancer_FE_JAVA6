@@ -1,9 +1,8 @@
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import scss from "./StaffTable.module.scss";
-import { Button, Table, Input, Space } from "antd";
+import { Button, Table } from "antd";
 import { useNavigate } from "react-router-dom";
-import staffApi from "../../api/staffApi";
-import { SearchOutlined } from "@ant-design/icons";
+import staffApi from "@api/staffApi";
 import SearchTable from "@components/iu/input/SearchTable";
 
 const StaffTable = () => {
@@ -95,63 +94,56 @@ const StaffTable = () => {
     {
       title: "Họ tên",
       dataIndex: "fullName",
-      sorter: (a, b) => a.fullName.length - b.fullName.length,
-      ...SearchTable("fullName")
+      sorter: true,
+      ...SearchTable({
+        dataIndex: "fullName",
+        searchText: searchFullName,
+        setSearchText: setSearchFullName,
+      }),
     },
     {
       title: "Ngày sinh",
       dataIndex: "birthday",
-      sorter: (a, b) => new Date(a.birthday) - new Date(b.birthday),
+      sorter: true,
     },
     {
       title: "Email",
       dataIndex: "email",
-      sorter: (a, b) => a.email.length - b.email.length,
-      ...SearchTable("email")
+      ...SearchTable({
+        dataIndex: "email",
+        searchText: searchEmail,
+        setSearchText: setSearchEmail,
+      }),
     },
     {
       title: "Số điện thoại",
       dataIndex: "phone",
-      ...SearchTable("phone")
+      ...SearchTable({
+        dataIndex: "phone",
+        searchText: searchPhone,
+        setSearchText: setSearchPhone,
+      }),
     },
     {
       title: "Trạng thái",
       dataIndex: "status",
-      sorter: (a, b) => a.status.length - b.status.length,
+      sorter: true,
     },
     {
       title: "",
-      dataIndex: "id",
       key: "id",
       render: (text, record) => (
-        <a href="" onClick={() => navigate(`/admin/staff/edit/${record.id}`)}>
+        <a href="#" onClick={() => navigate(`/admin/staff/edit/${record.id}`)}>
           Chỉnh sửa
         </a>
       ),
     },
   ];
 
-  useEffect(() => {
-    staffApi.getAll().then((res) => {
-      setData(
-        res.data.map((staff) => {
-          return {
-            id: staff.id,
-            fullName: staff.fullName,
-            birthday: formatDate(staff.birthday),
-            email: staff.account.email,
-            phone: staff.phone,
-            status: staff.status ? "Hoạt động" : "Vô hiệu hóa",
-          };
-        })
-      );
-    });
-  }, []);
-
   return (
     <div className={`${scss.employeeTable} p-3`}>
       <Button
-        className={"mb-3 float-end"}
+        className="mb-3 float-end"
         type="primary"
         onClick={() => navigate("/admin/staff/add")}
         size="large"
@@ -161,11 +153,14 @@ const StaffTable = () => {
       <Table
         columns={columns}
         dataSource={data}
-        loading={!data || data.length === 0}
-        onChange={(e) => {
-          window.scrollTo(0, 0);
+        loading={!data.length}
+        pagination={{
+          ...pagination,
+          locale: { items_per_page: " mục / trang" },
         }}
+        onChange={handleOnChange}
         showSorterTooltip={false}
+        rowKey={(record) => record.id}
       />
     </div>
   );

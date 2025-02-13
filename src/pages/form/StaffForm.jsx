@@ -46,7 +46,7 @@ const minDate = new Date(
   currentDate.getDate()
 );
 
-function SkillForm() {
+function StaffForm() {
   const [form] = Form.useForm();
 
   const { mode, id } = useParams();
@@ -278,4 +278,4 @@ function SkillForm() {
   );
 }
 
-export default SkillForm;
+export default StaffForm;

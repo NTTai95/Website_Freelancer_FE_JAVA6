@@ -5,7 +5,8 @@ import { Table, Button, Input, Space } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import Highlighter from "react-highlight-words";
-import skillApi from "../../api/skillApi";
+import skillApi from "@api/skillApi";
+import { locale } from "moment/moment";
 
 const SkillTable = () => {
   const navigate = useNavigate();
@@ -28,32 +29,33 @@ const SkillTable = () => {
       });
       const { content, totalElements } = res.data;
 
-      setData(content);
-      setPagination((prev) => ({
-        ...prev,
-        total: totalElements,
-      }));
-    } catch (error) {
-      console.error("Error fetching staff data:", error);
-    }
-  };
-
-  useEffect(() => {
-    skillApi.getAll().then((res) => {
       setData(
-        res.data.map((skill) => ({
+        content.map((skill) => ({
           key: skill.id,
           name: skill.name,
           description: skill.description,
         }))
       );
-    });
-  }, []);
+
+      setPagination((prev) => ({
+        ...prev,
+        total: totalElements,
+      }));
+    } catch (error) {
+      console.error("Error fetching skills:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSkills();
+    window.scrollTo(0, 0);
+  }, [pagination.current, pagination.pageSize, searchText]);
 
   const handleSearch = (selectedKeys, confirm) => {
     confirm();
     setSearchText(selectedKeys[0]);
   };
+
   const handleReset = (clearFilters, confirm) => {
     setSearchText("");
     clearFilters();
@@ -71,12 +73,10 @@ const SkillTable = () => {
         <Input
           ref={searchInput}
           placeholder="Tìm kiếm..."
-          value={selectedKeys[0]}
+          style={{ marginBottom: 8, display: "block" }}
           onChange={(e) =>
             setSelectedKeys(e.target.value ? [e.target.value] : [])
           }
-          onPressEnter={() => handleSearch(selectedKeys, confirm)}
-          style={{ marginBottom: 8, display: "block" }}
         />
         <Space>
           <Button
@@ -123,7 +123,7 @@ const SkillTable = () => {
               highlightStyle={{ backgroundColor: "#94dffa", padding: 0 }}
               searchWords={[searchText]}
               autoEscape
-              textToHighlight={text ? text.toString() : ""}
+              textToHighlight={text || ""}
             />
           </b>
           <br />
@@ -143,9 +143,7 @@ const SkillTable = () => {
                 highlightStyle={{ backgroundColor: "#94dffa", padding: 0 }}
                 searchWords={[searchText]}
                 autoEscape
-                textToHighlight={
-                  record.description ? record.description.toString() : ""
-                }
+                textToHighlight={record.description || ""}
               />
             </motion.p>
           </AnimatePresence>
@@ -160,7 +158,7 @@ const SkillTable = () => {
           href="#"
           onClick={(e) => {
             e.preventDefault();
-            navigate("/admin/skills/edit/" + record.key);
+            navigate(`/admin/skills/edit/${record.key}`);
           }}
         >
           Chỉnh sửa
@@ -168,6 +166,14 @@ const SkillTable = () => {
       ),
     },
   ];
+
+  const handleTableChange = (pagination) => {
+    setPagination({
+      ...pagination,
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+    });
+  };
 
   return (
     <div className={`${scss.employeeTable} p-3`}>
@@ -180,12 +186,16 @@ const SkillTable = () => {
         Thêm kỹ năng
       </Button>
       <Table
-        pagination={{ defaultPageSize: 10 }}
+        pagination={{
+          ...pagination,
+          locale: { items_per_page: " mục / trang" },
+        }}
         columns={columns}
         dataSource={data}
-        loading={!data || data.length === 0}
+        loading={!data}
         showSorterTooltip={{ target: "sorter-icon" }}
-        onChange={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+        onChange={handleTableChange}
+        rowKey={(record) => record.key}
       />
     </div>
   );
