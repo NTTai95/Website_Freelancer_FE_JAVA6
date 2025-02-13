@@ -20,6 +20,10 @@ import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "../pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
+import Profile from "@pages/profile/Profile";
+import LanguageTable from "@pages/language/LanguageTable";
+import LanguageForm from "@pages/language/LanguageForm";
+import Page404 from "@pages/page404/Page404";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -165,11 +169,15 @@ const AppRoutes = () => {
       <Route
         path="/profile/freelancer"
         element={
-          <MainLayout>
-            <ProfileLayout active="freelancer">
-              <ProfileFreelancers />
-            </ProfileLayout>
-          </MainLayout>
+          <PrivateRoute
+            element={
+              <MainLayout>
+                <ProfileLayout active="freelancer">
+                  <ProfileFreelancers />
+                </ProfileLayout>
+              </MainLayout>
+            }
+          />
         }
       />
       <Route
@@ -182,14 +190,38 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      {/* <Route
-        path="/admin/employee/:mode"
+      <Route
+        path="/admin/languages"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/languages/:mode/:id?"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/404"
         element={
           <MainLayout>
             <Page404 />
           </MainLayout>
         }
-      />*/}
+      />
     </Routes>
   );
 };

@@ -25,7 +25,7 @@ const SearchTable = (dataIndex) => {
         <Input
           ref={searchInput}
           placeholder="Tìm kiếm..."
-          value={selectedKeys[0]}
+          value={selectedKeys[0] || ""}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           onPressEnter={() => handleSearch(selectedKeys, confirm)}
           style={{ marginBottom: 8, display: "block" }}

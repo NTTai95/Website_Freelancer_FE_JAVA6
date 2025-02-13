@@ -8,6 +8,78 @@ import SearchTable from "@components/iu/input/SearchTable";
 
 const StaffTable = () => {
   const navigate = useNavigate();
+  const [data, setData] = useState([]);
+  const [searchFullName, setSearchFullName] = useState("");
+  const [searchEmail, setSearchEmail] = useState("");
+  const [searchPhone, setSearchPhone] = useState("");
+  const [sort, setSort] = useState("");
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
+  const fetchData = async () => {
+    try {
+      const res = await staffApi.getPage({
+        page: pagination.current,
+        size: pagination.pageSize,
+        fullName: searchFullName,
+        email: searchEmail,
+        phone: searchPhone,
+        sort,
+      });
+
+      const { content, totalElements } = res.data;
+
+      const formattedData = content.map((staff) => ({
+        id: staff.id,
+        fullName: staff.fullName,
+        birthday: formatDate(staff.birthday),
+        email: staff.email,
+        phone: staff.phone,
+        status: staff.status == 0 ? "Hoạt động" : "Vô hiệu hóa",
+      }));
+
+      setData(formattedData);
+
+      setPagination((prev) => ({
+        ...prev,
+        total: totalElements,
+      }));
+    } catch (error) {
+      console.error("Error fetching staff data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+    window.scrollTo(0, 0);
+  }, [
+    searchFullName,
+    searchEmail,
+    searchPhone,
+    sort,
+    pagination.current,
+    pagination.pageSize,
+  ]);
+
+  const handleOnChange = (pagination, filters, sorter) => {
+    setPagination({
+      ...pagination,
+      current: pagination.current,
+      pageSize: pagination.pageSize,
+    });
+
+    handleSortChange(sorter);
+  };
+
+  const handleSortChange = (sorter) => {
+    const sortField = sorter.field;
+    const sortOrder = sorter.order === "ascend" ? "asc" : "desc";
+
+    setSort(sortField ? `${sortField},${sortOrder}` : "");
+  };
 
   const formatDate = (dateString) => {
     if (!dateString) return "";
@@ -58,8 +130,6 @@ const StaffTable = () => {
       ),
     },
   ];
-
-  const [data, setData] = useState();
 
   useEffect(() => {
     staffApi.getAll().then((res) => {

@@ -31,7 +31,9 @@ function Authentication({ isLogin}) {
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
-  const [messageApi, contextHolder] = message.useMessage();
+
+  const urlPrev = sessionStorage.getItem("urlPrev");
+
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
 
@@ -109,6 +111,27 @@ function Authentication({ isLogin}) {
           });
         });
     } else {
+      if (!values.agree) {
+        api.warning({
+          message: "Thông báo!",
+          description:
+            "Vui lòng đồng ý với các điều khoản và chính sách của chúng tôi.",
+          showProgress: true,
+        });
+        return;
+      }
+      authenticationApi.register(values).then((response) => {
+        if (response.status == 200) {
+          sessionStorage.setItem("logined", JSON.stringify(response.data));
+          navigate(urlPrev || "/");
+          window.location.reload();
+        }
+      }).catch((error) => {
+        messageApi.open({
+          type: "error",
+          content: error.response.data,
+        });
+      });
     }
   }
 
