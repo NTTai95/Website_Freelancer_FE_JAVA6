@@ -11,9 +11,10 @@ const SearchTable = ({dataIndex, searchText,setSearchText}) => {
     setSearchText(selectedKeys[0]);
   };
 
-  const handleReset = (clearFilters, confirm) => {
+  const handleReset = (clearFilters, setSelectedKeys ,confirm) => {
     clearFilters();
     setSearchText("");
+    setSelectedKeys([]);
     confirm();
   };
 
@@ -23,6 +24,7 @@ const SearchTable = ({dataIndex, searchText,setSearchText}) => {
         <Input
           ref={searchInput}
           placeholder="Tìm kiếm..."
+          value={selectedKeys[0] || ""}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
           style={{ marginBottom: 8, display: "block" }}
         />
@@ -37,7 +39,7 @@ const SearchTable = ({dataIndex, searchText,setSearchText}) => {
             Tìm
           </Button>
           <Button
-            onClick={() => clearFilters && handleReset(clearFilters, confirm)}
+            onClick={() => clearFilters && handleReset(clearFilters, setSelectedKeys ,confirm)}
             size="small"
             style={{ width: 90 }}
           >

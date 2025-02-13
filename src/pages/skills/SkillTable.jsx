@@ -22,7 +22,7 @@ const SkillTable = () => {
 
   const fetchSkills = async () => {
     try {
-      const res = await skillApi.getAll({
+      const res = await skillApi.getPage({
         page: pagination.current,
         size: pagination.pageSize,
         search: searchText,

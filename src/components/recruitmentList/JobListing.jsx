@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import JobCard from "./JobCard";
 import SidebarFilter from "./SidebarFilter";
 import accountApi from "../../api/accountApi";
+import { Pagination } from "antd";
+import jobspostApi from "../../api/jobspostApi";
 
 const JobListing = () => {
   const filters = {
@@ -31,67 +33,27 @@ const JobListing = () => {
     "Hình thức công việc": ["Toàn thời gian", "Bán thời gian", "Thực tập"],
   };
 
-  const jobs = [
-    {
-      title: "Thiết kế Web, Thiết kế đồ họa, UI/UX Designer & Nghệ thuật",
-      company: "Web Themes Ltd",
-      location: "Candlebriar Drive, Portland, NY 13679",
-      time: "3 phút trước",
-      type: "Toàn thời gian",
-      description:
-        "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
-    },
-    {
-      title: "PHP Developer, Team of PHP & IT Co",
-      company: "PHP Solutions",
-      location: "Rogers Street, Cincinnati, OH 45202",
-      time: "5 phút trước",
-      type: "Toàn thời gian",
-      description: "Phát triển ứng dụng PHP và duy trì cơ sở hạ tầng CNTT.",
-    },
-    {
-      title: "Website Developer & Software Developer",
-      company: "Code Valley Ltd",
-      location: "Carolina Avenue, Richland, TX 78978",
-      time: "5 phút trước",
-      type: "Toàn thời gian",
-      description:
-        "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
-    },
-    {
-      title: "Thiết kế Web, Thiết kế đồ họa, UI/UX Designer & Nghệ thuật",
-      company: "Web Themes Ltd",
-      location: "Candlebriar Drive, Portland, NY 13679",
-      time: "3 phút trước",
-      type: "Toàn thời gian",
-      description:
-        "Chịu trách nhiệm thiết kế giao diện người dùng và giải pháp web sáng tạo.",
-    },
-    {
-      title: "PHP Developer, Team of PHP & IT Co",
-      company: "PHP Solutions",
-      location: "Rogers Street, Cincinnati, OH 45202",
-      time: "5 phút trước",
-      type: "Toàn thời gian",
-      description: "Phát triển ứng dụng PHP và duy trì cơ sở hạ tầng CNTT.",
-    },
-    {
-      title: "Website Developer & Software Developer",
-      company: "Code Valley Ltd",
-      location: "Carolina Avenue, Richland, TX 78978",
-      time: "5 phút trước",
-      type: "Toàn thời gian",
-      description:
-        "Xây dựng và cải tiến các trang web, đảm bảo chức năng hoạt động trơn tru.",
-    },
-  ];
+  const [jobs, setJobs] = useState([]);
 
   const [accounts, setAccounts] = useState([]);
 
-  useEffect(() => {
-    accountApi.getAll().then((response) => {
-      setAccounts(response.data);
-    });
+  const [pagination, setPagination] = useState({
+    current: 1,
+    pageSize: 10,
+    total: 0,
+  });
+
+  useEffect(async () => {
+    await jobspostApi
+      .getAll({ page: pagination.current, size: pagination.pageSize })
+      .then((response) => {
+        console.log(response.data);
+        setJobs(response.data.content);
+        setPagination((prev) => ({
+          ...prev,
+          total: response.data.totalElements,
+        }));
+      });
   }, []);
 
   return (
@@ -106,21 +68,12 @@ const JobListing = () => {
         </aside>
 
         <main className="col-md-9">
-          <div className="d-flex justify-content-between align-items-center mb-3">
-            <p>Hiển thị kết quả 0-20</p>
-
-            <div>
-              <label htmlFor="results-select" className="mr-2">
-                Hiển thị:
-              </label>
-              <select id="results-select" className="form-select">
-                <option value="20">20</option>
-                <option value="50">50</option>
-                <option value="100">100</option>
-                <option value="200">200</option>
-              </select>
-            </div>
-          </div>
+          <Pagination
+            pageSize={pagination.pageSize}
+            align="end"
+            defaultCurrent={pagination.current}
+            total={pagination.total}
+          />
           {jobs.map((job, index) => (
             <JobCard key={index} {...job} />
           ))}

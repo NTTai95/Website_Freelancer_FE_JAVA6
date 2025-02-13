@@ -20,7 +20,7 @@ const StaffTable = () => {
 
   const fetchData = async () => {
     try {
-      const res = await staffApi.getAll({
+      const res = await staffApi.getPage({
         page: pagination.current,
         size: pagination.pageSize,
         fullName: searchFullName,
@@ -35,9 +35,9 @@ const StaffTable = () => {
         id: staff.id,
         fullName: staff.fullName,
         birthday: formatDate(staff.birthday),
-        email: staff.account.email,
+        email: staff.email,
         phone: staff.phone,
-        status: staff.status ? "Hoạt động" : "Vô hiệu hóa",
+        status: staff.status == 0 ? "Hoạt động" : "Vô hiệu hóa",
       }));
 
       setData(formattedData);

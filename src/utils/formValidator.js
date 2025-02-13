@@ -108,5 +108,23 @@ const password = ({ minLength = 8, maxLength = 50, requireUpper = false, require
     }),
 ];
 
+const iso = (setLoading, initialISO = "") => [
+    () => ({
+        async validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập ISO!");
+            if (value.length < 2) return Promise.reject("ISO tối thiểu 2 kí tự!");
+            if (value.length > 3) return Promise.reject("ISO tối đa 3 kí tự!");
 
-export default { phone, email, fullName, birthday, password };
+            const isSameAsInitial = value === initialISO;
+            if (isSameAsInitial) return Promise.resolve();
+
+            const ISOExits = await checker.checkISOExists(value, setLoading);
+            if (ISOExits) return Promise.reject("ISO đã tồn tại!");
+
+            return Promise.resolve();
+        },
+    }),
+];
+
+
+export default { phone, email, fullName, birthday, password, iso };

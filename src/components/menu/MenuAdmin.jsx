@@ -4,7 +4,8 @@ import {
   TagsOutlined,
   NotificationOutlined,
 } from "@ant-design/icons";
-import { icon } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faGlobe } from "@fortawesome/free-solid-svg-icons";
 import { Menu } from "antd";
 import { useNavigate } from "react-router-dom";
 
@@ -34,6 +35,14 @@ function MenuAdmin({ active }) {
       icon: <UserOutlined />,
       onClick: () => {
         navgate("/admin/staff");
+      },
+    },
+    {
+      key: "language",
+      label: "Ngôn ngữ",
+      icon: <FontAwesomeIcon icon={faGlobe} />,
+      onClick: () => {
+        navgate("/admin/languages");
       },
     },
     {

@@ -51,7 +51,7 @@ function SkillForm() {
 
   const { mode, id } = useParams();
 
-  const [api, contextHolder] = notification.useNotification();
+  const [messageApi, contextHolder] = notification.useNotification();
 
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
@@ -61,7 +61,6 @@ function SkillForm() {
   const [callAping, setCallAping] = useState(false);
 
   const [initialValues, setInitialValues] = useState({
-    id: "",
     fullName: "",
     birthday: null,
     email: "",
@@ -70,85 +69,81 @@ function SkillForm() {
     permissions: [],
   });
 
-  useEffect(() => {
-    permissionApi.getAll().then((response) => {
-      if (response.status == 200) {
-        setPermissions(response.data);
-      }
-    });
+  const fetchPermissions = async () => {
+    try {
+      const res = await permissionApi.getAll();
 
-    if (mode === "edit" && id) {
-      setCallAping(true);
-      staffApi.getById(id).then((response) => {
-        if (response.status == 200) {
-          const data = response.data;
-          console.log(data);
-          setInitialValues({
-            id: data.id,
-            fullName: data.fullName,
-            birthday: dayjs(data.birthday),
-            email: data?.account?.email,
-            phone: data.phone,
-            status: data.status,
-            permissions: data.permissions.map((item) => item.id),
-          });
-
-          form.setFieldsValue({
-            id: data.id,
-            fullName: data.fullName,
-            birthday: dayjs(data.birthday),
-            email: data?.account?.email,
-            password: data?.account.password,
-            phone: data.phone,
-            status: data.status ? "working" : "notWorking",
-            permissions: data.permissions.map((item) => item.id),
-          });
-
-          setCallAping(false);
-        }
-      });
+      setPermissions(res.data);
+    } catch (error) {
+      console.error("Error fetching permissions:", error);
     }
-  }, []);
-
-  const onFinish = (values) => {
+  };
+  const fetchData = async () => {
     setCallAping(true);
-    if (mode === "edit" && id) {
-      staffApi
-        .update(id, {
-          ...values,
-          status: values.status === "working" ? true : false,
-        })
-        .then(() => {
-          setCallAping(false);
-          api["success"]({
-            message: "cập nhập nhân viên thành công!",
-            showProgress: true,
-          });
-        })
-        .catch(() => {
-          setCallAping(false);
-          api["error"]({
-            message: "cập nhật nhân viên không thành công!",
-            showProgress: true,
-          });
+    try {
+      const res = await staffApi.getById(id);
+      const data = res.data;
+
+      console.log(data)
+
+      const formatData = {
+        fullName: data.fullName,
+        birthday: dayjs(data.birthday),
+        email: data?.email,
+        password: data?.password,
+        phone: data.phone,
+        status: data.status == 0 ? "working" : "notWorking",
+        permissions: data.permissionIds,
+      };
+
+      setInitialValues(formatData);
+      form.setFieldsValue(formatData);
+    } catch (error) {
+      console.error("Error fetching staff data:", error);
+    }
+    setCallAping(false);
+  };
+
+  useEffect(() => {
+    fetchPermissions();
+    id && fetchData();
+  }, [mode, id]);
+
+  const onFinish = async (values) => {
+    try {
+      setCallAping(true);
+
+      const staffDTO = {
+        fullName: values.fullName,
+        birthday: values.birthday.format(fomatDate),
+        phone: values.phone,
+        status: values.status === "working" ? 0 : 1,
+        email: values.email,
+        password: values.password,
+        permissionIds: values.permissions,
+      };
+
+      console.log(staffDTO);
+
+      if (mode === "edit" && id) {
+        await staffApi.update(id, staffDTO);
+        messageApi.success({
+          message: "Cập nhật nhân viên thành công!",
+          showProgress: true,
         });
-    } else {
-      staffApi
-        .add({ ...values, status: values.status === "working" ? true : false })
-        .then(() => {
-          setCallAping(false);
-          api["success"]({
-            message: "Thêm nhân viên thành công!",
-            showProgress: true,
-          });
-        })
-        .catch(() => {
-          setCallAping(false);
-          api["error"]({
-            message: "Thêm nhân viên không thành cônng!",
-            showProgress: true,
-          });
+        fetchData();
+      } else {
+        await staffApi.add(staffDTO);
+        messageApi.success({
+          message: "Thêm nhân viên thành công!",
+          showProgress: true,
         });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      messageApi.error({ message: "Có lỗi xảy ra!" });
+    } finally {
+      setCallAping(false);
     }
   };
 
@@ -260,11 +255,11 @@ function SkillForm() {
           <Skeleton
             paragraph={{ rows: 1 }}
             active
-            loading={!permissions.length}
+            loading={!permissions.length != 0 || !permissions}
           >
             <Form.Item label={<b>Chức vụ</b>} name="permissions">
               <Checkbox.Group>
-                {permissions.map((permission) => (
+                {permissions.length && permissions.map((permission) => (
                   <Tooltip key={permission.id} title={permission.description}>
                     <Checkbox value={permission.id}>{permission.name}</Checkbox>
                   </Tooltip>

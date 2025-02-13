@@ -21,6 +21,7 @@ function Header() {
       } else {
         profileApi.getByAccountId(logined.id).then((response) => {
           if (response.status == 200) {
+            console.log(response);
             setProfile(response.data);
           }
         });
@@ -62,7 +63,8 @@ function Header() {
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
-          Trang chủ        </span>
+          Trang chủ{" "}
+        </span>
         <DropDownHeader menuItems={menuItemsFindWork} label="Tìm việc" />
         <DropDownHeader menuItems={menuItemsRecruitment} label="Tuyển dụng" />
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
@@ -76,9 +78,7 @@ function Header() {
         />
       </Col>
       <Col className={scss.col4} span={5}>
-        {profile && (
-          <DropDownLogined profile={profile} />
-        )}
+        {profile && <DropDownLogined profile={profile} />}
         {staff && <p>{staff.fullName}</p>}{" "}
         {!profile && !staff && (
           <>
@@ -86,7 +86,10 @@ function Header() {
               className={scss.button}
               color="primary"
               variant="outlined"
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                sessionStorage.setItem("urlPrev", window.location.pathname);
+                navigate("/login");
+              }}
             >
               Đăng nhập
             </Button>

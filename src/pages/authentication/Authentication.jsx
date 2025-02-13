@@ -28,10 +28,12 @@ import authenticationApi from "@api/authenticationApi";
 import FlCalendar from "@components/iu/input/FlCalendar";
 import formValidator from "@utils/formValidator";
 
-function Authentication({ isLogin }) {
+function Authentication({ isLogin}) {
   const [showLogin, setShowLogin] = useState(isLogin);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
+
+  const urlPrev = sessionStorage.getItem("urlPrev");
 
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
@@ -104,7 +106,7 @@ function Authentication({ isLogin }) {
         .then((response) => {
           if (response.status == 200) {
             sessionStorage.setItem("logined", JSON.stringify(response.data));
-            navigate("/home");
+            navigate(urlPrev || "/");
             window.location.reload();
           }
         })
@@ -127,7 +129,7 @@ function Authentication({ isLogin }) {
       authenticationApi.register(values).then((response) => {
         if (response.status == 200) {
           sessionStorage.setItem("logined", JSON.stringify(response.data));
-          navigate("/home");
+          navigate(urlPrev || "/");
           window.location.reload();
         }
       }).catch((error) => {
