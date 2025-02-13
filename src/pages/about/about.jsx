@@ -2,50 +2,62 @@ import CardAbout from "@components/card/card";
 import scss from "./about.module.scss";
 import { Row, Col, Image, Button } from "antd";
 import React from "react";
-import { FileSearchOutlined, PieChartFilled } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
-  faFileInvoiceDollar,
-  faFileShield,
-  faRobot,
-} from "@fortawesome/free-solid-svg-icons";
+  CustomerServiceFilled,
+  CarryOutFilled,
+  FundFilled,
+  PieChartFilled,
+} from "@ant-design/icons";
 
 const arrays = [
   {
     fullName: "Nguyễn Tấn Tài",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
   {
     fullName: "Nguyễn Thị Ngọc Nghi",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
   {
     fullName: "Nguyễn Long Nhi",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
   {
     fullName: "Trần Minh Tiến",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
   {
     fullName: "Ngô Gia Huy",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
   {
     fullName: "Nguyễn Khách Duy",
-    description:
-      "Chúng tôi cam kết xây dựng một môi trường làm việc công bằng, minh bạch. Từ hợp đồng thông minh đến chính sách đảm bảo thanh toán, bạn hoàn toàn yên tâm khi nhận dự án và tập trung phát triển sự nghiệp của mình.",
+    description: "Người lap trinh",
   },
 ];
 function About() {
   return (
     <div>
+      {" "}
       <div className={"container"}>
+        <p
+          className={
+            "elegant-text text-center text-danger fs-5 mt-4 " + scss.title
+          }
+        >
+          Thành viên sáng lập công ty
+        </p>
+        <Row gutter={16}>
+          {arrays.map((item, index) => (
+            <Col key={index} className={scss.div1} span={8}>
+              <CardAbout
+                image="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                context={item.fullName}
+                context1={item.description}
+              />
+            </Col>
+          ))}
+        </Row>
         <div className={scss.cardimg}>
           <img src="src/assets/images/img_about.webp" />
           <div className={scss.cardAbsolute}>
@@ -61,26 +73,13 @@ function About() {
           </div>
         </div>
 
-        <p className={scss.title}>Thành viên sáng lập công ty</p>
-        <Row gutter={16}>
-          {arrays.map((item, index) => (
-            <Col key={index} className={scss.div1} span={8}>
-              <CardAbout
-                image="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                title={item.fullName}
-                text={item.description}
-              />
-            </Col>
-          ))}
-        </Row>
-
         <div className={scss.card}>
           <Row>
             <Col span={10}>
               <div className={scss.cardContent}>
-                <p className={scss.title}>Về Chúng Tôi</p>
+                <p className={scss.title}>Về Chùng Tôi</p>
                 <div className={scss.item}>
-                  <FileSearchOutlined className={scss.icon} />
+                  <PieChartFilled className={scss.icon} />
                   <div className={scss.context}>
                     <p className={scss.title2}>Tìm việc nhanh chóng</p>
                     <p className={scss.text}>
@@ -91,10 +90,7 @@ function About() {
                   </div>
                 </div>
                 <div className={scss.item}>
-                  <FontAwesomeIcon
-                    icon={faFileInvoiceDollar}
-                    className={scss.icon}
-                  />
+                  <PieChartFilled className={scss.icon} />
                   <div className={scss.context}>
                     <p className={scss.title2}>Dòng tiền minh bạch</p>
                     <p className={scss.text}>
@@ -105,10 +101,10 @@ function About() {
                   </div>
                 </div>
                 <div className={scss.item}>
-                  <FontAwesomeIcon icon={faFileShield} className={scss.icon} />
+                  <PieChartFilled className={scss.icon} />
                   <div className={scss.context}>
                     <p className={scss.title2}>
-                      Bảo vệ Freelancer – Hợp tác chuyên nghiệp
+                      Bảo vệ quyền lợi Freelancer – Hợp tác chuyên nghiệp
                     </p>
                     <p className={scss.text}>
                       Chúng tôi cam kết xây dựng một môi trường làm việc công
@@ -119,7 +115,7 @@ function About() {
                   </div>
                 </div>
                 <div className={scss.item}>
-                  <FontAwesomeIcon icon={faRobot} className={scss.icon} />
+                  <PieChartFilled className={scss.icon} />
                   <div className={scss.context}>
                     <p className={scss.title2}>
                       Nâng tầm sự nghiệp Freelancer với công nghệ AI

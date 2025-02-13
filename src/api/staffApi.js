@@ -1,7 +1,7 @@
 import apiClient from './index';
 
 const staffApi = {
-    getPage: ({ page, size, fullName, email, phone, sort }) => apiClient.get('/staffs', { params: { page, size, search: `fullName,${fullName || ""},email,${email || ""},phone,${phone || ""}`, sort } }),
+    getAll: () => apiClient.get('/staffs'),
     getById: (id) => apiClient.get(`/staffs/${id}`),
     add: (staffDTO) => apiClient.post('/staffs', staffDTO),
     update: (id, staffDTO) => apiClient.put(`/staffs/${id}`, staffDTO),

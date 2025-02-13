@@ -3,8 +3,9 @@ import { Input, Space, Button } from "antd";
 import { SearchOutlined } from "@ant-design/icons";
 import Highlighter from "react-highlight-words";
 
-const SearchTable = ({dataIndex, searchText,setSearchText}) => {
+const SearchTable = (dataIndex) => {
   const searchInput = useRef(null);
+  const [searchText, setSearchText] = useState("");
 
   const handleSearch = (selectedKeys, confirm) => {
     confirm();
@@ -24,8 +25,9 @@ const SearchTable = ({dataIndex, searchText,setSearchText}) => {
         <Input
           ref={searchInput}
           placeholder="Tìm kiếm..."
-          value={selectedKeys[0] || ""}
+          value={selectedKeys[0]}
           onChange={(e) => setSelectedKeys(e.target.value ? [e.target.value] : [])}
+          onPressEnter={() => handleSearch(selectedKeys, confirm)}
           style={{ marginBottom: 8, display: "block" }}
         />
         <Space>

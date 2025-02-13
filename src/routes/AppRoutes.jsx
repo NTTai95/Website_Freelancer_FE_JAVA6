@@ -19,14 +19,7 @@ import SkillForm from "@pages/form/SkillForm";
 import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import Profile from "@pages/profile/Profile";
-<<<<<<< HEAD
-import ProfileRecruiters from "../pages/ProfileRecruiters/ProfileRecruiters";
-=======
->>>>>>> d0e80b1 (404, API, Decentralization)
-import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
-import LanguageTable from "@pages/language/LanguageTable";
-import LanguageForm from "@pages/language/LanguageForm";
-import Page404 from "@pages/page404/Page404";
+import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -172,66 +165,25 @@ const AppRoutes = () => {
       <Route
         path="/profile/freelancer"
         element={
-          <PrivateRoute
-            element={
-              <MainLayout>
-                <ProfileLayout active="freelancer">
-                  <ProfileFreelancers />
-                </ProfileLayout>
-              </MainLayout>
-            }
-          />
-<<<<<<< HEAD
-        }
-      />
-      <Route
-        path="/profile/recruiters"
-        element={
           <MainLayout>
-            <ProfileLayout active="recruiters" >
-              <ProfileRecruiters />
-            </ProfileLayout>
-          </MainLayout>
-=======
->>>>>>> d0e80b1 (404, API, Decentralization)
-        }
-      />
-      <Route
-        path="/profile/recruiters"
-        element={
-          <MainLayout>
-            <ProfileLayout active="recruiters">
-              <ProfileRecruiters />
+            <ProfileLayout active="freelancer">
+              <ProfileFreelancers />
             </ProfileLayout>
           </MainLayout>
         }
       />
       <Route
-        path="/admin/languages"
+        path="/profile"
         element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageTable />
-              </AdminLayout>
-            }
-          />
+          <MainLayout>
+            <ProfileLayout active="profile">
+              <Profile />
+            </ProfileLayout>
+          </MainLayout>
         }
       />
-      <Route
-        path="/admin/languages/:mode/:id?"
-        element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/404"
+      {/* <Route
+        path="/admin/employee/:mode"
         element={
           <MainLayout>
             <Page404 />
