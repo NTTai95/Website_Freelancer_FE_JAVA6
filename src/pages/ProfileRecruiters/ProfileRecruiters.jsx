@@ -3,7 +3,7 @@ import profileApi from '@api/profileApi'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function ProfileEmployer() {
+function ProfileRecruiters() {
     const [profile, setProfile] = useState(null);
     const nagivate = useNavigate();
 
@@ -74,4 +74,4 @@ function ProfileEmployer() {
         </div>
     );
 }
-export default ProfileEmployer;
+export default ProfileRecruiters;
