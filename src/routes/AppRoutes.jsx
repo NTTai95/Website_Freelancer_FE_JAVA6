@@ -1,5 +1,7 @@
 import React from "react";
 import { Routes, Route } from "react-router-dom";
+import PrivateRoute from "./PrivateRoute";
+
 import MainLayout from "@layouts/mainLayout/MainLayout";
 import PostDetail from "@pages/postdetail/PostDetail";
 import Authentication from "@pages/authentication/Authentication";
@@ -12,16 +14,18 @@ import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 
-import Dashboard from "../pages/dashboard/Dashboard";
-import SkillForm from "../pages/form/SkillForm";
-import StaffForm from "../pages/form/StaffForm";
+import Dashboard from "@pages/dashboard/Dashboard";
+import SkillForm from "@pages/form/SkillForm";
+import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import Profile from "@pages/profile/Profile";
-import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
+import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
+import LanguageTable from "@pages/language/LanguageTable";
+import LanguageForm from "@pages/language/LanguageForm";
+import Page404 from "@pages/page404/Page404";
 const AppRoutes = () => {
   return (
     <Routes>
-      {/* Routes với MainLayout */}
       <Route
         path="/"
         element={
@@ -81,7 +85,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/ProjectPage"
+        path="/projectpage"
         element={
           <MainLayout>
             <ProjectPage />
@@ -91,25 +95,40 @@ const AppRoutes = () => {
       <Route
         path="/admin/skills/:mode/:id?"
         element={
-          <AdminLayout active="skills" breadcrumb="Kỹ năng">
-            <SkillForm />
-          </AdminLayout>
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillForm />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
         path="/admin/skills"
         element={
-          <AdminLayout active="skills" breadcrumb="Kỹ năng">
-            <SkillTable />
-          </AdminLayout>
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillTable />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
         path="/admin/staff"
         element={
-          <AdminLayout active="staff" breadcrumb="Nhân viên">
-            <StaffTable />
-          </AdminLayout>
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffTable />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
@@ -123,27 +142,41 @@ const AppRoutes = () => {
       <Route
         path="/admin/dashboard"
         element={
-          <AdminLayout active="home">
-            <Dashboard />
-          </AdminLayout>
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="home">
+                <Dashboard />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
         path="/admin/staff/:mode/:id?"
         element={
-          <AdminLayout active="staff" breadcrumb="Nhân viên">
-            <StaffForm />
-          </AdminLayout>
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffForm />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
         path="/profile/freelancer"
         element={
-          <MainLayout>
-            <ProfileLayout active="freelancer">
-              <ProfileFreelancers />
-            </ProfileLayout>
-          </MainLayout>
+          <PrivateRoute
+            element={
+              <MainLayout>
+                <ProfileLayout active="freelancer">
+                  <ProfileFreelancers />
+                </ProfileLayout>
+              </MainLayout>
+            }
+          />
         }
       />
       <Route
@@ -166,14 +199,38 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      {/* <Route
-        path="/admin/employee/:mode"
+      <Route
+        path="/admin/languages"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/languages/:mode/:id?"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/404"
         element={
           <MainLayout>
-            <ProfileFreelancers/>
+            <Page404 />
           </MainLayout>
         }
-      /> */}
+      />
     </Routes>
   );
 };

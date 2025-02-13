@@ -22,4 +22,15 @@ const checkPhoneExists = async (phone, setLoading) => {
     return false;
 };
 
-export default { checkEmailExists, checkPhoneExists };
+const checkISOExists = async (iso, setLoading) => {
+    setLoading(true);
+    const response = await checkApi.checkISOExists(iso);
+    setLoading(false);
+
+    if (response.status === 200 && response.data) {
+        return true;
+    }
+    return false;
+}
+
+export default { checkEmailExists, checkPhoneExists, checkISOExists };

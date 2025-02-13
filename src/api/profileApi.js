@@ -1,9 +1,9 @@
 import apiClient from './index';
 
 const profileApi = {
-    getByAccount: (account) => apiClient.get(`/profile/account`, account),
-    getByAccountId: (id) => apiClient.get(`/profile/account/${id}`),
-    uploadImage: (id, image) => apiClient.patch(`/profile/${id}/image`, image, {
+    getByAccount: (account) => apiClient.get(`/profiles/account`, account),
+    getByAccountId: (id) => apiClient.get(`/profiles/account/${id}`),
+    uploadImage: (id, image) => apiClient.patch(`/profiles/${id}/image`, image, {
         headers: {
             "Content-Type": "multipart/form-data",
         }
