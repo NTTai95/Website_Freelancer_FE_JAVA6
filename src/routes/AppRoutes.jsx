@@ -19,7 +19,10 @@ import SkillForm from "@pages/form/SkillForm";
 import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import Profile from "@pages/profile/Profile";
+<<<<<<< HEAD
 import ProfileRecruiters from "../pages/ProfileRecruiters/ProfileRecruiters";
+=======
+>>>>>>> d0e80b1 (404, API, Decentralization)
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
@@ -178,6 +181,7 @@ const AppRoutes = () => {
               </MainLayout>
             }
           />
+<<<<<<< HEAD
         }
       />
       <Route
@@ -188,6 +192,8 @@ const AppRoutes = () => {
               <ProfileRecruiters />
             </ProfileLayout>
           </MainLayout>
+=======
+>>>>>>> d0e80b1 (404, API, Decentralization)
         }
       />
       <Route
