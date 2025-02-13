@@ -43,7 +43,7 @@ const JobListing = () => {
     total: 0,
   });
 
-  useEffect(async () => {
+  const fetchData = async () => {
     await jobspostApi
       .getAll({ page: pagination.current, size: pagination.pageSize })
       .then((response) => {
@@ -54,6 +54,10 @@ const JobListing = () => {
           total: response.data.totalElements,
         }));
       });
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   return (

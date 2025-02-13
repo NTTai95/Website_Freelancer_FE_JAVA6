@@ -8,6 +8,7 @@ import {
   Form,
   message,
   Spin,
+  notification
 } from "antd";
 import scss from "./Authentication.module.scss";
 import FlInputText from "@components/iu/input/FlInputText";
@@ -31,6 +32,7 @@ function Authentication({ isLogin}) {
   const [check, setCheck] = useState(false);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
+  const [messageApi, contextHolder] = notification.useNotification();
 
   const urlPrev = sessionStorage.getItem("urlPrev");
 
