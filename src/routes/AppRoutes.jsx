@@ -7,7 +7,7 @@ import PostDetail from "@pages/postdetail/PostDetail";
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
-import JobListing from "@components/recruitmentList/JobListing";
+import JobPost from "@pages/JobPost/JobPost";
 import SkillTable from "@pages/skills/SkillTable";
 import StaffTable from "@pages/StaffTable/StaffTable";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
@@ -70,10 +70,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/joblisting"
+        path="/jobpost"
         element={
           <MainLayout>
-            <JobListing />
+            <JobPost />
           </MainLayout>
         }
       />

@@ -30,13 +30,13 @@ function Header() {
   }, []);
 
   const menuItemsFindWork = [
-    { name: "Tìm việc", link: "/joblisting" },
+    { name: "Tìm việc", link: "/jobpost" },
     // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
   const menuItemsRecruitment = [
     // { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/ProjectPage" },
+    { name: "Tạo bài tuyển dụng", link: "/projectpage" },
   ];
 
   const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
