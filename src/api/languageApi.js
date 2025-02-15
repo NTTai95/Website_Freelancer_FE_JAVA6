@@ -6,6 +6,11 @@ const languageApi = {
   add: (language) => apiClient.post('/languages', language),
   update: (id, language) => apiClient.put(`/languages/${id}`, language),
   delete: (id) => apiClient.delete(`/languages/${id}`),
+  getByIds: (ids) => {
+    const idsString = Array.isArray(ids) ? ids.join(',') : String(ids);
+    return apiClient.get(`/languages/list`, { params: { ids: idsString } });
+  }
+  
 };
 
 export default languageApi;
