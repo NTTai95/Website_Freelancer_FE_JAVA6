@@ -30,6 +30,7 @@ function SkillForm() {
   const onFinish = (values) => {
     setCallAping(true);
     const skill = {
+      id: null,
       name: values.name,
       description: values.description,
     };

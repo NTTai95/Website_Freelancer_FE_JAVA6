@@ -2,10 +2,11 @@ import apiClient from './index';
 
 const skillApi = {
     getAll: () => apiClient.get('/skills'),
-    add: () => apiClient.post('/skills'),
+    add: (skill) => apiClient.post('/skills',skill),
     getById(id) {
         return apiClient.get(`/skills/${id}`);
     }
 };
+
 
 export default skillApi;

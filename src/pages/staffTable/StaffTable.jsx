@@ -3,6 +3,7 @@ import scss from "./StaffTable.module.scss";
 import { Button, Table } from "antd";
 import { useNavigate } from "react-router-dom";
 import staffApi from "../../api/staffApi";
+import { faL } from "@fortawesome/free-solid-svg-icons";
 
 const StaffTable = () => {
   const navigate = useNavigate();

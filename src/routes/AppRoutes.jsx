@@ -17,6 +17,7 @@ import SkillForm from "../pages/form/SkillForm";
 import StaffForm from "../pages/form/StaffForm";
 import ProfileFreelancers from "../pages/profileFreelancers/ProfileFreelancers";
 import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
+import Profile from "../pages/profile/Profile";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -142,6 +143,15 @@ const AppRoutes = () => {
             <ProfileLayout active="freelancer" >
               <ProfileFreelancers />
             </ProfileLayout>
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          <MainLayout>
+            <Profile active="profile">
+            </Profile>
           </MainLayout>
         }
       />
