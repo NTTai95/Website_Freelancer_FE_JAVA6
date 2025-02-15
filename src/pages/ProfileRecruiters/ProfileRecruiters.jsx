@@ -1,10 +1,9 @@
-import scss from "./profileFreelancers.module.scss";
 import { Tag, Divider } from "antd";
 import profileApi from '@api/profileApi'
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 
-function ProfileFreelancers() {
+function ProfileRecruiters() {
     const [profile, setProfile] = useState(null);
     const nagivate = useNavigate();
 
@@ -26,7 +25,15 @@ function ProfileFreelancers() {
     return (
         <div>
             <div>
-                <h2 className="text-primary">Tóm lược</h2>
+                <h2 className="text-primary">Tên công ty</h2>
+                <Divider />
+                <p style={{ fontSize: "17px" }}>
+                    {profile?.freelancer?.introduce}
+                </p>
+                <Divider />
+            </div>
+            <div>
+                <h2 className="text-primary">Giới thiệu</h2>
                 <Divider />
                 <p style={{ fontSize: "17px" }}>
                     {profile?.freelancer?.introduce}
@@ -39,10 +46,18 @@ function ProfileFreelancers() {
                     Tiếng Anh
                 </Tag>
                 <Tag className="fs-6 p-1" color="cyan">
-                    Tiếng Nga
+                    Tiếng Ấn Độ
                 </Tag>
             </div>
             <Divider />
+            <div>
+                <h2 className="text-primary">Danh sách công việc</h2>
+                <Divider />
+                <p style={{ fontSize: "17px" }}>
+                    {profile?.freelancer?.introduce}
+                </p>
+                <Divider />
+            </div>
             <div className="mb-4">
                 <h2 className="text-primary">Kỹ năng</h2>
                 <Tag className="fs-6 p-1" bordered={false} color="processing">
@@ -54,11 +69,9 @@ function ProfileFreelancers() {
                 <Tag className="fs-6 p-1" bordered={false} color="magenta">
                     Copy Writing
                 </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="success">
-                    Copy & Paste
-                </Tag>
+                
             </div>
         </div>
     );
 }
-export default ProfileFreelancers;
+export default ProfileRecruiters;

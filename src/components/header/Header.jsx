@@ -1,5 +1,4 @@
-import { Col, Row, Button, Input, Select, Avatar, Dropdown } from "antd";
-import { UserOutlined } from "@ant-design/icons";
+import { Col, Row, Button, Input, Select } from "antd";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
 import DropDownLogined from "../iu/dropdown/DropDownLogined";
@@ -22,6 +21,7 @@ function Header() {
       } else {
         profileApi.getByAccountId(logined.id).then((response) => {
           if (response.status == 200) {
+            console.log(response);
             setProfile(response.data);
           }
         });
@@ -30,22 +30,21 @@ function Header() {
   }, []);
 
   const menuItemsFindWork = [
-    { name: "Tìm việc", link: "/joblisting" },
+    { name: "Tìm việc", link: "/jobpost" },
     // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
   const menuItemsRecruitment = [
     // { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/ProjectPage" },
+    { name: "Tạo bài tuyển dụng", link: "/projectpage" },
   ];
 
   const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
-
   const selectAfter = (
     <Select defaultValue="Tuyển dụng">
-      <Option value="tuyendung">tuyển dụng</Option>
+      <Option value="tuyendung">Tuyển dụng</Option>
       <Option value="freelancer">Freelancer</Option>
-      <Option value="skills">kỹ năng</Option>
+      <Option value="skills">Kỹ năng</Option>
     </Select>
   );
 
@@ -56,7 +55,7 @@ function Header() {
           className={scss.logo}
           gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
           animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
-          animateDuration={1500}
+          animateDuration={1700}
           onClick={() => navigate("/")}
         >
           FREELANCER
@@ -64,7 +63,7 @@ function Header() {
       </Col>
       <Col className={scss.col2} span={8}>
         <span className={scss.link} onClick={() => navigate("/")}>
-          Trang chủ
+          Trang chủ{" "}
         </span>
         <DropDownHeader menuItems={menuItemsFindWork} label="Tìm việc" />
         <DropDownHeader menuItems={menuItemsRecruitment} label="Tuyển dụng" />
@@ -79,9 +78,7 @@ function Header() {
         />
       </Col>
       <Col className={scss.col4} span={5}>
-        {profile && (
-          <DropDownLogined profile={profile} />
-        )}
+        {profile && <DropDownLogined profile={profile} />}
         {staff && <p>{staff.fullName}</p>}{" "}
         {!profile && !staff && (
           <>
@@ -89,7 +86,10 @@ function Header() {
               className={scss.button}
               color="primary"
               variant="outlined"
-              onClick={() => navigate("/login")}
+              onClick={() => {
+                sessionStorage.setItem("urlPrev", window.location.pathname);
+                navigate("/login");
+              }}
             >
               Đăng nhập
             </Button>

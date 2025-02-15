@@ -1,11 +1,12 @@
 import apiClient from './index';
 
 const skillApi = {
-    getAll: () => apiClient.get('/skills'),
-    add: (skill) => apiClient.post('/skills',skill),
-    getById(id) {
-        return apiClient.get(`/skills/${id}`);
-    }
+    getPage: ({ page, size, search }) => apiClient.get('/skills', { params: { page, size, search: `name,${search || ""}` } }),
+    add: (skill) => apiClient.post('/skills', skill),
+    getById: (id) => apiClient.get(`/skills/${id}`),
+    getByIds: (ids) => apiClient.get(`/skills/list`, { params: { ids: ids.join(',') } }),
+    update: (id, skill) => apiClient.put(`/skills/${id}`, skill)
+
 };
 
 

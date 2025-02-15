@@ -12,7 +12,7 @@ function ProjectPage1() {
         <div className={scss.leftColumn}>
           <h3>Tổng quan dự án</h3>
           <h5 className={scss.title}>Tiêu đề dự án</h5>
-          <Input placeholder="nhập tiêu đề dự án" size="large" />
+          <Input placeholder="Nhập tiêu đề dự án" size="large" />
           <h5 className={scss.title}>Mô tả dự án</h5>
           <TextArea
             showCount

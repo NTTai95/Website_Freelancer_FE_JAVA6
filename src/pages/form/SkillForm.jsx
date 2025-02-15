@@ -2,11 +2,13 @@ import scss from "./SkillForm.module.scss";
 import { Button, Form, Input, notification, Spin } from "antd";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import skillApi from "../../api/skillApi";
+import skillApi from "@api/skillApi";
 import { useParams } from "react-router-dom";
 
 function SkillForm() {
   const { mode, id } = useParams();
+
+  const [form] = Form.useForm();
 
   const [messageApi, contextHolder] = notification.useNotification();
   const [callAping, setCallAping] = useState(false);
@@ -17,36 +19,52 @@ function SkillForm() {
     description: "",
   });
 
-  useEffect(() => {
-    if (mode === "edit" && id) {
-      setCallAping(true);
-      skillApi.getById(id).then((response) => {
-        setInitialValues(response.data);
-        setCallAping(false);
-      });
-    }
-  }, []);
-
-  const onFinish = (values) => {
+  const fetchData = async () => {
     setCallAping(true);
-    const skill = {
-      id: null,
-      name: values.name,
-      description: values.description,
-    };
+    try {
+      const res = await skillApi.getById(id);
 
-    skillApi.add(skill).then(() => {
-      messageApi["success"]({
-        message: "Thêm kỹ năng thành công!",
-        showProgress: true,
-      });
+      const data = res.data;
+
+      setInitialValues(data);
+      form.setFieldsValue(data);
+    } catch (error) {
+      console.error("Error fetching staff data:", error);
+    }finally {
       setCallAping(false);
-    });
+    }
   };
 
-  function handleReset(){
+  useEffect(() => {
+    id && fetchData();
+  }, [mode, id]);
+
+  const onFinish = async (values) => {
+    try {
+      setCallAping(true);
+  
+      const skill = {
+        name: values.name,
+        description: values.description,
+      };
+  
+      if (mode === "edit" && id) {
+        await skillApi.update(id, skill);
+        messageApi.success({ message: "Cập nhật kỹ năng thành công!", showProgress: true });
+      } else {
+        await skillApi.add(skill);
+        messageApi.success({ message: "Thêm kỹ năng thành công!", showProgress: true });
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      messageApi.error({ message: "Có lỗi xảy ra!" });
+    } finally {
+      setCallAping(false);
+    }
+  };
+
+  function handleReset() {
     setInitialValues({
-      id: "",
       name: "",
       description: "",
     });
@@ -66,6 +84,7 @@ function SkillForm() {
           layout="vertical"
           name="basic"
           autoComplete="off"
+          form={form}
           onFinish={onFinish}
           initialValues={initialValues}
         >
@@ -74,19 +93,7 @@ function SkillForm() {
             name="name"
             rules={[{ required: true, message: "Vui lòng nhập tên kỹ năng!" }]}
           >
-            <div>
-              <p className={scss["text-help"]}>
-                Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
-              </p>
-              <Input
-                value={initialValues.name}
-                onChange={(e) =>
-                  setInitialValues({ ...initialValues, name: e.target.value })
-                }
-                type="text"
-                placeholder="Tên hiển thị kỹ năng..."
-              />
-            </div>
+            <Input type="text" placeholder="Tên hiển thị kỹ năng..." />
           </Form.Item>
           <Form.Item
             label={<b>Mô tả</b>}
@@ -98,30 +105,23 @@ function SkillForm() {
               },
             ]}
           >
-            <div>
-              <p className={scss["text-help"]}>
-                Hãy nhập tên kỹ năng một cách ngắn gọn và rõ ràng.
-              </p>
-              <Input.TextArea
-                rows={5}
-                placeholder="Mô tả chi tiết về kỹ năng..."
-                showCount
-                maxLength={10000}
-                value={initialValues.description}
-                onChange={(e) =>
-                  setInitialValues({
-                    ...initialValues,
-                    description: e.target.value,
-                  })
-                }
-              />
-            </div>
+            <Input.TextArea
+              rows={5}
+              placeholder="Mô tả chi tiết về kỹ năng..."
+              showCount
+              maxLength={10000}
+            />
           </Form.Item>
           <Form.Item label={null} className="d-flex justify-content-end">
             <Button type="primary" htmlType="submit">
               {mode === "add" ? "Thêm" : "Cập nhật"} kỹ năng
             </Button>
-            <Button className={"ms-3"} type="default" htmlType="reset" onClick={() => handleReset()}>
+            <Button
+              className={"ms-3"}
+              type="default"
+              htmlType="reset"
+              onClick={() => handleReset()}
+            >
               đặt lại
             </Button>
           </Form.Item>

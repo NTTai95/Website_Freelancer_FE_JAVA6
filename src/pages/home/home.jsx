@@ -1,17 +1,22 @@
-import CardHome from "@components/card/home";
 import scss from "./home.module.scss";
-import { Row, Col, Button, Carousel } from "antd";
+import { Row, Col, Button, Carousel, Card } from "antd";
 import {
   CustomerServiceFilled,
   CarryOutFilled,
   FundFilled,
   PieChartFilled,
   TrademarkCircleFilled,
-  CaretRightOutlined,
+  BoxPlotFilled,
   ProjectFilled,
-  SafetyCertificateFilled
+  SafetyCertificateFilled,
 } from "@ant-design/icons";
 import FancyText from "@carefully-coded/react-text-gradient";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faCoins,
+  faUserTie,
+  faBriefcase,
+} from "@fortawesome/free-solid-svg-icons";
 function Home() {
   return (
     <>
@@ -24,13 +29,13 @@ function Home() {
             </video>
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/header2.jpg" />
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/header3.jpg" />
           </div>
           <div>
-            <img src="src/assets/images/v.jpg" />
+            <img src="src/assets/images/banner1.jpg" />
           </div>
         </Carousel>
         <div className={scss["context-banner"]}>
@@ -58,7 +63,59 @@ function Home() {
           </div>
         </div>
       </div>
+
       <div className={"container mt-5 " + scss["view"]}>
+        <div className={scss.card2}>
+          <p className={scss.title}>Nâng Tầm Công Việc Của Bạn</p>
+          <Row justify="space-around">
+            <Col span={6}>
+              <Card
+                className={scss.cardContent}
+                hoverable
+                cover={
+                  <FontAwesomeIcon icon={faCoins} className={scss.icon2} />
+                }
+              >
+                <p className={scss.title2}>Miễn phí tham gia</p>
+                <p className={scss.description}>
+                  Đăng ký và khám phá hồ sơ của những tài năng hàng đầu, tìm
+                  kiếm dự án hoặc thậm chí đặt lịch tư vấn.
+                </p>
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card
+                className={scss.cardContent}
+                hoverable
+                cover={
+                  <FontAwesomeIcon icon={faUserTie} className={scss.icon3} />
+                }
+              >
+                <p className={scss.title2}>Tuyển dụng nhân tài hàng đầu</p>
+                <p className={scss.description}>
+                  Tìm kiếm nhân tài không còn là nỗi lo. Bạn có thể tự đăng
+                  tuyển hoặc để chúng tôi giúp tìm kiếm cho bạn!
+                </p>
+              </Card>
+            </Col>
+            <Col span={6}>
+              <Card
+                className={scss.cardContent}
+                hoverable
+                cover={
+                  <FontAwesomeIcon icon={faBriefcase} className={scss.icon2} />
+                }
+              >
+                <p className={scss.title2}>Làm việc với chuyên gia</p>
+                <p className={scss.description}>
+                  Freelancer giúp bạn tối ưu hóa chi phí với mức phí giao dịch
+                  thấp, mang lại cơ hội hợp tác hiệu quả và tiết kiệm.
+                </p>
+              </Card>
+            </Col>
+          </Row>
+        </div>
+
         <div className={scss.card}>
           <Row>
             <Col span={10}>
@@ -107,122 +164,17 @@ function Home() {
             </Col>
             <Col span={14}>
               <div className={scss.cardImg}>
-                <img src="src/assets/images/ft7.jpg" alt="image" />
+                <img src="src/assets/images/tuyendung.jpg" alt="image" />
               </div>
             </Col>
           </Row>
         </div>
 
-        <div style={{ marginBottom: "20px" }} className={scss.clients}>
-          <Row>
-            <Col span={24}>
-              <img
-                src="src/assets/images/contain4.jpg"
-                alt=""
-                style={{
-                  width: "100%",
-                  position: "absolute",
-                  zIndex: -1,
-                  height: "700px",
-                  objectFit: "cover",
-                }}
-              />
-              <h2
-                style={{
-                  color: "white",
-                  paddingLeft: "10px",
-                  paddingTop: "30px",
-                }}
-              >
-                Dành Cho Khách Hàng
-              </h2>
-              <br />
-              <h1 style={{ color: "white", paddingLeft: "10px" }}>
-                Tìm Kiếm Nhân Tài Theo Cách Của Bạn
-              </h1>
-              <br />
-              <h5 style={{ color: "white", paddingLeft: "10px" }}>
-                Làm việc với mạng lưới chuyên gia độc lập lớn nhất <br /> và
-                hoàn thành công việc – từ những nhiệm vụ <br />
-                nhanh chóng đến những sự chuyển đổi lớn.
-              </h5>
-            </Col>
-            <Col
-              span={7}
-              style={{
-                backgroundColor: "#33FF00",
-                margin: "20px",
-                borderRadius: "5px",
-                marginTop: "250px",
-                paddingLeft: "10px",
-              }}
-            >
-              {" "}
-              <h4>
-                <strong>Đăng việc làm </strong>
-              </h4>
-              <br />
-              <Button type="link" Flex>
-                {" "}
-                <h5>
-                  Thị trường tài năng
-                  <CaretRightOutlined />
-                </h5>
-              </Button>
-            </Col>
-            <Col
-              span={7}
-              style={{
-                backgroundColor: "#33FF00",
-                margin: "20px",
-                borderRadius: "5px",
-                marginTop: "250px",
-                paddingLeft: "10px",
-              }}
-            >
-              {" "}
-              <h4>
-                <strong> Mua dự án </strong>
-              </h4>
-              <br />
-              <Button type="link" Flex>
-                {" "}
-                <h5>
-                  Danh mục dự án
-                  <CaretRightOutlined />
-                </h5>{" "}
-              </Button>
-            </Col>
-            <Col
-              span={7}
-              style={{
-                backgroundColor: "#33FF00",
-                margin: "20px",
-                borderRadius: "5px",
-                marginTop: "250px",
-                paddingLeft: "10px",
-              }}
-            >
-              {" "}
-              <h4>
-                <strong> Lời khuyên từ các ngành </strong>
-              </h4>
-              <br />
-              <Button type="link" Flex>
-                <h5>
-                  Tư vấn
-                  <CaretRightOutlined />
-                </h5>
-              </Button>
-            </Col>
-          </Row>
-        </div>
-
-        <div className={scss.card}>
+        <div className={scss.card + " mt-5"}>
           <Row>
             <Col span={14}>
               <div className={scss.cardImg}>
-                <img src="src/assets/images/ft7.jpg" alt="image" />
+                <img src="src/assets/images/contain3.jpg" alt="image" />
               </div>
             </Col>
             <Col span={10}>

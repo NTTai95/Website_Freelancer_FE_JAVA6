@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom";
 const MainLayout = ({ children }) => {
   const navgate = useNavigate();
   return (
-    <>
+    <div>
       <Header />
       <main className={scss["container-main"]}>{children}</main>
       <div className={scss["float-button"]}>
@@ -21,7 +21,7 @@ const MainLayout = ({ children }) => {
         </Tooltip>
       </div>
       <Footer />
-    </>
+    </div>
   );
 };
 

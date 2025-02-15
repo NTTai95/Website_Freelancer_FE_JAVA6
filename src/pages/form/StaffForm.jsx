@@ -24,21 +24,34 @@ import viVN from "antd/locale/vi_VN";
 import dayjs from "dayjs";
 import "dayjs/locale/vi";
 import { motion } from "motion/react";
-import permissionApi from "../../api/permissionApi";
-import checkApi from "../../api/checkApi";
-import staffApi from "../../api/staffApi";
+import permissionApi from "@api/permissionApi";
+import staffApi from "@api/staffApi";
 import { useParams } from "react-router-dom";
 import utc from "dayjs/plugin/utc";
-import moment from "moment/moment";
+import formValidator from "@utils/formValidator";
 
 dayjs.extend(utc);
 dayjs.locale("vi");
-function SkillForm() {
+
+const currentDate = new Date();
+const fomatDate = "YYYY-MM-DD";
+const maxDate = new Date(
+  currentDate.getFullYear() - 18,
+  currentDate.getMonth(),
+  currentDate.getDate()
+);
+const minDate = new Date(
+  currentDate.getFullYear() - 100,
+  currentDate.getMonth(),
+  currentDate.getDate()
+);
+
+function StaffForm() {
   const [form] = Form.useForm();
 
   const { mode, id } = useParams();
 
-  const [api, contextHolder] = notification.useNotification();
+  const [messageApi, contextHolder] = notification.useNotification();
 
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
@@ -48,7 +61,6 @@ function SkillForm() {
   const [callAping, setCallAping] = useState(false);
 
   const [initialValues, setInitialValues] = useState({
-    id: "",
     fullName: "",
     birthday: null,
     email: "",
@@ -57,107 +69,81 @@ function SkillForm() {
     permissions: [],
   });
 
-  useEffect(() => {
-    permissionApi.getAll().then((response) => {
-      if (response.status == 200) {
-        setPermissions(response.data);
-      }
-    });
+  const fetchPermissions = async () => {
+    try {
+      const res = await permissionApi.getAll();
 
-    if (mode === "edit" && id) {
-      setCallAping(true);
-      staffApi.getById(id).then((response) => {
-        if (response.status == 200) {
-          const data = response.data;
-          console.log(data);
-          setInitialValues({
-            id: data.id,
-            fullName: data.fullName,
-            birthday: dayjs(data.birthday),
-            email: data?.account?.email,
-            phone: data.phone,
-            status: data.status,
-            permissions: data.permissions.map((item) => item.id),
-          });
-
-          form.setFieldsValue({
-            id: data.id,
-            fullName: data.fullName,
-            birthday: dayjs(data.birthday),
-            email: data?.account?.email,
-            password: data?.account.password,
-            phone: data.phone,
-            status: data.status ? "working" : "notWorking",
-            permissions: data.permissions.map((item) => item.id),
-          });
-
-          setCallAping(false);
-        }
-      });
+      setPermissions(res.data);
+    } catch (error) {
+      console.error("Error fetching permissions:", error);
     }
-  }, []);
-
-  const checkEmailExists = async (email) => {
-    setErrorEmailLoading(true);
-    const response = await checkApi.checkEmailExists(email);
-    setErrorEmailLoading(false);
-    if (response.status == 200 && response.data) {
-      return true;
-    }
-
-    return false;
   };
-
-  const checkPhoneExists = async (phone) => {
-    setErrorPhoneLoading(true);
-    const response = await checkApi.checkPhoneExists(phone);
-    setErrorPhoneLoading(false);
-
-    if (response.status === 200 && response.data) {
-      return true;
-    }
-    return false;
-  };
-
-  const onFinish = (values) => {
+  const fetchData = async () => {
     setCallAping(true);
-    if (mode === "edit" && id) {
-      staffApi
-        .update(id, {
-          ...values,
-          status: values.status === "working" ? true : false,
-        })
-        .then(() => {
-          setCallAping(false);
-          api["success"]({
-            message: "cập nhập nhân viên thành công!",
-            showProgress: true,
-          });
-        })
-        .catch(() => {
-          setCallAping(false);
-          api["error"]({
-            message: "cập nhật nhân viên không thành công!",
-            showProgress: true,
-          });
+    try {
+      const res = await staffApi.getById(id);
+      const data = res.data;
+
+      console.log(data)
+
+      const formatData = {
+        fullName: data.fullName,
+        birthday: dayjs(data.birthday),
+        email: data?.email,
+        password: data?.password,
+        phone: data.phone,
+        status: data.status == 0 ? "working" : "notWorking",
+        permissions: data.permissionIds,
+      };
+
+      setInitialValues(formatData);
+      form.setFieldsValue(formatData);
+    } catch (error) {
+      console.error("Error fetching staff data:", error);
+    }
+    setCallAping(false);
+  };
+
+  useEffect(() => {
+    fetchPermissions();
+    id && fetchData();
+  }, [mode, id]);
+
+  const onFinish = async (values) => {
+    try {
+      setCallAping(true);
+
+      const staffDTO = {
+        fullName: values.fullName,
+        birthday: values.birthday.format(fomatDate),
+        phone: values.phone,
+        status: values.status === "working" ? 0 : 1,
+        email: values.email,
+        password: values.password,
+        permissionIds: values.permissions,
+      };
+
+      console.log(staffDTO);
+
+      if (mode === "edit" && id) {
+        await staffApi.update(id, staffDTO);
+        messageApi.success({
+          message: "Cập nhật nhân viên thành công!",
+          showProgress: true,
         });
-    } else {
-      staffApi
-        .add({ ...values, status: values.status === "working" ? true : false })
-        .then(() => {
-          setCallAping(false);
-          api["success"]({
-            message: "Thêm nhân viên thành công!",
-            showProgress: true,
-          });
-        })
-        .catch(() => {
-          setCallAping(false);
-          api["error"]({
-            message: "Thêm nhân viên không thành cônng!",
-            showProgress: true,
-          });
+        fetchData();
+      } else {
+        await staffApi.add(staffDTO);
+        messageApi.success({
+          message: "Thêm nhân viên thành công!",
+          showProgress: true,
         });
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      messageApi.error({ message: "Có lỗi xảy ra!" });
+    } finally {
+      setCallAping(false);
     }
   };
 
@@ -184,9 +170,7 @@ function SkillForm() {
               <Form.Item
                 label={<b>Tên nhân viên</b>}
                 name="fullName"
-                rules={[
-                  { required: true, message: "Vui lòng nhập tên nhân viên!" },
-                ]}
+                rules={formValidator.fullName()}
               >
                 <Input type="text" placeholder="VD: Nguyễn Văn A" />
               </Form.Item>
@@ -197,34 +181,14 @@ function SkillForm() {
                   label={<b>Ngày sinh</b>}
                   name="birthday"
                   required
-                  rules={[
-                    () => ({
-                      validator(_, value) {
-                        if (!value)
-                          return Promise.reject("Vui lòng chọn ngày sinh!");
-
-                        const today = dayjs();
-                        const age = today.diff(value, "year");
-
-                        if (value.isAfter(today, "day")) {
-                          return Promise.reject("Ngày sinh không hợp lệ!");
-                        }
-
-                        if (age < 18) {
-                          return Promise.reject(
-                            "Nhân viên phải từ 18 tuổi trở lên!"
-                          );
-                        }
-
-                        return Promise.resolve();
-                      },
-                    }),
-                  ]}
+                  rules={formValidator.birthday()}
                 >
                   <DatePicker
                     style={{ width: "100%" }}
                     format="DD/MM/YYYY"
                     placeholder="VD: 01/01/2000"
+                    minDate={dayjs(minDate.toISOString(), fomatDate)}
+                    maxDate={dayjs(maxDate.toISOString(), fomatDate)}
                   />
                 </Form.Item>
               </ConfigProvider>
@@ -239,27 +203,10 @@ function SkillForm() {
                   ) : null
                 }
                 required
-                rules={[
-                  () => ({
-                    async validator(_, value) {
-                      if (!value)
-                        return Promise.reject("Vui lòng nhập số điện thoại!");
-                      else if (!/^[0-9]+$/.test(value))
-                        return Promise.reject("Số điện thoại không hợp lệ!");
-                      else if (value.length !== 10)
-                        return Promise.reject(
-                          "Số điện thoại phải có 10 chữ số!"
-                        );
-                      else if (
-                        (await checkPhoneExists(value)) &&
-                        value !== initialValues.phone
-                      )
-                        return Promise.reject("Số điện thoại đã được sử dụng!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.phone(
+                  setErrorPhoneLoading,
+                  initialValues.phone
+                )}
               >
                 <Input type="text" placeholder="VD: 099999999" />
               </Form.Item>
@@ -275,26 +222,10 @@ function SkillForm() {
                     <Spin indicator={<LoadingOutlined spin />} size="small" />
                   ) : null
                 }
-                rules={[
-                  () => ({
-                    async validator(_, value) {
-                      if (!value) return Promise.reject("Vui lòng nhập email!");
-                      else if (
-                        !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
-                          value
-                        )
-                      )
-                        return Promise.reject("Email không đúng định dạng!");
-                      else if (
-                        (await checkEmailExists(value)) &&
-                        value !== initialValues.email
-                      )
-                        return Promise.reject("Email đã được sử dụng!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.email(
+                  setErrorEmailLoading,
+                  initialValues.email
+                )}
               >
                 <Input placeholder="VD: example@gmail.com" />
               </Form.Item>
@@ -304,20 +235,7 @@ function SkillForm() {
                 label={<b>Mật khẩu</b>}
                 name="password"
                 required
-                rules={[
-                  ({ getFieldValue }) => ({
-                    validator(_, value) {
-                      if (!value)
-                        return Promise.reject("Vui lòng nhập mật khẩu!");
-                      else if (value.length < 8)
-                        return Promise.reject("Mật khẩu tối thiểu 8 kí tự!");
-                      else if (value.length > 50)
-                        return Promise.reject("Mật khẩu tối đa 50 kí tự!");
-
-                      return Promise.resolve();
-                    },
-                  }),
-                ]}
+                rules={formValidator.password()}
               >
                 <Input.Password
                   placeholder="VD: 12345678"
@@ -337,11 +255,11 @@ function SkillForm() {
           <Skeleton
             paragraph={{ rows: 1 }}
             active
-            loading={!permissions.length}
+            loading={!permissions.length != 0 || !permissions}
           >
             <Form.Item label={<b>Chức vụ</b>} name="permissions">
               <Checkbox.Group>
-                {permissions.map((permission) => (
+                {permissions.length && permissions.map((permission) => (
                   <Tooltip key={permission.id} title={permission.description}>
                     <Checkbox value={permission.id}>{permission.name}</Checkbox>
                   </Tooltip>
@@ -360,4 +278,4 @@ function SkillForm() {
   );
 }
 
-export default SkillForm;
+export default StaffForm;

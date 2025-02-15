@@ -1,4 +1,5 @@
 import scss from "./Footer.module.scss";
+import FancyText from "@carefully-coded/react-text-gradient";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faFacebookF,
@@ -13,19 +14,27 @@ function Footer() {
         <div className={scss.row}>
           {/* Single Widget */}
           <div className={`${scss.col} ${scss.colLg4}`}>
+            <FancyText
+              className={scss.logo}
+              gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
+              animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
+              animateDuration={1500}
+              onClick={() => navigate("/")}
+            >
+              FREELANCER
+            </FancyText>
             <div
               className={`${scss.single_footer_widget} ${scss.section_padding}`}
             >
               <div className={scss.footer_logo}></div>
               <p>
-                Appland is completely creative, lightweight, clean app landing
-                page.
+              Freelancer là nền tảng kết nối giữa doanh nghiệp và freelancer, mang đến cơ hội việc làm đa dạng,<br /> minh bạch và an toàn.
               </p>
               <div className={scss.copywrite_text}>
                 <p>
-                  Made with by
+                  Được thực hiện bởi
                   <a href="https://wrapbootstrap.com/user/DesigningWorld">
-                    Designing World
+                    Bug-free Zone
                   </a>
                 </p>
               </div>
@@ -51,20 +60,20 @@ function Footer() {
             <div
               className={`${scss.single_footer_widget} ${scss.section_padding}`}
             >
-              <h5 className={scss.widget_title}>About</h5>
+              <h5 className={scss.widget_title}>Giới thiệu</h5>
               <div className={scss.footer_menu}>
                 <ul>
                   <li>
-                    <a href="#">About Us</a>
+                    <a href="#">Giới thiệu về chúng tôi</a>
                   </li>
                   <li>
-                    <a href="#">Corporate Sale</a>
+                    <a href="#">Doanh nghiệp</a>
                   </li>
                   <li>
-                    <a href="#">Terms &amp; Policy</a>
+                    <a href="#">Điều khoản &amp; Chính sách</a>
                   </li>
                   <li>
-                    <a href="#">Community</a>
+                    <a href="#">Cộng đồng</a>
                   </li>
                 </ul>
               </div>
@@ -76,23 +85,17 @@ function Footer() {
             <div
               className={`${scss.single_footer_widget} ${scss.section_padding}`}
             >
-              <h5 className={scss.widget_title}>Support</h5>
+              <h5 className={scss.widget_title}>Hỗ trợ</h5>
               <div className={scss.footer_menu}>
                 <ul>
                   <li>
-                    <a href="#">Help</a>
+                    <a href="#">Chính sách bảo mật</a>
                   </li>
                   <li>
-                    <a href="#">Support</a>
+                    <a href="#">Điều khoản &amp; Điều kiện</a>
                   </li>
                   <li>
-                    <a href="#">Privacy Policy</a>
-                  </li>
-                  <li>
-                    <a href="#">Term &amp; Conditions</a>
-                  </li>
-                  <li>
-                    <a href="#">Help &amp; Support</a>
+                    <a href="#">Giúp đỡ &amp; Hỗ trợ</a>
                   </li>
                 </ul>
               </div>
@@ -104,20 +107,20 @@ function Footer() {
             <div
               className={`${scss.single_footer_widget} ${scss.section_padding}`}
             >
-              <h5 className={scss.widget_title}>Contact</h5>
+              <h5 className={scss.widget_title}>Liên hệ</h5>
               <div className={scss.footer_menu}>
                 <ul>
                   <li>
-                    <a href="#">Call Centre</a>
+                    <a href="#">Trung tâm cuộc gọi</a>
                   </li>
                   <li>
-                    <a href="#">Email Us</a>
+                    <a href="#">Email</a>
                   </li>
                   <li>
-                    <a href="#">Term &amp; Conditions</a>
+                    <a href="#">Điều khoản &amp; Điều kiện</a>
                   </li>
                   <li>
-                    <a href="#">Help Center</a>
+                    <a href="#">Trung tâm trợ giúp</a>
                   </li>
                 </ul>
               </div>
