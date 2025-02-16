@@ -167,6 +167,20 @@ const AppRoutes = () => {
         }
       />
       <Route
+        path="/profile"
+        element={
+          // <PrivateRoute
+            // element={
+              <MainLayout>
+                <ProfileLayout active="profile">
+                  <Profile />
+                </ProfileLayout>
+              </MainLayout>
+            // }
+          // />
+        }
+      />
+      <Route
         path="/profile/freelancer"
         element={
           <PrivateRoute

@@ -8,6 +8,7 @@ const profileApi = {
             "Content-Type": "multipart/form-data",
         }
     }),
+    getById: (id) =>apiClient.get(`/profiles/${id}`)
 };
 
 export default profileApi;

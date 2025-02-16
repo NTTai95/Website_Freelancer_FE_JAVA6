@@ -1,10 +1,19 @@
-import { Image, Menu, Tag, Card, Progress, Button, Badge, Rate, Flex } from 'antd';
+import { Image, Tag, Card, Button, Badge, Rate, Flex, Input, DatePicker,Form } from 'antd';
 import { ReconciliationOutlined, WalletOutlined } from '@ant-design/icons';
 import scss from './Profile.module.scss'
 import { useNavigate } from 'react-router-dom';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faMoneyBill } from '@fortawesome/free-solid-svg-icons';
+import { FontWeight } from '@cloudinary/url-gen/qualifiers';
+import profileApi from '../../api/profileApi';
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+
+dayjs.extend(utc);
+dayjs.locale("vi");
+
 const tabList = [
     {
         key: 'tab1',
@@ -16,13 +25,38 @@ const tabList = [
     },
 ];
 
-
 function Profile() {
+    const [isEdit, setIsEdit] = useState(false)
     const [activeTabKey1, setActiveTabKey1] = useState('tab1');
     const onTab1Change = (key) => {
         setActiveTabKey1(key);
     };
 
+
+    const [profile, setProfile] = useState({
+        fullName: ""
+    });
+    async function getProfile() {
+        const logined = JSON.parse(sessionStorage.getItem("logined"));
+        const id = logined.id;
+        const resp = await profileApi.getByAccountId(id);
+        setProfile(resp.data)
+        console.log(resp.data);
+    }
+
+    useEffect(() => {
+        getProfile();
+
+    }, [])
+    const formatDate = (dateString) => {
+        if (!dateString) return "";
+        const date = new Date(dateString);
+        return date.toLocaleDateString("vi-VN", {
+            day: "2-digit",
+            month: "2-digit",
+            year: "numeric",
+        });
+    };
     const navigator = useNavigate();
 
     const onClick = (e) => {
@@ -125,88 +159,101 @@ function Profile() {
 
     return (<div className="container" >
         <div className="row">
-            <div className="col-2"> <Image
-                width={200}
-                src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-            />
-                <Menu
-                    onClick={onClick}
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['sub1']}
-                    mode="inline"
-                    items={items}
-                    style={{ width: 200 }}
-                />
-                <Menu
-                    onClick={onClick}
-                    defaultSelectedKeys={['1']}
-                    defaultOpenKeys={['wallet1']}
-                    mode="inline"
-                    items={walletItems}
-                    style={{ width: 200 }}
-                />
-
-            </div>
-
-            <div className="col-7">
-                <h1>Nguyễn Tấn Tài</h1>
-                <p>Phát triển phần mềm</p>
-                <h5>Hậu Giang</h5>
-                <hr></hr>
-                <h5>Tóm lược</h5>
-                <p>Tôi đã có 5 năm kinh nghiệm làm Freelance trong ngành Phát triển phần mềm.
-                    Tôi đã có khả năng làm việc dưới áp lực lớn với hiệu quả cao và chi phí hợp lý.
-                    Khả năng làm việc độc lập và tập trung cũng là một trong những ưu thế tôi muốn để cập tới.</p>
-                <hr></hr>
-                <h5>Việc đã làm</h5>
-                <h5 className="text-primary">Logo design</h5>
-                <p>04/11/2013 | Thiết kế logo | 5.000.000 VNĐ | Đã được giao việc</p>
-                <h5 className="text-primary">Logo design</h5>
-                <p>04/11/2013 | Thiết kế logo | 5.000.000 VNĐ | Đã được giao việc</p>
-                <p className="text-primary">Xem thêm</p>
-                <hr></hr>
-                <h5>Hồ sơ làm việc </h5>
-                <div className="row">
-                    <div className="col-4"><Image
-                        width={200}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    /></div>
-                    <div className="col-4"><Image
-                        width={200}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    /></div>
-                    <div className="col-4"><Image
-                        width={200}
-                        src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                    /></div>
-                    <p className="text-primary">Xem thêm</p>
+            {!isEdit ? (
+                <div div className="col-8">
+                    <h1>{profile?.fullName}</h1>
                     <hr></hr>
-                    <h5>Kỹ năng làm việc</h5>
-                    <div>
-                        <Tag className={scss.tag} color="magenta">Java</Tag>
-                        <Tag className={scss.tag} color="lime">Javascript</Tag>
-                        <Tag className={scss.tag} color="blue">Python</Tag>
-                        <Tag className={scss.tag} color="purple">HTML</Tag>
+                    <h5>Ngày sinh</h5>
+                    <span>{formatDate(profile?.birthday)}</span>
+                    <h5>Số điện thoại</h5>
+                    <span>{profile?.phone}</span>
+                    <hr></hr>
+                    <h5>Hồ sơ làm việc </h5>
+                    <div className="row">
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <p className="text-primary">Xem thêm</p>
+                        <hr></hr>
+                        <h5>Kỹ năng làm việc</h5>
+                        <div>
+                            <Tag className={scss.tag} color="magenta">Java</Tag>
+                            <Tag className={scss.tag} color="lime">Javascript</Tag>
+                            <Tag className={scss.tag} color="blue">Python</Tag>
+                            <Tag className={scss.tag} color="purple">HTML</Tag>
+                        </div>
+                    </div>
+                    <div className='text-end'>
+                        <Button type="primary" ghost style={{ width: "100px" }} onClick={() => setIsEdit(!isEdit)}>
+                            Chỉnh sửa
+                        </Button>
                     </div>
                 </div>
-                <div className='text-end'>
-                    <Button type="primary" ghost style={{ width: "100px" }}>
-                        Chỉnh sửa
-                    </Button>
-                </div>
-            </div>
-            <div className={"col-3 " + scss.col3}>
-                <Card title={
-                    <span>
-                        <FontAwesomeIcon icon={faMoneyBill} style={{ marginRight: 8}} />
-                        Ví FreeLancePay
-                    </span>
-                }>
-                    <Card.Grid style={{ width: "305px", color: "Green",fontWeight:"bold" }}>10,000,000 VNĐ</Card.Grid>
-                </Card>
-                <Card className={scss.card} title="Hồ sơ của tôi">
-                    <Progress percent={50} size={{ height: 25 }} />
-                    <p>Bạn muốn khách hàng chú ý đến hồ sơ của bạn hơn? Hãy tham khảo<a href='#' onClick={() => { navigator("/") }}> gợi ý của chúng tôi.</a></p>
+            ) : (<div div className="col-8">
+                <Form>
+                    <Form.Item>
+                        <Input value={profile?.fullName} />
+                    </Form.Item>
+                    <hr></hr>
+                    <h5>Ngày sinh</h5>
+                    <DatePicker value={dayjs(profile.birthday)} format="DD/MM/YYYY" />
+                    <h5>Số điện thoại</h5>
+                    <span>{profile?.phone}</span>
+                    <hr></hr>
+                    <h5>Hồ sơ làm việc </h5>
+                    <div className="row">
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <div className="col-4"><Image
+                            width={200}
+                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
+                        /></div>
+                        <p className="text-primary">Xem thêm</p>
+                        <hr></hr>
+                        <h5>Kỹ năng làm việc</h5>
+                        <div>
+                            <Tag className={scss.tag} color="magenta">Java</Tag>
+                            <Tag className={scss.tag} color="lime">Javascript</Tag>
+                            <Tag className={scss.tag} color="blue">Python</Tag>
+                            <Tag className={scss.tag} color="purple">HTML</Tag>
+                        </div>
+                    </div>
+                    <div className='text-end'>
+                        <Button type="primary" ghost style={{ width: "100px" }} htmlType='submit' onClick={() => setIsEdit(!isEdit)}>
+                            Lưu
+                        </Button>
+                    </div>
+                </Form>
+            </div>)}
+            <div className={"col-4 " + scss.col3}>
+
+                <Card
+                    style={{
+                        fontWeight: "bold",
+                        color: "green"
+                    }}
+                    actions={[
+                        <span>Nạp</span>,
+                        <span>Rút</span>
+                    ]}
+                    title="Số dư ví FreelancePay"
+                >
+                    100,000,000
                 </Card>
                 <Card
                     className={scss.card}
@@ -216,10 +263,9 @@ function Profile() {
                     onTabChange={onTab1Change}>
                     {contentList[activeTabKey1]}
                 </Card>
+
             </div>
-
         </div>
-
     </div >);
 }
 
