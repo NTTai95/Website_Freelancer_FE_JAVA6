@@ -13,7 +13,7 @@ import StaffTable from "@pages/StaffTable/StaffTable";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "@layouts/AdminLayout/AdminLayout";
-
+import Apply from "../pages/apply/Apply";
 import Dashboard from "../pages/dashboard/Dashboard";
 import SkillForm from "../pages/form/SkillForm";
 import StaffForm from "../pages/form/StaffForm";
@@ -101,6 +101,7 @@ const AppRoutes = () => {
           />
         }
       />
+
       <Route
         path="/admin/skills"
         element={
@@ -185,7 +186,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      {/* <Route
+      <Route
         path="/admin/employee/:mode"
         element={
           <MainLayout>
