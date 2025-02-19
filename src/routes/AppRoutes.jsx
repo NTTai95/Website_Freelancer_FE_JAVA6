@@ -13,12 +13,18 @@ import StaffTable from "@pages/StaffTable/StaffTable";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "@layouts/AdminLayout/AdminLayout";
-import Apply from "../pages/apply/Apply";
-import Dashboard from "../pages/dashboard/Dashboard";
-import SkillForm from "../pages/form/SkillForm";
-import StaffForm from "../pages/form/StaffForm";
-import ProfileFreelancers from "../pages/profileFreelancers/ProfileFreelancers";
-import ProfileLayout from "../layouts/ProfileLayout/ProfileLayout";
+import Dashboard from "@pages/dashboard/Dashboard";
+import SkillForm from "@pages/form/SkillForm";
+import StaffForm from "@pages/form/StaffForm";
+import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
+import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
+import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
+import LanguageTable from "@pages/language/LanguageTable";
+import LanguageForm from "@pages/language/LanguageForm";
+import Page404 from "@pages/page404/Page404";
+import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
+import Freelancer from "@pages/freelancer/Freelancer";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -187,7 +193,47 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/employee/:mode"
+        path="/admin/languages"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/languages/:mode/:id?"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/freelancers"
+        element={
+          <MainLayout>
+            <ListFreelancer />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/freelancers/:id"
+        element={
+          <MainLayout>
+            <Freelancer />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/404"
         element={
           <MainLayout>
             <Page404 />
