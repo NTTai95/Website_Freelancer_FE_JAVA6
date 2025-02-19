@@ -8,7 +8,7 @@
   padding: 2%;
   margin-bottom: 20px;
   position: relative;
-  
+
   &::before {
     content: "";
     position: absolute;
@@ -17,7 +17,7 @@
     width: 100%;
     height: 4px;
     background: linear-gradient(to right, #4be1ec, #cb5eee); /* Gradient màu */
-}
+  }
   .header {
     display: flex;
     align-items: center;
@@ -67,10 +67,11 @@
     .description {
       .thin {
         display: -webkit-box;
-        -webkit-line-clamp: 2;
+        -webkit-line-clamp: 2; /* Giới hạn số dòng */
         -webkit-box-orient: vertical;
         overflow: hidden;
         text-overflow: ellipsis;
+        white-space: normal; /* Tránh lỗi hiển thị */
       }
     }
   }

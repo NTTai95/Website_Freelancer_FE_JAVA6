@@ -5,7 +5,8 @@ const skillApi = {
     add: (skill) => apiClient.post('/skills', skill),
     getById: (id) => apiClient.get(`/skills/${id}`),
     getByIds: (ids) => apiClient.get(`/skills/list`, { params: { ids: ids.join(',') } }),
-    update: (id, skill) => apiClient.put(`/skills/${id}`, skill)
+    update: (id, skill) => apiClient.put(`/skills/${id}`, skill),
+    searchByName: (name) => apiClient.get(`/skills/search/name/${name}`),
 
 };
 

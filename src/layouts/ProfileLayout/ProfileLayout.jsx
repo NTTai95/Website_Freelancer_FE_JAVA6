@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Row, Col, Menu } from "antd";
+import { Row, Col, Menu, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
 import profileApi from "../../api/profileApi";
 import {
@@ -42,7 +42,14 @@ const ProfileLayout = ({ children, active }) => {
     <div>
       <Row>
         <Col span={6} className={"container border-end"}>
-          <CardUpLoadImage profile={profile}></CardUpLoadImage>
+          {profile ? (
+            <CardUpLoadImage profile={profile}></CardUpLoadImage>
+          ) : (
+            <Skeleton.Image
+              className={"w-100"}
+              style={{ height: "250px" }}
+            ></Skeleton.Image>
+          )}
 
           <Menu
             mode="inline"

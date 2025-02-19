@@ -28,7 +28,7 @@ import authenticationApi from "@api/authenticationApi";
 import FlCalendar from "@components/iu/input/FlCalendar";
 import formValidator from "@utils/formValidator";
 
-function Authentication({ isLogin}) {
+function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
@@ -99,10 +99,36 @@ function Authentication({ isLogin}) {
     };
   }, [showLogin]);
 
-  function onFinish(values) {
+  async function onFinish(values) {
     if (showLogin) {
+      try {
+        const res = await authenticationApi.login(values.email, values.password);
+        console.log(res);
+
+        if (res.status == 200) {
+          sessionStorage.setItem("logined", JSON.stringify(res.data));
+          navigate(urlPrev || "/");
+          window.location.reload();
+        }
+      } catch (error) {
+        messageApi.open({
+          type: "error",
+          content: error.response.data,
+        })
+      }
+    } else {
+      if (!values.agree) {
+        api.warning({
+          message: "Thông báo!",
+          description:
+            "Vui lòng đồng ý với các điều khoản và chính sách của chúng tôi.",
+          showProgress: true,
+        });
+        return;
+      }
+
       authenticationApi
-        .login(values.email, values.password)
+        .register(values)
         .then((response) => {
           if (response.status == 200) {
             sessionStorage.setItem("logined", JSON.stringify(response.data));
@@ -116,28 +142,6 @@ function Authentication({ isLogin}) {
             content: error.response.data,
           });
         });
-    } else {
-      if (!values.agree) {
-        api.warning({
-          message: "Thông báo!",
-          description:
-            "Vui lòng đồng ý với các điều khoản và chính sách của chúng tôi.",
-          showProgress: true,
-        });
-        return;
-      }
-      authenticationApi.register(values).then((response) => {
-        if (response.status == 200) {
-          sessionStorage.setItem("logined", JSON.stringify(response.data));
-          navigate(urlPrev || "/");
-          window.location.reload();
-        }
-      }).catch((error) => {
-        messageApi.open({
-          type: "error",
-          content: error.response.data,
-        });
-      });
     }
   }
 
