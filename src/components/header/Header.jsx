@@ -31,6 +31,7 @@ function Header() {
 
   const menuItemsFindWork = [
     { name: "Tìm việc", link: "/jobpost" },
+    { name: "Tìm freelancer", link: "/freelancers" },
     // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
