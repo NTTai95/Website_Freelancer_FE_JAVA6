@@ -20,10 +20,12 @@ import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
-import Profile from "@pages/profile/Profile";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
 import Page404 from "@pages/page404/Page404";
+import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
+import Freelancer from "@pages/freelancer/Freelancer";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -184,7 +186,7 @@ const AppRoutes = () => {
         path="/profile/recruiters"
         element={
           <MainLayout>
-            <ProfileLayout active="recruiters" >
+            <ProfileLayout active="recruiters">
               <ProfileRecruiters />
             </ProfileLayout>
           </MainLayout>
@@ -212,6 +214,22 @@ const AppRoutes = () => {
               </AdminLayout>
             }
           />
+        }
+      />
+      <Route
+        path="/freelancers"
+        element={
+          <MainLayout>
+            <ListFreelancer />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/freelancers/:id"
+        element={
+          <MainLayout>
+            <Freelancer />
+          </MainLayout>
         }
       />
       <Route
