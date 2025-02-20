@@ -16,6 +16,7 @@ import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 import Dashboard from "@pages/dashboard/Dashboard";
 import SkillForm from "@pages/form/SkillForm";
 import StaffForm from "@pages/form/StaffForm";
+import Profile from "../pages/profile/Profile";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
@@ -166,6 +167,20 @@ const AppRoutes = () => {
               </AdminLayout>
             }
           />
+        }
+      />
+      <Route
+        path="/profile"
+        element={
+          // <PrivateRoute
+            // element={
+              <MainLayout>
+                <ProfileLayout active="profile">
+                  <Profile />
+                </ProfileLayout>
+              </MainLayout>
+            // }
+          // />
         }
       />
       <Route
