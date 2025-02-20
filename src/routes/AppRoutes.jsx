@@ -25,7 +25,7 @@ import LanguageForm from "@pages/language/LanguageForm";
 import Page404 from "@pages/page404/Page404";
 import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
-
+import Apply from "@pages/apply/Apply";
 const AppRoutes = () => {
   return (
     <Routes>
@@ -231,6 +231,7 @@ const AppRoutes = () => {
           />
         }
       />
+      
       <Route
         path="/freelancers"
         element={

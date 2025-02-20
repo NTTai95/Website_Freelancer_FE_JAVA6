@@ -51,7 +51,7 @@ const JobCard = ({ job }) => {
             <div className={scss.text}>
               <span
                 className={scss.title}
-                onClick={() => navigate("/jobpostdetail")}
+                onClick={() => navigate(`/postdetail/${job?.id}`)}
               >
                 {job?.title}
               </span>
@@ -97,7 +97,7 @@ const JobCard = ({ job }) => {
                 <Skeleton.Button active />
               </div>
             )}
-            <Button type="primary">Ứng tuyển</Button>
+            <Button onClick={() => navigate(`/postdetail/${job?.id}`)} type="primary">Ứng tuyển</Button>
           </div>
         </div>
       ) : (

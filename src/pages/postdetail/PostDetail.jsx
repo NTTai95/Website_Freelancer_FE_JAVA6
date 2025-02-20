@@ -8,13 +8,13 @@ import {
   GoogleOutlined,
   CommentOutlined,
   HeartOutlined,
-
 } from "@ant-design/icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMapPin } from "@fortawesome/free-solid-svg-icons";
 import { Tag } from "antd";
-import { Button, Flex } from "antd";
+import { Button } from "antd";
 import { Input } from "antd";
+import TextArea from "antd/es/input/TextArea";
 import { Rate } from "antd";
 function PostDetail() {
   return (
@@ -116,47 +116,33 @@ function PostDetail() {
               Lời mời đã gửi: 1<br />
               Lời mời chưa được phản hồi: 1
             </p>
-            <h4>Hãy liên hệ với chúng tôi nếu bạn thấy phù hợp với công việc</h4>
+            <h4>
+              Hãy liên hệ với chúng tôi nếu bạn thấy phù hợp với công việc
+            </h4>
           </div>
         </div>
 
-        {/* Đường phân cách dọc */}
-        {/* <div className="col-auto">
-          <hr
-            style={{
-              height: "100%",
-              width: "1px",
-              backgroundColor: "black",
-              border: "none",
-            }}
-          />
-        </div> */}
-
         {/* Cột phải (3 phần) */}
         <div className="col-lg-3 border-start">
-          <div
-            className={scss.Button}
-            style={{ display: "flex", flexDirection: "column" }}
-          >
-            <Button type="primary" style={{ marginBottom: "10px" }}>
-              Nộp đơn ngay
-            </Button>
-            <Button><HeartOutlined />Yêu thích công việc</Button>
-            <br />
-          </div>
+          
+
           <div className={scss.KhachHang}>
-            <h5>Về khách hàng</h5>
+            <h5 style={{
+              
+              marginTop: "10px",
+            }} >Về khách hàng</h5>
             <p>
               Phương thức thanh toán đã được xác minh Số điện thoại đã được xác
               minh
             </p>
-            <Rate /> 5.0  <CommentOutlined /> 2
+            <Rate /> 5.0 <CommentOutlined /> 2
             <p>
               2 việc làm đã đăng <br />
               Tỷ lệ tuyển dụng 100% <br />
               Tỉ lệ thuê lại 100%
               <br />
-              Đúng hạn 100%<br />
+              Đúng hạn 100%
+              <br />
               <PhoneOutlined /> 0999999999 <br />
               <GoogleOutlined /> freelancer@gmail.com <br />
               <BankOutlined /> Ninh Kiều, Cần Thơ
@@ -174,7 +160,38 @@ function PostDetail() {
               referrerpolicy="no-referrer-when-downgrade"
             ></iframe>
           </div>
+          <div
+            className={scss.Button}
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              gap: "12px",
+              padding: "16px",
+              background: "#f9f9f9",
+              borderRadius: "12px",
+              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
+              maxWidth: "400px",
+              margin: "0 auto",
+            }}
+          >
+            <h5>Nhập thông tin ứng tuyển</h5>
+            <TextArea
+              placeholder="Nội dung ứng tuyển"
+              style={{
+                borderRadius: "8px",
+                padding: "10px",
+                border: "1px solid #ccc",
+                width: "100%",
+              }}
+            />
+
+            <Button type="primary" style={{ width: "100%", padding: "10px" }}>
+              Nộp đơn ngay
+            </Button>
+          </div>
         </div>
+        
       </div>
     </div>
   );
