@@ -79,7 +79,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/postdetail"
+        path="/postdetail/:id"
         element={
           <MainLayout>
             <PostDetail />

@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 import FreelancerFormAdd from "./FreelancerFormAdd";
 
 function ProfileFreelancers() {
-  const [hasFreelancerId, setHasFreelancerId] = useState(false);
+  const [freelancer, setFreelancer] = useState(null);
 
   const checkFreelancerId = async () => {
     try {
@@ -16,7 +16,7 @@ function ProfileFreelancers() {
       if (!logined) return;
 
       const resFreelancer = await freelancerApi.getByAccountId(logined.id);
-      setHasFreelancerId(!!resFreelancer.data?.id);
+      setFreelancer(resFreelancer?.data);
     } catch (error) {
       console.error("Error checking freelancer:", error);
     }
@@ -35,7 +35,7 @@ function ProfileFreelancers() {
     {
       key: "2",
       label: "Danh sách ứng tuyển",
-      children: <FreelancerApplies />,
+      children: <FreelancerApplies freelancer={freelancer} />,
     },
     {
       key: "3",
@@ -70,8 +70,8 @@ function ProfileFreelancers() {
 
   return (
     <div className={scss.container}>
-      {hasFreelancerId ? (
-        <Tabs className={scss.barlow} defaultActiveKey="1" items={items} />
+      {freelancer ? (
+        <Tabs className={scss.barlow} defaultActiveKey="2" items={items} />
       ) : (
         <FreelancerFormAdd onFinish={onFinish} />
       )}
