@@ -1,47 +1,63 @@
-import { Form, Input, Button, Spin } from "antd";
+import { Form, Input, Button, Alert } from "antd";
 import scss from "./FreelancerInfo.module.scss";
 import DebounceSelect from "@components/iu/select/DebounceSelect";
+import skillApi from "@api/skillApi";
+import languageApi from "@api/languageApi";
+import formValidator from "../../utils/formValidator";
 
-const FreelancerForm = ({
-  initialValues,
-  onFinish,
-  onSearchSkill,
-  onSearchLanguage,
-  onCancel,
-}) => {
+const FreelancerFormAdd = ({ onFinish }) => {
   const [form] = Form.useForm();
-  form.setFieldsValue(initialValues);
 
-  const isLoading =
-    initialValues.introduce === "" ||
-    !initialValues?.skills ||
-    !initialValues?.languages;
+  const onSearchSkill = async (value) => {
+    const res = await skillApi.searchByName(value);
+    return res.data.map((skill) => ({
+      value: skill.id,
+      label: skill.name,
+    }));
+  };
+
+  const onSearchLanguage = async (value) => {
+    const res = await languageApi.searchByName(value);
+    return res.data.map((language) => ({
+      value: language.id,
+      label: language.name,
+    }));
+  };
 
   return (
-    <Spin spinning={isLoading}>
+    <div>
+      <Alert
+        message="Thêm thông tin"
+        description="Hãy thêm thông tin freelancer để bất đầu làm việc"
+        type="info"
+        showIcon
+      />
       <Form
         className={scss.form}
         layout="vertical"
         form={form}
-        initialValues={initialValues}
         onFinish={onFinish}
       >
         <Form.Item
           name="introduce"
           label={<p className={scss.title}>Giới thiệu</p>}
           className={scss.part}
+          rules={formValidator.introduce()}
         >
           <Input.TextArea
             size="large"
             className={scss.barlow}
             placeholder="Giới thiệu về bản thân mình..."
             rows={7}
+            showCount
+            maxLength={10000}
           />
         </Form.Item>
         <Form.Item
           name="skills"
           label={<p className={scss.title}>Kỹ năng</p>}
           className={scss.part}
+          rules={formValidator.skills()}
         >
           <DebounceSelect
             mode="multiple"
@@ -56,6 +72,7 @@ const FreelancerForm = ({
           name="languages"
           label={<p className={scss.title}>Ngôn ngữ</p>}
           className={scss.part}
+          rules={formValidator.languages()}
         >
           <DebounceSelect
             mode="multiple"
@@ -68,13 +85,12 @@ const FreelancerForm = ({
 
         <div className="d-flex gap-2 justify-content-end">
           <Button type="primary" htmlType="submit">
-            Lưu
+            Lưu thông tin
           </Button>
-          <Button onClick={onCancel}>Hủy</Button>
         </div>
       </Form>
-    </Spin>
+    </div>
   );
 };
 
-export default FreelancerForm;
+export default FreelancerFormAdd;

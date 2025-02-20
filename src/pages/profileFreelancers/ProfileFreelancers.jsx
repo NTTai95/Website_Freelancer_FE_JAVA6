@@ -1,9 +1,31 @@
 import FreelancerInfo from "./FreelancerInfo";
 import FreelancerApplies from "./FreelancerApplies";
 import scss from "./FreelancerInfo.module.scss";
-import { Tabs } from "antd";
+import { Tabs, Button } from "antd";
+import freelancerApi from "@api/freelancerApi";
+import profileApi from "@api/profileApi";
+import { useEffect, useState } from "react";
+import FreelancerFormAdd from "./FreelancerFormAdd";
 
 function ProfileFreelancers() {
+  const [hasFreelancerId, setHasFreelancerId] = useState(false);
+
+  const checkFreelancerId = async () => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
+
+      const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+      setHasFreelancerId(!!resFreelancer.data?.id);
+    } catch (error) {
+      console.error("Error checking freelancer:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkFreelancerId();
+  }, []);
+
   const items = [
     {
       key: "1",
@@ -22,9 +44,37 @@ function ProfileFreelancers() {
     },
   ];
 
+  const onFinish = async (values) => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
+
+      const resProfile = await profileApi.getByAccountId(logined.id);
+
+      const freelancerDTO = {
+        profileId: resProfile.data.id,
+        introduce: values.introduce,
+        skillIds: values.skills.map((skill) => skill.value),
+        freelancerLanguages: values.languages.map((language) => ({
+          languageId: language.value,
+          level: 1,
+        })),
+      };
+
+      await freelancerApi.create(freelancerDTO);
+      checkFreelancerId();
+    } catch (error) {
+      console.error("Error creating freelancer:", error);
+    }
+  };
+
   return (
     <div className={scss.container}>
-      <Tabs className={scss.barlow} defaultActiveKey="1" items={items} />
+      {hasFreelancerId ? (
+        <Tabs className={scss.barlow} defaultActiveKey="1" items={items} />
+      ) : (
+        <FreelancerFormAdd onFinish={onFinish} />
+      )}
     </div>
   );
 }

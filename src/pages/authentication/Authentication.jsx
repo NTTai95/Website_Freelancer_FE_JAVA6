@@ -102,8 +102,10 @@ function Authentication({ isLogin }) {
   async function onFinish(values) {
     if (showLogin) {
       try {
-        const res = await authenticationApi.login(values.email, values.password);
-        console.log(res);
+        const res = await authenticationApi.login(
+          values.email,
+          values.password
+        );
 
         if (res.status == 200) {
           sessionStorage.setItem("logined", JSON.stringify(res.data));
@@ -114,7 +116,7 @@ function Authentication({ isLogin }) {
         messageApi.open({
           type: "error",
           content: error.response.data,
-        })
+        });
       }
     } else {
       if (!values.agree) {
@@ -126,13 +128,12 @@ function Authentication({ isLogin }) {
         });
         return;
       }
-
       authenticationApi
         .register(values)
         .then((response) => {
           if (response.status == 200) {
             sessionStorage.setItem("logined", JSON.stringify(response.data));
-            navigate(urlPrev || "/");
+            navigate(urlPrev || "/profile/freelancer");
             window.location.reload();
           }
         })
