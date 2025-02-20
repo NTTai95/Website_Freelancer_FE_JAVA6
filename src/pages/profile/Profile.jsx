@@ -1,14 +1,13 @@
-import { Image, Tag, Card, Button, Badge, Rate, Flex, Input, DatePicker,Form } from 'antd';
-import { ReconciliationOutlined, WalletOutlined } from '@ant-design/icons';
+import { Card, Button, Badge, Rate, Flex, Input, DatePicker, Form, Spin, notification } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import scss from './Profile.module.scss'
 import { useNavigate } from 'react-router-dom';
 import React, { useEffect, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMoneyBill } from '@fortawesome/free-solid-svg-icons';
-import { FontWeight } from '@cloudinary/url-gen/qualifiers';
 import profileApi from '../../api/profileApi';
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import formValidator from '../../utils/formValidator';
+import formatCurrency from '../../utils/formater';
 
 
 dayjs.extend(utc);
@@ -26,23 +25,63 @@ const tabList = [
 ];
 
 function Profile() {
+    const [form] = Form.useForm();
     const [isEdit, setIsEdit] = useState(false)
+    const [messageApi, contextHolder] = notification.useNotification();
+
+
+    const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
+    const [initialValues, setInitialValues] = useState({
+        fullName: "",
+        birthday: "",
+        phone: "",
+        wallet: ""
+    });
     const [activeTabKey1, setActiveTabKey1] = useState('tab1');
     const onTab1Change = (key) => {
         setActiveTabKey1(key);
     };
 
-
-    const [profile, setProfile] = useState({
-        fullName: ""
-    });
     async function getProfile() {
         const logined = JSON.parse(sessionStorage.getItem("logined"));
         const id = logined.id;
         const resp = await profileApi.getByAccountId(id);
-        setProfile(resp.data)
+        const formatData = {
+            id: resp.data.id,
+            fullName: resp.data.fullName,
+            birthday: dayjs(resp.data.birthday),
+            phone: resp.data.phone,
+            wallet: resp.data.wallet
+        };
+        setInitialValues(formatData)
+        form.setFieldsValue(formatData)
         console.log(resp.data);
     }
+
+    const onFinish = async (values) => {
+        try{
+            const resp = await profileApi.update(initialValues.id,values);
+            const formatData = {
+                id: resp.data.id,
+                fullName: resp.data.fullName,
+                birthday: dayjs(resp.data.birthday),
+                phone: resp.data.phone,
+                wallet: resp.data.wallet
+            };
+            setInitialValues(formatData);
+            form.setFieldsValue(formatData);
+            messageApi.success({
+                message: "Cập nhật hồ sơ thành công!",
+                showProgress: true,
+            });
+            setIsEdit(!isEdit);
+        }catch(e){
+            console.log(e)
+        }
+        
+    }
+
+
 
     useEffect(() => {
         getProfile();
@@ -124,74 +163,19 @@ function Profile() {
         ),
     };
 
-    const items = [
-        {
-            key: 'sub1',
-            label: 'Tổng quan',
-            icon: <ReconciliationOutlined />,
-            children: [
-                {
-                    key: 'g1',
-                    label: 'Hồ sơ việc làm',
-                },
-                {
-                    key: 'g2',
-                    label: 'Việc đã làm',
-                },
-            ],
-        }
-    ];
-
-    const walletItems = [
-        {
-            key: 'wallet1wallet1',
-            label: 'FreeLance wallet',
-            icon: <WalletOutlined />,
-            children: [
-                {
-                    key: 'w1',
-                    icon: <FontAwesomeIcon icon={faMoneyBill} />,
-                    label: '10,000,000 VNĐ',
-                }
-            ]
-        }
-    ]
 
     return (<div className="container" >
+        {contextHolder}
         <div className="row">
             {!isEdit ? (
                 <div div className="col-8">
-                    <h1>{profile?.fullName}</h1>
+                    <h1>{initialValues?.fullName}</h1>
                     <hr></hr>
                     <h5>Ngày sinh</h5>
-                    <span>{formatDate(profile?.birthday)}</span>
+                    <span>{formatDate(initialValues?.birthday)}</span>
                     <h5>Số điện thoại</h5>
-                    <span>{profile?.phone}</span>
+                    <span>{initialValues?.phone}</span>
                     <hr></hr>
-                    <h5>Hồ sơ làm việc </h5>
-                    <div className="row">
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <p className="text-primary">Xem thêm</p>
-                        <hr></hr>
-                        <h5>Kỹ năng làm việc</h5>
-                        <div>
-                            <Tag className={scss.tag} color="magenta">Java</Tag>
-                            <Tag className={scss.tag} color="lime">Javascript</Tag>
-                            <Tag className={scss.tag} color="blue">Python</Tag>
-                            <Tag className={scss.tag} color="purple">HTML</Tag>
-                        </div>
-                    </div>
                     <div className='text-end'>
                         <Button type="primary" ghost style={{ width: "100px" }} onClick={() => setIsEdit(!isEdit)}>
                             Chỉnh sửa
@@ -199,42 +183,33 @@ function Profile() {
                     </div>
                 </div>
             ) : (<div div className="col-8">
-                <Form>
-                    <Form.Item>
-                        <Input value={profile?.fullName} />
+                <Form
+                    form={form}
+                    initialValues={initialValues}
+                    onFinish={onFinish}
+                >
+                    <Form.Item name={'fullName'}
+                        rules={formValidator.fullName()}>
+                        <Input />
                     </Form.Item>
                     <hr></hr>
                     <h5>Ngày sinh</h5>
-                    <DatePicker value={dayjs(profile.birthday)} format="DD/MM/YYYY" />
+                    <Form.Item name={'birthday'} rules={formValidator.birthday()}>
+                        <DatePicker format="DD/MM/YYYY" />
+                    </Form.Item>
                     <h5>Số điện thoại</h5>
-                    <span>{profile?.phone}</span>
+                    <Form.Item name={'phone'}
+                        rules={formValidator.phone(setErrorPhoneLoading, initialValues?.phone)}
+                        help={
+                            errorPhoneLoading ? (
+                                <Spin indicator={<LoadingOutlined spin />} size="small" />
+                            ) : null
+                        }>
+                        <Input />
+                    </Form.Item>
                     <hr></hr>
-                    <h5>Hồ sơ làm việc </h5>
-                    <div className="row">
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <div className="col-4"><Image
-                            width={200}
-                            src="https://zos.alipayobjects.com/rmsportal/jkjgkEfvpUPVyRjUImniVslZfWPnJuuZ.png"
-                        /></div>
-                        <p className="text-primary">Xem thêm</p>
-                        <hr></hr>
-                        <h5>Kỹ năng làm việc</h5>
-                        <div>
-                            <Tag className={scss.tag} color="magenta">Java</Tag>
-                            <Tag className={scss.tag} color="lime">Javascript</Tag>
-                            <Tag className={scss.tag} color="blue">Python</Tag>
-                            <Tag className={scss.tag} color="purple">HTML</Tag>
-                        </div>
-                    </div>
                     <div className='text-end'>
-                        <Button type="primary" ghost style={{ width: "100px" }} htmlType='submit' onClick={() => setIsEdit(!isEdit)}>
+                        <Button type="primary" ghost style={{ width: "100px" }} htmlType='submit'>
                             Lưu
                         </Button>
                     </div>
@@ -253,7 +228,7 @@ function Profile() {
                     ]}
                     title="Số dư ví FreelancePay"
                 >
-                    100,000,000
+                    {formatCurrency(initialValues?.wallet?.balance)}
                 </Card>
                 <Card
                     className={scss.card}

@@ -8,7 +8,8 @@ const profileApi = {
             "Content-Type": "multipart/form-data",
         }
     }),
-    getById: (id) =>apiClient.get(`/profiles/${id}`)
+    getById: (id) =>apiClient.get(`/profiles/${id}`),
+    update: (id, profile) => apiClient.put(`/profiles/${id}`, profile),
 };
 
 export default profileApi;
