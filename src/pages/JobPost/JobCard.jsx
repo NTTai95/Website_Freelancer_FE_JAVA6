@@ -51,7 +51,7 @@ const JobCard = ({ job }) => {
             <div className={scss.text}>
               <span
                 className={scss.title}
-                onClick={() => navigate("/postdetail")}
+                onClick={() => navigate("/jobpostdetail")}
               >
                 {job?.title}
               </span>

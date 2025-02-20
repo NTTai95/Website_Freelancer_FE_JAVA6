@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from "@pages/postdetail/PostDetail";
+import PostDetail from "@pages/postDetail/PostDetail";
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
@@ -79,7 +79,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/postdetail/:id"
+        path="/jobpostdetail/:id"
         element={
           <MainLayout>
             <PostDetail />
@@ -87,7 +87,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/projectpage"
+        path="/jobpost/:mode/:id?"
         element={
           <MainLayout>
             <ProjectPage />

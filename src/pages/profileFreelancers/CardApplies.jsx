@@ -42,7 +42,7 @@ const CardApplies = ({ apply }) => {
         <Col span={20}>
           <p
             className={scss.title}
-            onClick={() => navigate(`/postdetail/${jobPost?.id}`)}
+            onClick={() => navigate(`/jobpostdetail/${jobPost?.id}`)}
           >
             {jobPost?.title}
           </p>

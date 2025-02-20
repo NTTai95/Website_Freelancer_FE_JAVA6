@@ -66,6 +66,7 @@ const State = {
         HIDDEN: 8,
         DELETED: 9,
         DOING: 10,
+        EDITING: 11
     },
 };
 
