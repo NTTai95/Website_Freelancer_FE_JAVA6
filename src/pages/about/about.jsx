@@ -77,7 +77,7 @@ function About() {
           <Row>
             <Col span={10}>
               <div className={scss.cardContent}>
-                <p className={scss.title}>Về Chùng Tôi</p>
+                <p className={scss.title}>Về Chúng Tôi</p>
                 <div className={scss.item}>
                   <PieChartFilled className={scss.icon} />
                   <div className={scss.context}>
