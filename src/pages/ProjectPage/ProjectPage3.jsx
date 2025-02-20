@@ -1,76 +1,60 @@
 import scss from "./ProjectPage3.module.scss";
-import { InboxOutlined } from "@ant-design/icons";
-import { message, Upload } from "antd";
+import { Row, Col, Typography, Form, DatePicker } from "antd";
 
-const { Dragger } = Upload;
+const { Title, Paragraph, Link } = Typography;
 
 function ProjectPage3() {
-  const props = {
-    name: "file",
-    multiple: true,
-    action: "https://660d2bd96ddfa2943b33731c.mockapi.io/api/upload",
-    onChange(info) {
-      const { status } = info.file;
-      if (status !== "uploading") {
-        console.log(info.file, info.fileList);
-      }
-      if (status === "done") {
-        message.success(`${info.file.name} file uploaded successfully.`);
-      } else if (status === "error") {
-        message.error(`${info.file.name} file upload failed.`);
-      }
-    },
-    onDrop(e) {
-      console.log("Dropped files", e.dataTransfer.files);
-    },
-  };
-
   return (
     <div className={scss.container}>
-      {/* Thanh chia đôi với border */}
-      <div className={scss.mainContent}>
-        {/* Bên trái chiếm 7 phần */}
-        <div className={scss.leftColumn}>
-          <h3>Dữ liệu dự án</h3>
-          <h5 className="mt-5">Hình ảnh dự án</h5>
-          <Dragger className={scss.dragger} {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Nhấn vào để tải hình ảnh lên</p>
-            <p className="ant-upload-hint">
-              Tải lên file hình ảnh và tối đa 10MB
-            </p>
-          </Dragger>
-
-          <h5 className="mt-5">Tài liệu dự án</h5>
-          <Dragger className={scss.dragger} {...props}>
-            <p className="ant-upload-drag-icon">
-              <InboxOutlined />
-            </p>
-            <p className="ant-upload-text">Nhấn vào để tải lên file</p>
-            <p className="ant-upload-hint">Tải lên file và tối đa 100MB</p>
-          </Dragger>
-        </div>
-
-        {/* Bên phải chiếm 3 phần */}
-        <div className="col-4">
-          <h5 className="mb-3">Mẹo nếu bạn gặp khó khăn</h5>
-          <div className="bg-light p-3 rounded">
-            <h6 className="mb-3">Yêu cầu</h6>
-            <p className="text-muted">
-              Giải thích bạn đang gặp khó khăn gì? Cần hỗ trợ gì?
-            </p>
-            <h6 className="mb-3">Bước</h6>
-            <p className="text-muted">
-              Đề xuất cách thực hiện từng bước để hoàn thành dự án.
-            </p>
-            <a href="#" className="text-success">
-              Video từng bước về cách tạo dự án
-            </a>
+      <Row gutter={24}>
+        <Col span={17} className={scss.colLeft}>
+          <Title className={scss.title3} level={3}>
+            Thời lượng dự án
+          </Title>
+          <Title className={scss.title5} level={5}>
+            Ngày bắt đầu dự án
+          </Title>
+          <Form.Item name="startDate">
+            <DatePicker />
+          </Form.Item>
+          <Title className={scss.title5} level={5}>
+            Ngày kết thúc dự án
+          </Title>
+          <Form.Item name="endDate">
+            <DatePicker />
+          </Form.Item>
+          <div>
+            <Paragraph className={scss.text} type="secondary">
+              Bài đăng của bạn đã sẵn sàng để đăng. Khi nhấn nút đăng mọi người
+              sẽ nhìn thấy bài đăng của bạn
+            </Paragraph>
           </div>
-        </div>
-      </div>
+        </Col>
+
+        <Col span={7} className={scss.colRight}>
+          <Title className={scss.title5} level={4}>
+            Mẹo nếu bạn gặp khó khăn
+          </Title>
+          <div>
+            <Title className={scss.title5} level={5}>
+              Ngày bắt đầu
+            </Title>
+            <Paragraph className={scss.text} type="secondary">
+              Ngày dự kiến mà bạn phải bắt đầu dự án của mình.
+            </Paragraph>
+            <Title className={scss.title5} level={5}>
+              Ngày kết thúc
+            </Title>
+            <Paragraph className={scss.text} type="secondary">
+              Ngày dự kiến dự án của bạn được hoàn thành và trả tiền cho
+              freelancer.
+            </Paragraph>
+            <Link className={scss.link} href="#" type="success">
+              Video từng bước về cách tạo dự án
+            </Link>
+          </div>
+        </Col>
+      </Row>
     </div>
   );
 }

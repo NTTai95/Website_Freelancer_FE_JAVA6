@@ -1,69 +1,95 @@
 import scss from "./ProjectPage2.module.scss";
-import { InputNumber, Select, Checkbox } from "antd";
+import {
+  InputNumber,
+  Form,
+  Button,
+  Row,
+  Col,
+  Typography,
+  Checkbox,
+} from "antd";
+import { useEffect, useState } from "react";
+import skillApi from "@api/skillApi";
 
 function ProjectPage2() {
-  const selectAfter = (
-    <Select
-      defaultValue="VND"
-      style={{
-        width: 60,
-      }}
-    >
-      <Option value="VND">₫</Option>
-      <Option value="USD">$</Option>
-      <Option value="EUR">€</Option>
-      <Option value="GBP">£</Option>
-      <Option value="CNY">¥</Option>
-    </Select>
-  );
+  const { Title } = Typography;
+  //tạo biến skills và lấy dữ liệu Skills từ api
+  const [skills, setSkills] = useState([]);
+
+  const fetchSkills = async () => {
+    try {
+      const res = await skillApi.getAll();
+      setSkills(res.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchSkills();
+  }, []);
 
   return (
     <div className={scss.container}>
-      {/* Thanh chia đôi với border */}
-      <div className={scss.mainContent}>
-        {/* Bên trái chiếm 7 phần */}
-        <div className={scss.leftColumn}>
-            <h3>Ngân sách và lĩnh vực</h3>
-          <h5 className={scss.title}>Ngân sách dự án</h5>
-          <InputNumber
-            addonAfter={selectAfter}
-            defaultValue={100000}
-            formatter={(value) =>
-              `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-            }
-          />
-          <h5 className={scss.title}>Lĩnh vực tuyển dụng</h5>
+      <Row gutter={24}>
+        <Col span={17} className={scss.colLeft}>
+          <Title className={scss.title3} level={3}>
+            Ngân sách và lĩnh vực
+          </Title>
+          <Title className={scss.title5} level={5}>
+            Ngân sách dự án
+          </Title>
+          <Form.Item name="budget">
+            <InputNumber
+              addonAfter="₫"
+              placeholder="VD: 100.000"
+              formatter={(value) =>
+                `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+              }
+            />
+          </Form.Item>
+          <Title className={scss.title5} level={5}>
+            Lĩnh vực tuyển dụng
+          </Title>
           <div className={scss.CheckboxGroup}>
-            <Checkbox>Java</Checkbox>
-            <Checkbox>Website design</Checkbox>
-            <Checkbox>Copy writing</Checkbox>
-            <Checkbox>Graphic design</Checkbox>
-            <Checkbox>Manager project</Checkbox>
+            <Row>
+              <Form.Item name="skills">
+                <Checkbox.Group style={{ width: "100%" }}>
+                  <Row>
+                    {skills.map((skill) => (
+                      <Col span={6} key={skill.id}>
+                        <Checkbox className={scss.Checkbox} value={skill.id}>{skill.name}</Checkbox>
+                      </Col>
+                    ))}
+                  </Row>
+                </Checkbox.Group>
+              </Form.Item>
+            </Row>
           </div>
-
-          <button className="btn btn-link text-success mb-3">
-            + Thêm lĩnh vực tuyển dụng
-          </button>
-        </div>
-
-        {/* Bên phải chiếm 3 phần */}
-        <div className="col-4">
-          <h5 className="mb-3">Mẹo nếu bạn gặp khó khăn</h5>
-          <div className="bg-light p-3 rounded">
-            <h6 className="mb-3">Yêu cầu</h6>
-            <p className="text-muted">
-              Giải thích bạn đang gặp khó khăn gì? Cần hỗ trợ gì?
-            </p>
-            <h6 className="mb-3">Bước</h6>
-            <p className="text-muted">
-              Đề xuất cách thực hiện từng bước để hoàn thành dự án.
-            </p>
-            <a href="#" className="text-success">
+        </Col>
+        <Col span={7} className={scss.colRight}>
+          <Title className={scss.title5} level={4}>
+            Mẹo nếu bạn gặp khó khăn
+          </Title>
+          <div>
+            <Title className={scss.title5} level={5}>
+              Ngân sách dự án
+            </Title>
+            <Typography.Paragraph className={scss.text} type="secondary">
+              Khoản chi phí bạn sẽ chi trả cho freelancer làm dự án này.
+            </Typography.Paragraph>
+            <Title className={scss.title5} level={5}>
+              Lĩnh vực tuyển dụng
+            </Title>
+            <Typography.Paragraph className={scss.text} type="secondary">
+              Các lĩnh vực yêu cầu freelancer phải đáp ứng được.
+            </Typography.Paragraph>
+            <Typography.Link className={scss.link} href="#" type="success">
               Video từng bước về cách tạo dự án
-            </a>
+            </Typography.Link>
           </div>
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 }

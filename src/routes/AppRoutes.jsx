@@ -3,7 +3,7 @@ import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from "@pages/postdetail/PostDetail";
+import PostDetail from "@pages/postDetail/PostDetail";
 import Authentication from "@pages/authentication/Authentication";
 import About from "@pages/about/about";
 import Home from "@pages/home/home";
@@ -13,17 +13,18 @@ import StaffTable from "@pages/StaffTable/StaffTable";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
 import AdminLayout from "@layouts/AdminLayout/AdminLayout";
-
 import Dashboard from "@pages/dashboard/Dashboard";
 import SkillForm from "@pages/form/SkillForm";
 import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
-import Profile from "@pages/profile/Profile";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
 import Page404 from "@pages/page404/Page404";
+import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
+import Freelancer from "@pages/freelancer/Freelancer";
+
 const AppRoutes = () => {
   return (
     <Routes>
@@ -78,7 +79,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/postdetail"
+        path="/jobpostdetail/:id"
         element={
           <MainLayout>
             <PostDetail />
@@ -86,7 +87,7 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/projectpage"
+        path="/jobpost/:mode/:id?"
         element={
           <MainLayout>
             <ProjectPage />
@@ -106,6 +107,7 @@ const AppRoutes = () => {
           />
         }
       />
+
       <Route
         path="/admin/skills"
         element={
@@ -198,7 +200,7 @@ const AppRoutes = () => {
         path="/profile/recruiters"
         element={
           <MainLayout>
-            <ProfileLayout active="recruiters" >
+            <ProfileLayout active="recruiters">
               <ProfileRecruiters />
             </ProfileLayout>
           </MainLayout>
@@ -226,6 +228,22 @@ const AppRoutes = () => {
               </AdminLayout>
             }
           />
+        }
+      />
+      <Route
+        path="/freelancers"
+        element={
+          <MainLayout>
+            <ListFreelancer />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/freelancers/:id"
+        element={
+          <MainLayout>
+            <Freelancer />
+          </MainLayout>
         }
       />
       <Route

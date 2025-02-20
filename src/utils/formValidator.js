@@ -126,5 +126,39 @@ const iso = (setLoading, initialISO = "") => [
     }),
 ];
 
+const introduce = ({ minLength = 100, maxLength = 10000 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập giới thiệu!");
+            if (value.length < minLength) return Promise.reject(`Giới thiệu tối thiểu ${minLength} kí tự!`);
+            if (value.length > 10000) return Promise.reject(`Giới thiệu tối đa ${maxLength} kí tự!`);
 
-export default { phone, email, fullName, birthday, password, iso };
+            return Promise.resolve();
+        },
+    }),
+];
+
+const skills = ({ minLength = 1, maxLength = 10 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value || value.length < minLength) return Promise.reject(`Vui lòng chọn ít nhất ${minLength} kỹ năng!`);
+            if (value.length > maxLength) return Promise.reject(`Vui lòng chọn tối đa ${maxLength} kỹ năng!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+const languages = ({ minLength = 1, maxLength = 20 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value || value.length < minLength) return Promise.reject(`Vui lòng chọn ít nhất ${minLength} ngôn ngữ!`);
+            if (value.length > maxLength) return Promise.reject(`Vui lòng chọn tối đa ${maxLength} ngôn ngữ!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+
+
+
+export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages };

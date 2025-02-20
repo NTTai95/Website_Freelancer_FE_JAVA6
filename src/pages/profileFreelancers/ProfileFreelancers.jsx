@@ -1,64 +1,82 @@
-import scss from "./profileFreelancers.module.scss";
-import { Tag, Divider } from "antd";
-import profileApi from '@api/profileApi'
-import { useNavigate } from "react-router-dom";
+import FreelancerInfo from "./FreelancerInfo";
+import FreelancerApplies from "./FreelancerApplies";
+import scss from "./FreelancerInfo.module.scss";
+import { Tabs, Button } from "antd";
+import freelancerApi from "@api/freelancerApi";
+import profileApi from "@api/profileApi";
 import { useEffect, useState } from "react";
+import FreelancerFormAdd from "./FreelancerFormAdd";
 
 function ProfileFreelancers() {
-    const [profile, setProfile] = useState(null);
-    const nagivate = useNavigate();
+  const [freelancer, setFreelancer] = useState(null);
 
-    useEffect(() => {
-        const logined = JSON.parse(sessionStorage.getItem("logined"));
-        if (logined) {
-            if (logined.type) {
-                nagivate("/404");
-            } else {
-                profileApi.getByAccountId(logined.id).then((response) => {
-                    if (response.status == 200) {
-                        setProfile(response.data);
-                    }
-                });
-            }
-        }
-    }, []);
+  const checkFreelancerId = async () => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
 
-    return (
-        <div>
-            <div>
-                <h2 className="text-primary">Tóm lược</h2>
-                <Divider />
-                <p style={{ fontSize: "17px" }}>
-                    {profile?.freelancer?.introduce}
-                </p>
-                <Divider />
-            </div>
-            <div className="mb-4">
-                <h2 className="text-primary">Ngôn ngữ</h2>
-                <Tag className="fs-6 p-1" color="purple">
-                    Tiếng Anh
-                </Tag>
-                <Tag className="fs-6 p-1" color="cyan">
-                    Tiếng Nga
-                </Tag>
-            </div>
-            <Divider />
-            <div className="mb-4">
-                <h2 className="text-primary">Kỹ năng</h2>
-                <Tag className="fs-6 p-1" bordered={false} color="processing">
-                    Java
-                </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="gold">
-                    React
-                </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="magenta">
-                    Copy Writing
-                </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="success">
-                    Copy & Paste
-                </Tag>
-            </div>
-        </div>
-    );
+      const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+      setFreelancer(resFreelancer?.data);
+    } catch (error) {
+      console.error("Error checking freelancer:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkFreelancerId();
+  }, []);
+
+  const items = [
+    {
+      key: "1",
+      label: "Thông tin cá nhân",
+      children: <FreelancerInfo />,
+    },
+    {
+      key: "2",
+      label: "Danh sách ứng tuyển",
+      children: <FreelancerApplies freelancer={freelancer} />,
+    },
+    {
+      key: "3",
+      label: "Lịch sử làm việc",
+      children: "Lịch sử làm việc",
+    },
+  ];
+
+  const onFinish = async (values) => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
+
+      const resProfile = await profileApi.getByAccountId(logined.id);
+
+      const freelancerDTO = {
+        profileId: resProfile.data.id,
+        introduce: values.introduce,
+        skillIds: values.skills.map((skill) => skill.value),
+        freelancerLanguages: values.languages.map((language) => ({
+          languageId: language.value,
+          level: 1,
+        })),
+      };
+
+      await freelancerApi.create(freelancerDTO);
+      checkFreelancerId();
+    } catch (error) {
+      console.error("Error creating freelancer:", error);
+    }
+  };
+
+  return (
+    <div className={scss.container}>
+      {freelancer ? (
+        <Tabs className={scss.barlow} defaultActiveKey="2" items={items} />
+      ) : (
+        <FreelancerFormAdd onFinish={onFinish} />
+      )}
+    </div>
+  );
 }
+
 export default ProfileFreelancers;

@@ -162,8 +162,6 @@ function Profile() {
             </>
         ),
     };
-
-
     return (<div className="container" >
         {contextHolder}
         <div className="row">
@@ -238,7 +236,6 @@ function Profile() {
                     onTabChange={onTab1Change}>
                     {contentList[activeTabKey1]}
                 </Card>
-
             </div>
         </div>
     </div >);

@@ -1,11 +1,13 @@
 import { Col, Row, Button, Input, Select } from "antd";
 import scss from "./Header.module.scss";
 import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
-import DropDownLogined from "../iu/dropdown/DropDownLogined";
+import DropDownLogined from "@components/iu/dropdown/DropDownLogined";
+import DropDownStaff from "@components/iu/dropdown/DropDownStaff";
 import { useNavigate } from "react-router-dom";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useState, useEffect } from "react";
-import profileApi from "../../api/profileApi";
+import profileApi from "@api/profileApi";
+import staffApi from "@api/staffApi";
 const { Option } = Select;
 
 function Header() {
@@ -14,29 +16,40 @@ function Header() {
   const [profile, setProfile] = useState(null);
   const [staff, setStaff] = useState(null);
 
+  const fetchProfile = async (id) => {
+    const res = await profileApi.getByAccountId(id);
+    if (res.status == 200) {
+      setProfile(res.data);
+    }
+  };
+
+  const fetchStaff = async (id) => {
+    const res = await staffApi.getByAccountId(id);
+    if (res.status == 200) {
+      setStaff(res.data);
+    }
+  };
+
   useEffect(() => {
     const logined = JSON.parse(sessionStorage.getItem("logined"));
     if (logined) {
-      if (logined.type) {
+      if (logined.isStaff) {
+        fetchStaff(logined.id);
       } else {
-        profileApi.getByAccountId(logined.id).then((response) => {
-          if (response.status == 200) {
-            console.log(response);
-            setProfile(response.data);
-          }
-        });
+        fetchProfile(logined.id);
       }
     }
   }, []);
 
   const menuItemsFindWork = [
     { name: "Tìm việc", link: "/jobpost" },
+    { name: "Tìm freelancer", link: "/freelancers" },
     // { name: "Công việc đã lưu", link: "/saved-jobs" },
   ];
 
   const menuItemsRecruitment = [
     // { name: "Freelacner", link: "/find-jobs" },
-    { name: "Tạo bài tuyển dụng", link: "/projectpage" },
+    { name: "Tạo bài tuyển dụng", link: "/jobpost/add" },
   ];
 
   const menuItemsHelp = [{ name: "Giới thiệu", link: "/about" }];
@@ -79,7 +92,7 @@ function Header() {
       </Col>
       <Col className={scss.col4} span={5}>
         {profile && <DropDownLogined profile={profile} />}
-        {staff && <p>{staff.fullName}</p>}{" "}
+        {staff && <DropDownStaff staff={staff} />}
         {!profile && !staff && (
           <>
             <Button

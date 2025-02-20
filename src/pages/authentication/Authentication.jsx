@@ -28,7 +28,7 @@ import authenticationApi from "@api/authenticationApi";
 import FlCalendar from "@components/iu/input/FlCalendar";
 import formValidator from "@utils/formValidator";
 
-function Authentication({ isLogin}) {
+function Authentication({ isLogin }) {
   const [showLogin, setShowLogin] = useState(isLogin);
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
@@ -99,23 +99,25 @@ function Authentication({ isLogin}) {
     };
   }, [showLogin]);
 
-  function onFinish(values) {
+  async function onFinish(values) {
     if (showLogin) {
-      authenticationApi
-        .login(values.email, values.password)
-        .then((response) => {
-          if (response.status == 200) {
-            sessionStorage.setItem("logined", JSON.stringify(response.data));
-            navigate(urlPrev || "/");
-            window.location.reload();
-          }
-        })
-        .catch((error) => {
-          messageApi.open({
-            type: "error",
-            content: error.response.data,
-          });
+      try {
+        const res = await authenticationApi.login(
+          values.email,
+          values.password
+        );
+
+        if (res.status == 200) {
+          sessionStorage.setItem("logined", JSON.stringify(res.data));
+          navigate(urlPrev || "/");
+          window.location.reload();
+        }
+      } catch (error) {
+        messageApi.open({
+          type: "error",
+          content: error.response.data,
         });
+      }
     } else {
       if (!values.agree) {
         api.warning({
@@ -126,18 +128,21 @@ function Authentication({ isLogin}) {
         });
         return;
       }
-      authenticationApi.register(values).then((response) => {
-        if (response.status == 200) {
-          sessionStorage.setItem("logined", JSON.stringify(response.data));
-          navigate(urlPrev || "/");
-          window.location.reload();
-        }
-      }).catch((error) => {
-        messageApi.open({
-          type: "error",
-          content: error.response.data,
+      authenticationApi
+        .register(values)
+        .then((response) => {
+          if (response.status == 200) {
+            sessionStorage.setItem("logined", JSON.stringify(response.data));
+            navigate(urlPrev || "/profile/freelancer");
+            window.location.reload();
+          }
+        })
+        .catch((error) => {
+          messageApi.open({
+            type: "error",
+            content: error.response.data,
+          });
         });
-      });
     }
   }
 
