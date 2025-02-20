@@ -10,6 +10,7 @@ const profileApi = {
             "Content-Type": "multipart/form-data",
         }
     }),
+    update: (id, profile) => apiClient.put(`/profiles/${id}`, profile),
 };
 
 export default profileApi;
