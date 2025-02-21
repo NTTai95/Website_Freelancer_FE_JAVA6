@@ -2,33 +2,41 @@ import React from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
 
+// Layouts
 import MainLayout from "@layouts/mainLayout/MainLayout";
-import PostDetail from "@pages/postDetail/PostDetail";
-import Authentication from "@pages/authentication/Authentication";
-import About from "@pages/about/about";
+import AdminLayout from "@layouts/AdminLayout/AdminLayout";
+import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
+
+// Pages
 import Home from "@pages/home/home";
+import About from "@pages/about/about";
+import Authentication from "@pages/authentication/Authentication";
+import PostDetail from "@pages/postDetail/PostDetail";
 import JobPost from "@pages/JobPost/JobPost";
-import SkillTable from "@pages/skills/SkillTable";
-import StaffTable from "@pages/StaffTable/StaffTable";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import AdminLayout from "@layouts/AdminLayout/AdminLayout";
-import Dashboard from "@pages/dashboard/Dashboard";
-import SkillForm from "@pages/form/SkillForm";
-import StaffForm from "@pages/form/StaffForm";
 import Profile from "../pages/profile/Profile";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
-import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
-import LanguageTable from "@pages/language/LanguageTable";
-import LanguageForm from "@pages/language/LanguageForm";
-import Page404 from "@pages/page404/Page404";
 import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
 import Apply from "@pages/apply/Apply";
+import Page404 from "@pages/page404/Page404";
+
+// Admin Pages
+import Dashboard from "@pages/dashboard/Dashboard";
+import SkillTable from "@pages/skills/SkillTable";
+import SkillForm from "@pages/form/SkillForm";
+import StaffTable from "@pages/StaffTable/StaffTable";
+import StaffForm from "@pages/form/StaffForm";
+import LanguageTable from "@pages/language/LanguageTable";
+import LanguageForm from "@pages/language/LanguageForm";
+import PaymentSuccess from "@pages/paymentsuccess/PaymentSuccess";
+
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route
         path="/"
         element={
@@ -53,7 +61,6 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-
       <Route
         path="/register"
         element={
@@ -62,7 +69,6 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-
       <Route
         path="/about"
         element={
@@ -96,46 +102,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/skills/:mode/:id?"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-
-      <Route
-        path="/admin/skills"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/staff"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
         path="/forgotpassword"
         element={
           <MainLayout>
@@ -144,43 +110,39 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/admin/dashboard"
+        path="/freelancers"
         element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="home">
-                <Dashboard />
-              </AdminLayout>
-            }
-          />
+          <MainLayout>
+            <ListFreelancer />
+          </MainLayout>
         }
       />
       <Route
-        path="/admin/staff/:mode/:id?"
+        path="/freelancers/:id"
         element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffForm />
-              </AdminLayout>
-            }
-          />
+          <MainLayout>
+            <Freelancer />
+          </MainLayout>
         }
       />
+      <Route
+        path="/404"
+        element={
+          <MainLayout>
+            <Page404 />
+          </MainLayout>
+        }
+      />
+
+      {/* Profile Routes */}
       <Route
         path="/profile"
         element={
-          // <PrivateRoute
-            // element={
-              <MainLayout>
-                <ProfileLayout active="profile">
-                  <Profile />
-                </ProfileLayout>
-              </MainLayout>
-            // }
-          // />
+          <MainLayout>
+            <ProfileLayout active="profile">
+              <Profile />
+            </ProfileLayout>
+          </MainLayout>
         }
       />
       <Route
@@ -200,11 +162,82 @@ const AppRoutes = () => {
       <Route
         path="/profile/recruiters"
         element={
-          <MainLayout>
-            <ProfileLayout active="recruiters">
-              <ProfileRecruiters />
-            </ProfileLayout>
-          </MainLayout>
+          <PrivateRoute
+            element={
+              <MainLayout>
+                <ProfileLayout active="recruiters">
+                  <ProfileRecruiters />
+                </ProfileLayout>
+              </MainLayout>
+            }
+          />
+        }
+      />
+
+      {/* Admin Routes */}
+      <Route
+        path="/admin/dashboard"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="home">
+                <Dashboard />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/skills"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/skills/:mode/:id?"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/staff"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/staff/:mode/:id?"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffForm />
+              </AdminLayout>
+            }
+          />
         }
       />
       <Route
@@ -233,26 +266,10 @@ const AppRoutes = () => {
       />
       
       <Route
-        path="/freelancers"
+        path="/payment/success"
         element={
           <MainLayout>
-            <ListFreelancer />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/freelancers/:id"
-        element={
-          <MainLayout>
-            <Freelancer />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/404"
-        element={
-          <MainLayout>
-            <Page404 />
+            <PaymentSuccess />
           </MainLayout>
         }
       />

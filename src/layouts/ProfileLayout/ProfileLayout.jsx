@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Menu, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
-import profileApi from "../../api/profileApi";
+import profileApi from "@api/profileApi";
 import {
   UserOutlined,
   ApartmentOutlined,
@@ -108,5 +108,6 @@ const ProfileLayout = ({ children, active }) => {
     </div>
   );
 };
+
 
 export default ProfileLayout;

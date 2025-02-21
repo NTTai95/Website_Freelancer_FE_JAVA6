@@ -1,9 +1,10 @@
 import apiClient from './index';
 
 const skillApi = {
-    add: (skill) => apiClient.post('/skills', skill),
+    add: (recruiter) => apiClient.post('/recruiters', recruiter),
     getById: (id) => apiClient.get(`/recruiters/${id}`),
-    update: (id, skill) => apiClient.put(`/skills/${id}`, skill) 
+    update: (id, recruiter) => apiClient.put(`/recruiters/${id}`, recruiter),
+    getByAccountId: (accountId) => apiClient.get(`/recruiters/account/${accountId}`),
 
 };
 

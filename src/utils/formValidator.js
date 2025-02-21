@@ -158,7 +158,47 @@ const languages = ({ minLength = 1, maxLength = 20 } = {}) => [
     }),
 ];
 
+const title = ({ minLength = 20, maxLength = 100 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập tiêu đề!");
+            if (value.length < minLength) return Promise.reject(`Tiêu đề tối thiểu ${minLength} kí tự!`);
+            if (value.length > maxLength) return Promise.reject(`Tiêu đề tối đa ${maxLength} kí tự!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+const description = ({ minLength = 1000, maxLength = 100000 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập mô tả!");
+            if (value.length < minLength) return Promise.reject(`Mô tả tối thiểu ${minLength} kí tự!`);
+            if (value.length > maxLength) return Promise.reject(`Mô tả tối đa ${maxLength} kí tự!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+const startDate = () => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng chọn ngày bắt đầu!");
+            return Promise.resolve();
+        },
+    }),
+];
+
+const endDate = () => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng chọn ngày kết thúc!");
+            return Promise.resolve();
+        },
+    }),
+];
 
 
 
-export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages };
+
+export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate }; 

@@ -6,6 +6,8 @@ const jobspostApi = {
     add: (jobpost) => apiClient.post('/jobposts', jobpost),
     update: (id, staff) => apiClient.put(`/jobposts/${id}`, staff),
     delete: (id) => apiClient.delete(`/jobposts/${id}`),
+    getStatusById: (id) => apiClient.get(`/jobposts/${id}/status`),
+    post: (id) => apiClient.post(`/jobposts/${id}/post`),
 };
 
 export default jobspostApi;

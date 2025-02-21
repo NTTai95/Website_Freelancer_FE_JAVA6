@@ -1,9 +1,10 @@
 import React, { useState } from "react";
-import { Button, Steps, Form } from "antd";
+import { Button, Steps, Form, message } from "antd";
 import scss from "./Stepper.module.scss";
+import { useEffect } from "react";
 
-const Stepper = ({ steps, post, save }) => {
-  const [current, setCurrent] = useState(2);
+const Stepper = ({ steps, post, save, initialValues }) => {
+  const [current, setCurrent] = useState(0);
   const isLastStep = current === steps.length - 1;
   const [form] = Form.useForm();
 
@@ -20,34 +21,63 @@ const Stepper = ({ steps, post, save }) => {
   }));
 
   const onFinish = (values) => {
-    if (isLastStep) {
-      post(values);
-    } else {
+    const { action } = values;
+
+    if (action === "save") {
       save(values);
+    } else if (action === "saveAndPost") {
+      post(values);
+    } else if (action === "saveAndNext") {
+      save(values);
+      next();
     }
   };
 
+  useEffect(() => {
+    form.setFieldsValue(initialValues);
+  }, [initialValues]);
+
   return (
-    <Form form={form} onFinish={onFinish}>
+    <Form form={form} onFinish={onFinish} initialValues={initialValues}>
       <Steps current={current} items={items} />
       <div className={scss.containerStepper}>{steps[current].content}</div>
       <div style={{ marginTop: 24 }}>
-        {current > 0 && (
-          <Button className={scss.mr10px + scss["font-barlow"]} onClick={prev}>
-            quay lại
-          </Button>
-        )}
-        <>
-          {isLastStep ? (
-            <Button className={scss["font-barlow"]} type="primary" htmlType="submit">
-              Đăng bài
+        <Form.Item name="action">
+          {current > 0 && (
+            <Button htmlType="button" className={scss.prev} onClick={prev}>
+              quay lại
             </Button>
+          )}
+          {isLastStep ? (
+            <>
+              <Button
+                className={scss.next}
+                type="primary"
+                htmlType="submit"
+                onClick={() => form.setFieldsValue({ action: "save" })}
+              >
+                Lưu
+              </Button>
+              <Button
+                className={scss.next}
+                type="primary"
+                htmlType="submit"
+                onClick={() => form.setFieldsValue({ action: "saveAndPost" })}
+              >
+                Lưu và đăng bài
+              </Button>
+            </>
           ) : (
-            <Button className={scss["font-barlow"]} type="primary" htmlType="submit">
+            <Button
+              className={scss.next}
+              type="primary"
+              htmlType="submit"
+              onClick={() => form.setFieldsValue({ action: "saveAndNext" })}
+            >
               Lưu và tiếp tục
             </Button>
           )}
-        </>
+        </Form.Item>
       </div>
     </Form>
   );
