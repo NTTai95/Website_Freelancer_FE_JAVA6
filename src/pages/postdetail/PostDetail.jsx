@@ -1,198 +1,201 @@
-import scss from "./PostDetail";
+import scss from "./PostDetail.module.scss";
 import {
-  ClockCircleOutlined,
-  TransactionOutlined,
-  UserSwitchOutlined,
-  PhoneOutlined,
-  BankOutlined,
-  GoogleOutlined,
-  CommentOutlined,
-  HeartOutlined,
+  CreditCardFilled,
+  MailFilled,
+  PhoneFilled,
+  ClockCircleFilled,
+  CalendarFilled,
+  ContainerFilled,
 } from "@ant-design/icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faMapPin } from "@fortawesome/free-solid-svg-icons";
-import { Tag } from "antd";
-import { Button } from "antd";
-import { Input } from "antd";
-import TextArea from "antd/es/input/TextArea";
-import { Rate } from "antd";
+import {
+  Tag,
+  Button,
+  Input,
+  Form,
+  Typography,
+  Col,
+  Row,
+  Divider,
+  Avatar,
+  Spin
+} from "antd";
+import { useParams } from "react-router-dom";
+import { useEffect, useState } from "react";
+import jobspostApi from "@api/jobspostApi";
+import skillApi from "@api/skillApi";
+import profileApi from "@api/profileApi";
+import dayjs from "dayjs";
+import formater from "@utils/formater";
+import { useNavigate } from "react-router-dom";
+import formValidator from "@utils/formValidator";
+import geminiCall from "@utils/geminiCall";
+
+const { Title, Text } = Typography;
+
 function PostDetail() {
+  const navigate = useNavigate();
+
+  const { id } = useParams();
+  const [jobpost, setJobPost] = useState(null);
+  const [lastDatePost, setLastDatePost] = useState(0);
+  const [skills, setSkills] = useState(null);
+  const [profile, setProfile] = useState(null);
+  const [form] = Form.useForm();
+  const [content, setContent] = useState("");
+  const [loadingCall, setLoadingCall] = useState(false);
+
+  const fetchData = async () => {
+    try {
+      const jobRes = await jobspostApi.getById(id);
+      setJobPost(jobRes.data);
+      setLastDatePost(
+        formater.timePeriodFromNow(dayjs(jobRes.data.datePosted))
+      );
+
+      const [skillsRes, profileRes] = await Promise.all([
+        skillApi.getByIds(jobRes.data.skillIds),
+        profileApi.getByRecruiterId(jobRes.data.recruiterId),
+      ]);
+
+      setSkills(skillsRes.data);
+      setProfile(profileRes.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const onFinish = (values) => {
+    console.log("Received values of form: ", values);
+  };
+
+  const genreateContent = async () => {
+    setLoadingCall(true);
+    const res = await geminiCall.generateContentApply(jobpost?.id, content);
+    form.setFieldsValue({
+      content: res,
+    });
+    setLoadingCall(false);
+  };
+
   return (
-    <div className="container">
-      <div className="row">
-        {/* Cột trái (9 phần) */}
-        <div className="col-lg-9">
-          <h2>Cần Tuyển Nhân Viên Kiểm Tra Chất Lượng Cho Website</h2>
-          <div className={scss.ThongTin + " d-flex"}>
-            <div className="me-3">
-              <ClockCircleOutlined
-                style={{ fontSize: "25px", marginRight: "10px" }}
-              />
-              <span className="text-secondary">Đăng cách đây 7 giờ trước</span>
-            </div>
-            <div>
-              <FontAwesomeIcon
-                icon={faMapPin}
-                style={{ fontSize: "25px", marginRight: "10px" }}
-              />
-              <span className="text-secondary">Ninh Kiều, Cần Thơ</span>
-            </div>
+    <div className={"container"}>
+      <Row gutter={24}>
+        <Col span={16} className={"border-end"}>
+          <Title className={scss.title} level={3}>
+            {jobpost?.title}
+          </Title>
+          <div className={scss["info-icon"]}>
+            <ClockCircleFilled className={scss.icon} />
+            <span className={scss["text-grey"]}>
+              Đăng cách đây {lastDatePost} trước
+            </span>
+          </div>
+          <Divider />
+          <div>
+            <Title level={4}>Mô tả</Title>
+            <p>{jobpost?.description}</p>
           </div>
           <hr />
-          <div className="text">
-            <h5>Mô tả</h5>
-            <p>
-              Chúng tôi đang tìm kiếm một Manual QA Tester siêng năng và chú
-              trọng đến chi tiết để tham gia nhóm kiểm thử di động và web của
-              chúng tôi
-            </p>
+          <Title level={4}>Ngân sách</Title>
+          <div className={scss["info-icon"]}>
+            <CreditCardFilled className={scss.icon} />
+            <span>{formater.formatCurrency(jobpost?.budget)}</span>
+          </div>
+          <Divider />
+          <Title level={4}>Kỹ năng và Chuyên môn</Title>
+          <div className={scss.skills}>
+            {skills?.map((skill) => (
+              <Tag color="purple" className={scss.tag} key={skill.id}>
+                {skill.name}
+              </Tag>
+            ))}
           </div>
           <hr />
-          <h5>Ngân sách</h5>
-          <div className={scss.ThongTin + " d-flex"}>
-            <div className="me-5">
-              <TransactionOutlined
-                style={{ fontSize: "25px", marginRight: "10px" }}
-              />
-              <span>100.000đ/Giờ</span>
-              <p>Có thể thương lượng</p>
+          <div className={scss.activity}>
+            <Title level={4}>Hoạt động trong công việc này</Title>
+            <Title level={5}>Thời gian bắt đầu</Title>
+            <div className={scss["info-icon-small"]}>
+              <CalendarFilled className={scss.icon} />
+              <Text>{formater.formatDate(jobpost?.startDate)}</Text>
             </div>
-            <div>
-              <UserSwitchOutlined
-                style={{ fontSize: "25px", marginRight: "10px" }}
-              />
-              <span>Yêu cầu</span>
-              <p>
-                Tôi đang cần tìm kiếm những người làm việc tự do với mức giá
-                thấp nhất
-              </p>
+            <br />
+            <Title level={5}>Thời gian kết thúc</Title>
+            <div className={scss["info-icon-small"]}>
+              <CalendarFilled className={scss.icon} />
+              <Text>{formater.formatDate(jobpost?.startEnd)}</Text>
             </div>
           </div>
-          <hr />
-          <div className="text">
-            <h5>Mô tả công việc</h5>
-            <p>
-              <strong>Kiểm tra chức năng:</strong> Đánh giá các tính năng trên
-              website (đăng ký, đăng nhập, tìm kiếm, giỏ hàng, thanh toán, v.v.)
-              để đảm bảo chúng hoạt động đúng.
-            </p>
-            <p>
-              <strong>Kiểm tra giao diện (UI/UX):</strong> Đánh giá trải nghiệm
-              người dùng, bố cục, màu sắc, font chữ, độ tương thích với các
-              thiết bị (mobile, tablet, desktop).
-            </p>
-            <p>
-              <strong>Kiểm tra hiệu suất:</strong> Xác định tốc độ tải trang,
-              khả năng phản hồi của website dưới tải cao, kiểm tra các yếu tố
-              tối ưu hóa tốc độ.
-            </p>
-            <p>
-              <strong>Kiểm tra bảo mật:</strong> Kiểm tra lỗi bảo mật như lỗ
-              hổng XSS, SQL Injection, kiểm tra bảo mật đăng nhập, bảo vệ dữ
-              liệu người dùng.
-            </p>
-          </div>
-          <hr />
-          <div className={scss.KyNang}>
-            <h5>Kỹ năng và Chuyên môn</h5>
-            <Tag>Bug Report</Tag>
-            <Tag>Functional Testing</Tag>
-            <Tag>Manual Testing</Tag>
-            <Tag>Jira</Tag>
-            <Tag>Quality Assurance</Tag>
-            <Tag>Web Testing</Tag>
-            <Tag>Test Case Design</Tag>
-          </div>
-          <hr />
-          <div className={scss.HoatDong}>
-            <h5>Hoạt động trong công việc này</h5>
-            <p>
-              Thời gian: bất cứ khi nào
-              <br />
-              Yêu cầu: hoàn thành tốt công việc được giao đúng hạn
-              <br />
-              Độ tuổi: 18 tuổi trở lên <br />
-              Phỏng vấn: 3<br />
-              Lời mời đã gửi: 1<br />
-              Lời mời chưa được phản hồi: 1
-            </p>
-            <h4>
-              Hãy liên hệ với chúng tôi nếu bạn thấy phù hợp với công việc
-            </h4>
-          </div>
-        </div>
+        </Col>
 
-        {/* Cột phải (3 phần) */}
-        <div className="col-lg-3 border-start">
-          
-
-          <div className={scss.KhachHang}>
-            <h5 style={{
-              
-              marginTop: "10px",
-            }} >Về khách hàng</h5>
-            <p>
-              Phương thức thanh toán đã được xác minh Số điện thoại đã được xác
-              minh
-            </p>
-            <Rate /> 5.0 <CommentOutlined /> 2
-            <p>
-              2 việc làm đã đăng <br />
-              Tỷ lệ tuyển dụng 100% <br />
-              Tỉ lệ thuê lại 100%
-              <br />
-              Đúng hạn 100%
-              <br />
-              <PhoneOutlined /> 0999999999 <br />
-              <GoogleOutlined /> freelancer@gmail.com <br />
-              <BankOutlined /> Ninh Kiều, Cần Thơ
-            </p>
+        <Col span={8}>
+          <div>
+            <Title level={3}>Nhà tuyển dụng</Title>
+            <Divider />
+            <Title level={4}>Đại diện</Title>
+            <div className={scss.info}>
+              <Avatar
+                onClick={() => navigate(`/recruiter/${profile?.id}`)}
+                className={scss.avatar}
+                src={profile?.avatar}
+              />
+              <div className={scss.text}>
+                <span
+                  onClick={() => navigate(`/recruiter/${profile?.id}`)}
+                  className={scss.fullName}
+                >
+                  {profile?.fullName}
+                </span>
+                <span>{formater.formatDate(profile?.birthday)}</span>
+              </div>
+            </div>
+            <Divider />
+            <Title level={4}>Liên hệ</Title>
+            <div className={scss["info-icon-small"]}>
+              <ContainerFilled className={scss.icon} />{" "}
+              <span>{profile?.recruiter?.name}</span>
+            </div>
+            <div className={scss["info-icon-small"]}>
+              <PhoneFilled className={scss.icon} />{" "}
+              <span>{profile?.phone}</span>
+            </div>
+            <div className={scss["info-icon-small"]}>
+              <MailFilled className={scss.icon} />{" "}
+              <span>{profile?.account?.email}</span>
+            </div>
           </div>
-          <div className={scss.Link}>
-            <h5>Liên kết việc làm</h5>
-            <Input placeholder="Link" />
-            <a href="#" style={{ color: "green", textDecoration: "none" }}>
-              Sao chép liên kết
-            </a>
-            <iframe
-              src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3929.1763404726867!2d105.75622517479356!3d10.002288390103253!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x31a089c81e8f59f9%3A0x1146a9aed97ccaf9!2sFREELANCE%20PHOTOGRAPHY!5e0!3m2!1svi!2s!4v1737465606358!5m2!1svi!2s"
-              loading="lazy"
-              referrerpolicy="no-referrer-when-downgrade"
-            ></iframe>
-          </div>
-          <div
-            className={scss.Button}
-            style={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              gap: "12px",
-              padding: "16px",
-              background: "#f9f9f9",
-              borderRadius: "12px",
-              boxShadow: "0px 4px 10px rgba(0, 0, 0, 0.1)",
-              maxWidth: "400px",
-              margin: "0 auto",
-            }}
-          >
-            <h5>Nhập thông tin ứng tuyển</h5>
-            <TextArea
-              placeholder="Nội dung ứng tuyển"
-              style={{
-                borderRadius: "8px",
-                padding: "10px",
-                border: "1px solid #ccc",
-                width: "100%",
-              }}
-            />
-
-            <Button type="primary" style={{ width: "100%", padding: "10px" }}>
-              Nộp đơn ngay
-            </Button>
-          </div>
-        </div>
-        
-      </div>
+          <Divider />
+          <Spin spinning={loadingCall}>
+            <Form form={form} onFinish={onFinish}>
+              <Title level={4}>Ứng tuyển ngay</Title>
+              <Form.Item name="content" rules={formValidator.content()}>
+                <Input.TextArea
+                  placeholder="Nội dung ứng tuyển"
+                  rows={20}
+                  onChange={(e) => {
+                    setContent(e.target.value);
+                  }}
+                />
+              </Form.Item>
+              <div className={"d-flex justify-content-center gap-2"}>
+                <Button htmlType="submit" type="primary">
+                  Nộp đơn ngay
+                </Button>
+                <Button
+                  htmlType="button"
+                  type="default"
+                  onClick={genreateContent}
+                >
+                  Hỗ trợ AI
+                </Button>
+              </div>
+            </Form>
+          </Spin>
+        </Col>
+      </Row>
     </div>
   );
 }
