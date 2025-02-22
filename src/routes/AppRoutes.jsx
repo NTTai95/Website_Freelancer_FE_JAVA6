@@ -273,6 +273,146 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
+
+      {/* Profile Routes */}
+      <Route
+        path="/profile"
+        element={
+          <MainLayout>
+            <ProfileLayout active="profile">
+              <Profile />
+            </ProfileLayout>
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile/freelancer"
+        element={
+          <PrivateRoute
+            element={
+              <MainLayout>
+                <ProfileLayout active="freelancer">
+                  <ProfileFreelancers />
+                </ProfileLayout>
+              </MainLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/profile/recruiters"
+        element={
+          <PrivateRoute
+            element={
+              <MainLayout>
+                <ProfileLayout active="recruiters">
+                  <ProfileRecruiters />
+                </ProfileLayout>
+              </MainLayout>
+            }
+          />
+        }
+      />
+
+      {/* Admin Routes */}
+      <Route
+        path="/admin/dashboard"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="home">
+                <Dashboard />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/skills"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/skills/:mode/:id?"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                <SkillForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/staff"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/staff/:mode/:id?"
+        element={
+          <PrivateRoute
+            requireStaff={true}
+            element={
+              <AdminLayout active="staff" breadcrumb="Nhân viên">
+                <StaffForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/languages"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageTable />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      <Route
+        path="/admin/languages/:mode/:id?"
+        element={
+          <PrivateRoute
+            element={
+              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                <LanguageForm />
+              </AdminLayout>
+            }
+          />
+        }
+      />
+      
+      <Route
+        path="/payment/success"
+        element={
+          <MainLayout>
+            <PaymentSuccess />
+          </MainLayout>
+        }
+      />
     </Routes>
   );
 };
