@@ -20,7 +20,7 @@ import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
-import Apply from "@pages/apply/Apply";
+import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
 
 // Admin Pages
@@ -264,7 +264,7 @@ const AppRoutes = () => {
           />
         }
       />
-      
+
       <Route
         path="/payment/success"
         element={
@@ -404,12 +404,19 @@ const AppRoutes = () => {
           />
         }
       />
-      
       <Route
         path="/payment/success"
         element={
           <MainLayout>
             <PaymentSuccess />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/recruiter/:id"
+        element={
+          <MainLayout>
+            <Recruiter />
           </MainLayout>
         }
       />
