@@ -1,0 +1,64 @@
+$primary-color: #4CAF50;
+$secondary-color: #f4f4f4;
+$text-color: #333;
+$border-radius: 10px;
+
+.freelancerprofile {
+  max-width: 100%;
+  margin: 20px auto;
+  background: white;
+  padding: 20px;
+  border-radius: $border-radius;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  .avatarnameform {
+    text-align: center;
+    
+    .avatar {
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 3px solid $primary-color;
+    }
+    
+    h2 {
+      color: $text-color;
+      margin-top: 10px;
+    }
+  }
+
+  .skillslanguagesform,
+  .contact-form,
+  .personal-info-form,
+  .introduction-form {
+    background: $secondary-color;
+    padding: 15px;
+    margin-top: 15px;
+    border-radius: $border-radius;
+
+    h3 {
+      color: $primary-color;
+      border-bottom: 2px solid $primary-color;
+      padding-bottom: 5px;
+      margin-bottom: 10px;
+    }
+
+    ul {
+      list-style: none;
+      padding: 0;
+      
+      li {
+        background: white;
+        padding: 8px;
+        margin: 5px 0;
+        border-radius: 5px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    p {
+      color: $text-color;
+      margin: 5px 0;
+    }
+  }
+}
