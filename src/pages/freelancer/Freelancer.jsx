@@ -9,6 +9,11 @@ import {
   Col, Avatar, Typography, List, Card
 } from "antd";
 
+
+const colors = ["#FF5733", "#33FF57", "#3357FF", "#F3FF33", "#FF33A1", "#A133FF"];
+const randomColor = colors[Math.floor(Math.random() * colors.length)];
+
+
 const Freelancer = () => {
   const [freelancer, setFreelancer] = useState(null);
   const [skills, setSkills] = useState(['JavaScript', 'React', 'Node.js', 'HTML/CSS', 'Python']);
@@ -48,14 +53,13 @@ const Freelancer = () => {
         <Row>
           <Col span={8}>
             <Card className={scss.leftSection}>
-              <div className="row "> <Avatar size={150} src={profile?.image || ""} /></div>
+              <div className="row" style={{ background: randomColor, padding: '5px' }}> <Avatar size={150} src={profile?.image || ""} /></div>
               <h2>Nguyễn Văn A</h2>
               <p>Năm sinh: 1999</p>
               <p>Ngày vào: 19-02-2025</p>
               <p>Số điện thoại: 0901234567</p>
             </Card>
           </Col>
-
           <Col span={16}>
             <Card className={scss.introduction}>
               <Typography.Title level={3}>Giới thiệu</Typography.Title>
@@ -85,6 +89,5 @@ const Freelancer = () => {
           </Col>
         </Row>
       </div>
-    </div>);
-};
+    </div>);};
 export default Freelancer;
