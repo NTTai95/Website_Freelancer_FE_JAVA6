@@ -53,7 +53,7 @@ const Freelancer = () => {
         <Row>
           <Col span={8}>
             <Card className={scss.leftSection}>
-              <div className="row" style={{ background: randomColor, padding: '5px' }}> <Avatar size={150} src={profile?.image || ""} /></div>
+              <div className="avatar" style={{ background: randomColor, padding: '15px' }}> <Avatar size={150} src={profile?.image || ""} /></div>             
               <h2>Nguyễn Văn A</h2>
               <p>Năm sinh: 1999</p>
               <p>Ngày vào: 19-02-2025</p>
@@ -73,8 +73,9 @@ const Freelancer = () => {
               <List
                 dataSource={skills}
                 renderItem={(skill) => (
-                  <List.Item>{skill}</List.Item>
+                  <List.Item style={{ display: 'inline-block', marginRight: '10px' }}>{skill}</List.Item>
                 )}
+                grid={{ gutter: 16, column: 4 }}
               />
             </Card>
             <Card>
@@ -82,11 +83,12 @@ const Freelancer = () => {
               <List
                 dataSource={languages}
                 renderItem={(language) => (
-                  <List.Item>{language}</List.Item>
+                  <List.Item style={{ display: 'inline-block', marginRight: '10px' }}>{language}</List.Item>
                 )}
+                grid={{ gutter: 16, column: 4 }}
               />
-            </Card>
-          </Col>
+
+            </Card>          </Col>
         </Row>
       </div>
     </div>);};
