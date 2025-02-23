@@ -1,5 +1,5 @@
 import { Card, notification, Modal, Form, InputNumber, message } from "antd";
-import formatCurrency from "@utils/formater";
+import formater from "@utils/formater";
 import profileApi from "@api/profileApi";
 import walletApi from "@api/walletApi";
 import { useState } from "react";
@@ -85,7 +85,7 @@ const WalletCard = ({ wallet }) => {
         ]}
         title="Số dư ví FreelancePay"
       >
-        {formatCurrency(wallet?.balance)}
+        {formater.formatCurrency(wallet?.balance)}
       </Card>
     </>
   ) : (

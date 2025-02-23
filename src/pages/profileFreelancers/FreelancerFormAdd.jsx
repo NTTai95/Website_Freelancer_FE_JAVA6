@@ -11,6 +11,7 @@ const FreelancerFormAdd = ({ onFinish }) => {
   const onSearchSkill = async (value) => {
     const res = await skillApi.searchByName(value);
     return res.data.map((skill) => ({
+      key: skill.id,
       value: skill.id,
       label: skill.name,
     }));
@@ -19,6 +20,7 @@ const FreelancerFormAdd = ({ onFinish }) => {
   const onSearchLanguage = async (value) => {
     const res = await languageApi.searchByName(value);
     return res.data.map((language) => ({
+      key: language.id,
       value: language.id,
       label: language.name,
     }));

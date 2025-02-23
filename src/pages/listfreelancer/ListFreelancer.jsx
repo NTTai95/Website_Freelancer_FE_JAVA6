@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import FreelancerCard from "./FreelancerCard";
 import SidebarFilter from "./SidebarFilter";
-import { Pagination, Skeleton, Row, Col } from "antd";
+import { Skeleton, Row, Col } from "antd";
 import profileApi from "@api/profileApi";
 
 const ListFreelancer = () => {
@@ -81,8 +81,8 @@ const ListFreelancer = () => {
           <Row gutter={[16, 16]}>
             {profile &&
               profile.map((profile, index) => (
-                <Col span={6}>
-                  <FreelancerCard key={index} profile={profile} />
+                <Col key={profile.id || index} span={6}>
+                  <FreelancerCard profile={profile} />
                 </Col>
               ))}
 

@@ -11,7 +11,7 @@ const FreelancerApplies = ({ freelancer }) => {
   return (
     <>
       {freelancer?.applies?.length > 0 ? (
-        applies.map((apply) => <CardApplies apply={apply} />)
+        applies.map((apply) => <CardApplies key={apply.id} apply={apply} />)
       ) : (
         <div>Hiện tại không có công việc nào!</div>
       )}

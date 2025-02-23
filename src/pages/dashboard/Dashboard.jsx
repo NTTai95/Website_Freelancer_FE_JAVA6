@@ -129,21 +129,25 @@ function Dashboard() {
 
   const dataFreelance = [
     {
+      key: "1",
       rank: "1",
       name: "Lê Quốc Anh",
       total: 52,
     },
     {
+      key: "2",
       rank: "2",
       name: "Ngô Gia Huy",
       total: 46,
     },
     {
+      key: "3",
       rank: "3",
       name: "Trần Quốc Trung",
       total: 52,
     },
     {
+      key: "4",
       rank: "4",
       name: "Nguyễn Thị Anh",
       total: 46,
@@ -152,51 +156,61 @@ function Dashboard() {
 
   const data = [
     {
+      key: "1",
       rank: "1",
       name: "Lê Quốc Anh",
       total: 52,
     },
     {
+      key: "2",
       rank: "2",
       name: "Ngô Gia Huy",
       total: 46,
     },
     {
+      key: "3",
       rank: "3",
       name: "Trần Quốc Trung",
       total: 52,
     },
     {
+      key: "4",
       rank: "4",
       name: "Nguyễn Thị Anh",
       total: 46,
     },
     {
+      key: "5",
       rank: "5",
       name: "Lê Quốc Anh",
       total: 52,
     },
     {
+      key: "6",
       rank: "6",
       name: "Ngô Gia Huy",
       total: 46,
     },
     {
+      key: "7",
       rank: "7",
       name: "Trần Quốc Trung",
       total: 52,
     },
     {
+      key: "8",
       rank: "8",
       name: "Nguyễn Thị Anh",
       total: 46,
     },
     {
+      key: "9",
       rank: "9",
       name: "Trần Quốc Trung",
       total: 52,
     },
     {
+      key: "10",
       rank: "10",
       name: "Nguyễn Thị Anh",
       total: 46,

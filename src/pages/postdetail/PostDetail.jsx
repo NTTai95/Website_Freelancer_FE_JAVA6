@@ -1,36 +1,20 @@
 import scss from "./PostDetail.module.scss";
-import {
-  CreditCardFilled,
-  MailFilled,
-  PhoneFilled,
-  ClockCircleFilled,
-  CalendarFilled,
-  ContainerFilled,
-} from "@ant-design/icons";
-import {
-  Tag,
-  Button,
-  Input,
-  Form,
-  Typography,
-  Col,
-  Row,
-  Divider,
-  Avatar,
-  Spin
-} from "antd";
-import { useParams } from "react-router-dom";
+import { Button, Form, Col, Row, Divider, message } from "antd";
+import { useParams, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import jobspostApi from "@api/jobspostApi";
 import skillApi from "@api/skillApi";
 import profileApi from "@api/profileApi";
+import freelancerApi from "@api/freelancerApi";
+import applyApi from "@api/applyApi";
 import dayjs from "dayjs";
 import formater from "@utils/formater";
-import { useNavigate } from "react-router-dom";
-import formValidator from "@utils/formValidator";
 import geminiCall from "@utils/geminiCall";
 
-const { Title, Text } = Typography;
+import JobDescription from "./JobDescription";
+import JobActivity from "./JobActivity";
+import RecruiterInfo from "./RecruiterInfo";
+import ApplyForm from "./ApplyForm";
 
 function PostDetail() {
   const navigate = useNavigate();
@@ -43,6 +27,11 @@ function PostDetail() {
   const [form] = Form.useForm();
   const [content, setContent] = useState("");
   const [loadingCall, setLoadingCall] = useState(false);
+  const logined = JSON.parse(sessionStorage.getItem("logined"));
+  const [freelancer, setFreelancer] = useState(null);
+  const [apply, setApply] = useState(null);
+  const [messageApi, contextHolder] = message.useMessage();
+  const [openPopconfirm, setOpenPopconfirm] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -59,8 +48,23 @@ function PostDetail() {
 
       setSkills(skillsRes.data);
       setProfile(profileRes.data);
+
+      if (logined) {
+        const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+        setFreelancer(resFreelancer.data);
+        for (const item of resFreelancer?.data?.applies || []) {
+          if (item.jobPostId == jobRes?.data?.id) {
+            setApply(item);
+            break;
+          }
+        }
+      }
     } catch (error) {
-      console.error("Error fetching data:", error);
+      messageApi.open({
+        type: "error",
+        content: "Lỗi khi tải dữ liệu",
+      });
+      console.log(error);
     }
   };
 
@@ -68,8 +72,33 @@ function PostDetail() {
     fetchData();
   }, []);
 
+  const createApply = async (formatData) => {
+    try {
+      const res = await applyApi.create(formatData);
+      if (res) {
+        setApply(res.data);
+        messageApi.open({
+          type: "success",
+          content: "Thêm bài ứng tuyển thành công",
+        });
+      }
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: "Lỗi thêm bài ứng tuyển",
+      });
+      console.log(error);
+    }
+  };
+
   const onFinish = (values) => {
-    console.log("Received values of form: ", values);
+    const formatData = {
+      jobPostId: jobpost?.id,
+      freelancerId: freelancer?.id,
+      context: values?.content,
+    };
+
+    createApply(formatData);
   };
 
   const genreateContent = async () => {
@@ -81,119 +110,67 @@ function PostDetail() {
     setLoadingCall(false);
   };
 
+  const handleSubmit = async () => {
+    try {
+      await form.validateFields();
+      setOpenPopconfirm(true);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <div className={"container"}>
+      {contextHolder}
       <Row gutter={24}>
         <Col span={16} className={"border-end"}>
-          <Title className={scss.title} level={3}>
-            {jobpost?.title}
-          </Title>
-          <div className={scss["info-icon"]}>
-            <ClockCircleFilled className={scss.icon} />
-            <span className={scss["text-grey"]}>
-              Đăng cách đây {lastDatePost} trước
-            </span>
-          </div>
-          <Divider />
-          <div>
-            <Title level={4}>Mô tả</Title>
-            <p>{jobpost?.description}</p>
-          </div>
+          <JobDescription 
+            jobpost={jobpost}
+            lastDatePost={lastDatePost}
+            skills={skills}
+          />
           <hr />
-          <Title level={4}>Ngân sách</Title>
-          <div className={scss["info-icon"]}>
-            <CreditCardFilled className={scss.icon} />
-            <span>{formater.formatCurrency(jobpost?.budget)}</span>
-          </div>
-          <Divider />
-          <Title level={4}>Kỹ năng và Chuyên môn</Title>
-          <div className={scss.skills}>
-            {skills?.map((skill) => (
-              <Tag color="purple" className={scss.tag} key={skill.id}>
-                {skill.name}
-              </Tag>
-            ))}
-          </div>
-          <hr />
-          <div className={scss.activity}>
-            <Title level={4}>Hoạt động trong công việc này</Title>
-            <Title level={5}>Thời gian bắt đầu</Title>
-            <div className={scss["info-icon-small"]}>
-              <CalendarFilled className={scss.icon} />
-              <Text>{formater.formatDate(jobpost?.startDate)}</Text>
-            </div>
-            <br />
-            <Title level={5}>Thời gian kết thúc</Title>
-            <div className={scss["info-icon-small"]}>
-              <CalendarFilled className={scss.icon} />
-              <Text>{formater.formatDate(jobpost?.startEnd)}</Text>
-            </div>
-          </div>
+          <JobActivity jobpost={jobpost} />
         </Col>
 
         <Col span={8}>
-          <div>
-            <Title level={3}>Nhà tuyển dụng</Title>
-            <Divider />
-            <Title level={4}>Đại diện</Title>
-            <div className={scss.info}>
-              <Avatar
-                onClick={() => navigate(`/recruiter/${profile?.id}`)}
-                className={scss.avatar}
-                src={profile?.avatar}
-              />
-              <div className={scss.text}>
-                <span
-                  onClick={() => navigate(`/recruiter/${profile?.id}`)}
-                  className={scss.fullName}
-                >
-                  {profile?.fullName}
-                </span>
-                <span>{formater.formatDate(profile?.birthday)}</span>
-              </div>
-            </div>
-            <Divider />
-            <Title level={4}>Liên hệ</Title>
-            <div className={scss["info-icon-small"]}>
-              <ContainerFilled className={scss.icon} />{" "}
-              <span>{profile?.recruiter?.name}</span>
-            </div>
-            <div className={scss["info-icon-small"]}>
-              <PhoneFilled className={scss.icon} />{" "}
-              <span>{profile?.phone}</span>
-            </div>
-            <div className={scss["info-icon-small"]}>
-              <MailFilled className={scss.icon} />{" "}
-              <span>{profile?.account?.email}</span>
-            </div>
-          </div>
+          <RecruiterInfo profile={profile} navigate={navigate} />
           <Divider />
-          <Spin spinning={loadingCall}>
-            <Form form={form} onFinish={onFinish}>
-              <Title level={4}>Ứng tuyển ngay</Title>
-              <Form.Item name="content" rules={formValidator.content()}>
-                <Input.TextArea
-                  placeholder="Nội dung ứng tuyển"
-                  rows={20}
-                  onChange={(e) => {
-                    setContent(e.target.value);
-                  }}
-                />
-              </Form.Item>
-              <div className={"d-flex justify-content-center gap-2"}>
-                <Button htmlType="submit" type="primary">
-                  Nộp đơn ngay
+          {freelancer?.profileId == profile?.id ? (
+            <div>
+              <p>Đây là bài đăng của bạn không thể tự nộp hồ sơ.</p>
+            </div>
+          ) : !logined ? (
+            <div>
+              <p>
+                <Button type="link" className={"p-0"} onClick={() => navigate("/login")}>
+                  Đăng nhập
                 </Button>
-                <Button
-                  htmlType="button"
-                  type="default"
-                  onClick={genreateContent}
-                >
-                  Hỗ trợ AI
-                </Button>
-              </div>
-            </Form>
-          </Spin>
+                để nộp hồ sơ ứng tuyển.
+              </p>
+            </div>
+          ) : !freelancer ? (
+            <div>
+              <p>
+                <Button type="link" className={"p-0"} onClick={() => navigate("/profile/freelancer")}>
+                  Thêm hồ sơ
+                </Button>{" "}
+                Freelancer để có thể nộp hồ sơ.
+              </p>
+            </div>
+          ) : (
+            <ApplyForm
+              form={form}
+              onFinish={onFinish}
+              loadingCall={loadingCall}
+              openPopconfirm={openPopconfirm}
+              setOpenPopconfirm={setOpenPopconfirm}
+              handleSubmit={handleSubmit}
+              genreateContent={genreateContent}
+              setContent={setContent}
+              apply={apply}
+            />
+          )}
         </Col>
       </Row>
     </div>

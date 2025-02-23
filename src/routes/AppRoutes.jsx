@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route } from "react-router-dom";
 import PrivateRoute from "./PrivateRoute";
+import { useLocation } from "react-router-dom";
 
 // Layouts
 import MainLayout from "@layouts/mainLayout/MainLayout";
@@ -34,6 +35,15 @@ import LanguageForm from "@pages/language/LanguageForm";
 import PaymentSuccess from "@pages/paymentsuccess/PaymentSuccess";
 
 const AppRoutes = () => {
+  const location = useLocation();
+
+  useEffect(() => {
+    const currentPath = location.pathname;
+    if (currentPath != "/login" && currentPath != "/register") {
+      sessionStorage.setItem("urlPrev", currentPath);
+    }
+  }, [location]);
+
   return (
     <Routes>
       {/* Public Routes */}
@@ -143,20 +153,6 @@ const AppRoutes = () => {
               <Profile />
             </ProfileLayout>
           </MainLayout>
-        }
-      />
-      <Route
-        path="/profile/freelancer"
-        element={
-          <PrivateRoute
-            element={
-              <MainLayout>
-                <ProfileLayout active="freelancer">
-                  <ProfileFreelancers />
-                </ProfileLayout>
-              </MainLayout>
-            }
-          />
         }
       />
       <Route

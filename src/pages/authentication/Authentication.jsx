@@ -33,8 +33,6 @@ function Authentication({ isLogin }) {
   const [text, setText] = useState("");
   const [imgGif, setImgGif] = useState("");
 
-  const urlPrev = sessionStorage.getItem("urlPrev");
-
   const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const [errorEmailLoading, setErrorEmailLoading] = useState(false);
 
@@ -100,6 +98,8 @@ function Authentication({ isLogin }) {
   }, [showLogin]);
 
   async function onFinish(values) {
+    const urlPrev = sessionStorage.getItem("urlPrev");
+
     if (showLogin) {
       try {
         const res = await authenticationApi.login(
@@ -109,6 +109,7 @@ function Authentication({ isLogin }) {
 
         if (res.status == 200) {
           sessionStorage.setItem("logined", JSON.stringify(res.data));
+          sessionStorage.removeItem("urlPrev");
           navigate(urlPrev || "/");
           window.location.reload();
         }
@@ -133,6 +134,7 @@ function Authentication({ isLogin }) {
         .then((response) => {
           if (response.status == 200) {
             sessionStorage.setItem("logined", JSON.stringify(response.data));
+
             navigate(urlPrev || "/profile/freelancer");
             window.location.reload();
           }
@@ -303,7 +305,16 @@ function Authentication({ isLogin }) {
                       >
                         <Form.Item
                           name="password"
-                          rules={showLogin ? [] : formValidator.password()}
+                          rules={
+                            showLogin
+                              ? [
+                                  {
+                                    required: true,
+                                    message: "Vui lòng nhập mật khẩu!",
+                                  },
+                                ]
+                              : formValidator.password()
+                          }
                         >
                           <FlInputPassword
                             label="Mật khẩu"

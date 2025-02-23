@@ -31,7 +31,7 @@ async function generateRecruitmentContent(details) {
     jobContent,
     jobSkills,
     recruiterName,
-    RepresentativeName,
+    representativeName,
     exp
   } = details;
 
@@ -51,9 +51,9 @@ Introduction: ${freelancerIntro}
 Skills: ${freelancerSkills}
 Job Title: ${jobTitle}
 Job Content: ${jobContent}
-Job Content: ${jobSkills}
+Job Skills: ${jobSkills}
 Recruiter Name: ${recruiterName}
-Representative Name: ${RepresentativeName}
+Representative Name: ${representativeName}
 Experience: 
 ${exp}
 
@@ -72,7 +72,7 @@ Output plain text only without any markdown characters (such as **, [], or /*).
 The entire output must be written in Vietnamese.
 Generate the job application letter accordingly.`;
 
-console.log(prompt);
+  console.log(prompt);
 
   try {
     const result = await model.generateContent({
@@ -100,23 +100,23 @@ console.log(prompt);
 
 const generateContentApply = async (jobPostId, exp = "") => {
 
-  const jobPost = await jobPostApi.getById(jobPostId);
-  const jobSkills = await skillApi.getByIds(jobPost?.data?.skillIds);
+  const resJobPost = await jobPostApi.getById(jobPostId);
+  const resJobSkills = await skillApi.getByIds(resJobPost?.data?.skillIds);
   const logined = JSON.parse(sessionStorage.getItem("logined"));
-  const profile = await profileApi.getByAccountId(logined?.id);
-  const freelancerSkills = await skillApi.getByIds(profile?.data?.freelancer?.skillIds);
-  const profileRecruiter = await profileApi.getByRecruiterId(jobPost?.data?.recruiterId);
+  const resProfile = await profileApi.getByAccountId(logined?.id);
+  const resFreelancerSkills = await skillApi.getByIds(resProfile?.data?.freelancer?.skillIds);
+  const resProfileRecruiter = await profileApi.getByRecruiterId(resJobPost?.data?.recruiterId);
 
   const details = {
-    freelancerName: profile?.data?.fullName,
-    freelancerDOB: profile?.data?.birthday,
-    freelancerIntro: profile?.data?.freelancer?.introduction,
-    freelancerSkills: freelancerSkills?.data?.name,
-    jobTitle: jobPost?.data?.title,
-    jobContent: jobPost?.data?.description,
-    jobSkills: jobSkills?.data?.name,
-    RecruiterName: profileRecruiter?.data?.recruiter?.name,
-    RepresentativeName: profileRecruiter?.data?.fullName,
+    freelancerName: resProfile?.data?.fullName,
+    freelancerDOB: resProfile?.data?.birthday,
+    freelancerIntro: resProfile?.data?.freelancer?.introduce,
+    freelancerSkills: resFreelancerSkills?.data?.map((skill => skill?.name)).join(", "),
+    jobTitle: resJobPost?.data?.title,
+    jobContent: resJobPost?.data?.description,
+    jobSkills: resJobSkills?.data?.map((skill => skill?.name)).join(", "),
+    recruiterName: resProfileRecruiter?.data?.recruiter?.name,
+    representativeName: resProfileRecruiter?.data?.fullName,
     exp: exp
   };
 

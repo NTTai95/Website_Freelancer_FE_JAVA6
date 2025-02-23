@@ -71,7 +71,7 @@ function ProfileFreelancers() {
   return (
     <div className={scss.container}>
       {freelancer ? (
-        <Tabs className={scss.barlow} defaultActiveKey="2" items={items} />
+        <Tabs className={scss.barlow} defaultActiveKey="1" items={items} />
       ) : (
         <FreelancerFormAdd onFinish={onFinish} />
       )}

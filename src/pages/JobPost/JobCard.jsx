@@ -51,7 +51,7 @@ const JobCard = ({ job }) => {
             <div className={scss.text}>
               <span
                 className={scss.title}
-                onClick={() => navigate(`/postdetail/${job?.id}`)}
+                onClick={() => navigate(`/jobpostdetail/${job?.id}`)}
               >
                 {job?.title}
               </span>
@@ -87,7 +87,7 @@ const JobCard = ({ job }) => {
             {skills ? (
               <div>
                 {skills.map((skill) => (
-                  <Tag color="blue">{skill.name}</Tag>
+                  <Tag key={skill.id} color="blue">{skill.name}</Tag>
                 ))}
               </div>
             ) : (
