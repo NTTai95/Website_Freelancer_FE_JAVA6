@@ -6,7 +6,8 @@ const FreelancerApplies = ({ freelancer }) => {
   const applies = freelancer?.applies?.filter(
     (apply) =>
       apply.status == State.Apply.PENDING || apply.status == State.Apply.WORKING
-  );
+  )
+
 
   return (
     <>

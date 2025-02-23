@@ -1,20 +1,19 @@
 import React from "react";
 import { Card, Tag, Row, Col } from "antd";
-import { useEffect, useState } from "react";
-import jobspostApi from "@api/jobspostApi";
 import { useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import State from "@utils/State";
-import scss from "./CardApplies.module.scss";
+import scss from "./JobCard.module.scss";
+import jobspostApi from "@api/jobspostApi";
 
-const CardApplies = ({ apply }) => {
-  const [jobPost, setJobPost] = useState(null);
+const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
 
   const fetchJobPost = async () => {
     try {
-      const response = await jobspostApi.getById(apply.jobPostId);
+      const response = await jobspostApi.getByAccountId(job.RecruiterId);
       setJobPost(response.data);
       console.log("jobPost", response.data);
     } catch (error) {
@@ -25,41 +24,40 @@ const CardApplies = ({ apply }) => {
   useEffect(() => {
     fetchJobPost();
 
-    switch (apply.status) {
-      case State.Apply.PENDING:
+    switch (job.status) {
+      case State.JobPost.PENDING:
         setStatus({ text: "Chờ xác nhận", color: "blue" });
         break;
-      case State.Apply.WORKING:
+      case State.JobPost.WORKING:
         setStatus({ text: "Đang làm", color: "success" });
         break;
       default:
         setStatus({ text: "Không xác định" });
     }
   }, []);
-
   return (
-    <Card className={scss.card} loading={!jobPost}>
+    <Card className={scss.card} loading={!job}>
       <Row>
         <Col span={20}>
           <p
             className={scss.title}
-            onClick={() => navigate(`/jobpostdetail/${jobPost?.id}`)}
+            onClick={() => navigate(`/jobpostdetail/${jobPost.id}`)}
           >
-            {jobPost?.title}
+            {job.title}
           </p>
           <div className={scss.budgetContainer}>
             <span className={scss.bold}>Ngân sách: </span>
             <span className={scss.text}>
-              {jobPost?.budget?.toLocaleString("vi-VN", {
+              {job.budget?.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
               })}
             </span>
           </div>
-          <div className={scss.dateCraetedContainer}>
-            <span className={scss.bold}>Ngày nộp: </span>
+          <div className={scss.datePostedContainer}>
+            <span className={scss.bold}>Ngày đăng: </span>
             <span className={scss.text}>
-              {dayjs(apply?.dateCreated).format("DD/MM/YYYY hh:mm")}
+              {dayjs(job.datePosted).format("DD/MM/YYYY")}
             </span>
           </div>
         </Col>
@@ -73,4 +71,4 @@ const CardApplies = ({ apply }) => {
   );
 };
 
-export default CardApplies;
+export default JobCard;

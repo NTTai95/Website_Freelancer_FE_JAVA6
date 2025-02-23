@@ -1,11 +1,10 @@
 import apiClient from './index';
 
-const skillApi = {
+const recruiterApi = {
     add: (recruiter) => apiClient.post('/recruiters', recruiter),
     getById: (id) => apiClient.get(`/recruiters/${id}`),
-    update: (id, recruiter) => apiClient.put(`/recruiters/${id}`, recruiter),
     getByAccountId: (accountId) => apiClient.get(`/recruiters/account/${accountId}`),
-
+    update: (id, recruiter) => apiClient.put(`/recruiters/${id}`, recruiter),
 };
 
-export default skillApi;
+export default recruiterApi;

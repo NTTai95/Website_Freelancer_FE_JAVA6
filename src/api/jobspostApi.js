@@ -3,6 +3,7 @@ import apiClient from './index';
 const jobspostApi = {
     getPage: ({ page, size }) => apiClient.get('/jobposts', { params: { page, size } }),
     getById: (id) => apiClient.get(`/jobposts/${id}`),
+    getByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}`),
     add: (jobpost) => apiClient.post('/jobposts', jobpost),
     update: (id, staff) => apiClient.put(`/jobposts/${id}`, staff),
     delete: (id) => apiClient.delete(`/jobposts/${id}`),

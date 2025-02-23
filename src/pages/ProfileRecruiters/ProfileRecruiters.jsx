@@ -1,77 +1,78 @@
-import { Tag, Divider } from "antd";
-import profileApi from '@api/profileApi'
-import { useNavigate } from "react-router-dom";
+import RecruiterInfo from "./RecruitersInfo";
+import RecruiterJobs from "./RecruiterJobs";
+//import RecruiterHistory from "./RecruiterHistory";
+import scss from "./RecruiterInfo.module.scss";
+import { Tabs } from "antd";
+import recruiterApi from "@api/recruiterApi";
+import profileApi from "@api/profileApi";
 import { useEffect, useState } from "react";
+import RecruiterFormAdd from "./RecruiterFormAdd";
 
 function ProfileRecruiters() {
-    const [profile, setProfile] = useState(null);
-    const nagivate = useNavigate();
+  const [recruiter, setRecruiter] = useState(null);
 
-    useEffect(() => {
-        const logined = JSON.parse(sessionStorage.getItem("logined"));
-        if (logined) {
-            if (logined.type) {
-                nagivate("/404");
-            } else {
-                profileApi.getByAccountId(logined.id).then((response) => {
-                    if (response.status == 200) {
-                        setProfile(response.data);
-                    }
-                });
-            }
-        }
-    }, []);
+  const checkRecruiterId = async () => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
 
-    return (
-        <div>
-            <div>
-                <h2 className="text-primary">Tên công ty</h2>
-                <Divider />
-                <p style={{ fontSize: "17px" }}>
-                    {profile?.freelancer?.introduce}
-                </p>
-                <Divider />
-            </div>
-            <div>
-                <h2 className="text-primary">Giới thiệu</h2>
-                <Divider />
-                <p style={{ fontSize: "17px" }}>
-                    {profile?.freelancer?.introduce}
-                </p>
-                <Divider />
-            </div>
-            <div className="mb-4">
-                <h2 className="text-primary">Ngôn ngữ</h2>
-                <Tag className="fs-6 p-1" color="purple">
-                    Tiếng Anh
-                </Tag>
-                <Tag className="fs-6 p-1" color="cyan">
-                    Tiếng Ấn Độ
-                </Tag>
-            </div>
-            <Divider />
-            <div>
-                <h2 className="text-primary">Danh sách công việc</h2>
-                <Divider />
-                <p style={{ fontSize: "17px" }}>
-                    {profile?.freelancer?.introduce}
-                </p>
-                <Divider />
-            </div>
-            <div className="mb-4">
-                <h2 className="text-primary">Kỹ năng</h2>
-                <Tag className="fs-6 p-1" bordered={false} color="processing">
-                    Java
-                </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="gold">
-                    React
-                </Tag>
-                <Tag className="fs-6 p-1" bordered={false} color="magenta">
-                    Copy Writing
-                </Tag>
-                
-            </div>
-        </div>
-    );
+      const resRecruiter = await recruiterApi.getByAccountId(logined.id);
+      setRecruiter(resRecruiter?.data);
+    } catch (error) {
+      console.error("Error checking recruiter:", error);
+    }
+  };
+
+  useEffect(() => {
+    checkRecruiterId();
+  }, []);
+
+  const items = [
+    {
+      key: "1",
+      label: "Thông tin cá nhân",
+      children: <RecruiterInfo />,
+    },
+    {
+      key: "2",
+      label: "Công việc đã đăng",
+      children: <RecruiterJobs recruiter={recruiter} />,
+    },
+    {
+      key: "3",
+      label: "Lịch sử tuyển dụng",
+      children: "êm",//<RecruiterHistory recruiter={recruiter} />,
+    },
+  ];
+
+  const onFinish = async (values) => {
+    try {
+      const logined = JSON.parse(sessionStorage.getItem("logined"));
+      if (!logined) return;
+
+      const resProfile = await profileApi.getByAccountId(logined.id);
+      const recruiterDTO = {
+        profileId: resProfile.data.id,
+        introduce: values.introduce,
+        company: values.company,
+      };
+
+      await recruiterApi.create(recruiterDTO);
+      checkRecruiterId();
+    } catch (error) {
+      console.error("Error creating recruiter:", error);
+    }
+  };
+
+  return (
+    <div className={scss.container}>
+      {recruiter ? (
+        <Tabs className={scss.barlow} defaultActiveKey="1" items={items} />
+      ) : (
+        <RecruiterFormAdd onFinish={onFinish} />
+      )}
+    </div>
+  );
 }
+
 export default ProfileRecruiters;
