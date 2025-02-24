@@ -1,0 +1,33 @@
+@import "@assets/styles/variables.scss";
+
+.card {
+  margin-bottom: 16px;
+  font-family: "Barlow", sans-serif;
+  .title {
+    font-size: 20px;
+    font-weight: 700;
+    color: $color-bright-blue;
+    cursor: pointer;
+    margin-bottom: 8px;
+    font-family: "Barlow", sans-serif;
+    &:hover {
+      filter: brightness(1.2);
+    }
+  }
+
+  div {
+    font-family: "Barlow", sans-serif;
+    .bold {
+      font-weight: 600;
+    }
+
+    .text {
+      color: #333;
+    }
+  }
+  .tag {
+    float: right;
+    font-size: 16px;
+    padding: 4px 8px;
+  }
+}

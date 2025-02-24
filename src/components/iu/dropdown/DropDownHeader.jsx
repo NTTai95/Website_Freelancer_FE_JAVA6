@@ -1,24 +1,22 @@
 import React from "react";
-import { Menu, Dropdown } from "antd";
+import { Dropdown } from "antd";
 import { CaretDownOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import scss from "./DropDownHeader.module.scss";
 
-const CustomDropdown = ({ menuItems, label }) => {
+const DropDownHeader = ({ menuItems, label }) => {
   const navigate = useNavigate();
 
-  const menu = (
-    <Menu>
-      {menuItems.map((item, index) => (
-        <Menu.Item key={index} onClick={() => navigate(item.link)}>
-          {item.name}
-        </Menu.Item>
-      ))}
-    </Menu>
-  );
+  const items = menuItems.map((item, index) => {
+    return {
+      key: index,
+      label: item.name,
+      onClick: () => navigate(item.link),
+    };
+  });
 
   return (
-    <Dropdown overlay={menu} trigger={["click"]}>
+    <Dropdown menu={{items}} trigger={["click"]}>
       <span className={scss.title}>
         {label} <CaretDownOutlined />
       </span>
@@ -26,4 +24,4 @@ const CustomDropdown = ({ menuItems, label }) => {
   );
 };
 
-export default CustomDropdown;
+export default DropDownHeader;
