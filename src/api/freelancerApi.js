@@ -1,4 +1,4 @@
-import { getPage } from '@cloudinary/url-gen/actions/extract';
+
 import apiClient from './index';
 
 const freelancerApi = {
