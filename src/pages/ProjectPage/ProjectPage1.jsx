@@ -1,3 +1,4 @@
+import formValidator from "../../utils/formValidator";
 import scss from "./ProjectPage1.module.scss";
 import { Input, Row, Col, Typography, Form } from "antd";
 
@@ -8,48 +9,53 @@ function ProjectPage1() {
     <div className={scss.container}>
       <Row gutter={24}>
         <Col span={17} className={scss.colLeft}>
-          <Title className={scss.title3} level={3}>
+          <Title level={3} className={scss.title3}>
             Tổng quan dự án
           </Title>
-          <Title className={scss.title5} level={5}>
+          <Title level={5} className={scss.title5}>
             Tiêu đề dự án
           </Title>
-          <Form.Item name="title">
-            <Input placeholder="Nhập tiêu đề dự án" size="large" />
+          <Form.Item name="title" rules={formValidator.title()}>
+            <Input
+              size="large"
+              showCount
+              maxLength={100}
+              placeholder="VD: Xây dựng website freelancer..."
+            />
           </Form.Item>
-          <Title className={scss.title5} level={5}>
+          <Title level={5} className={scss.title5}>
             Mô tả dự án
           </Title>
-          <Form.Item name="description" rules={[{ required: true, message: "Vui lòng nhập mô tả dự án" }]}>
+          <Form.Item name="description" rules={formValidator.description()}>
             <Input.TextArea
-              className={scss.description}
+              rows={7}
               showCount
               maxLength={10000}
-              rows={7}
-              placeholder="Nhập mô tả dự án"
+              className={scss.description}
+              placeholder="VD: Tôi cần một freelancer giỏi về thiết kế web để giúp tôi xây dựng website bán hàng online..."
             />
           </Form.Item>
         </Col>
         <Col span={7} className={scss.colRight}>
-          <Title className={scss.title5} level={4}>
+          <Title level={4} className={scss.title5}>
             Mẹo nếu bạn gặp khó khăn
           </Title>
           <div>
-            <Title className={scss.title5} level={5}>
+            <Title level={5} className={scss.title5}>
               Yêu cầu dự án
             </Title>
-            <Paragraph className={scss.text} type="secondary">
+            <Paragraph type="secondary" className={scss.text}>
               Ngắn gọn vấn đề, khó khăn bạn gặp phải là gì? cần được hỗ trợ
               những gì?
             </Paragraph>
-            <Title className={scss.title5} level={5}>
+            <Title level={5} className={scss.title5}>
               Mô tả dự án
             </Title>
-            <Paragraph className={scss.text} type="secondary">
+            <Paragraph type="secondary" className={scss.text}>
               Mô tả chi tiết đầy đủ về vấn đề, khó khăn bạn gặp phải và cần được
               hỗ trợ những gì?
             </Paragraph>
-            <Link className={scss.link} href="#" type="success">
+            <Link href="#" type="success" className={scss.link}>
               Video từng bước về cách tạo dự án
             </Link>
           </div>

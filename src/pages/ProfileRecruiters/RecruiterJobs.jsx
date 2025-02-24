@@ -1,0 +1,38 @@
+import React, { useEffect, useState } from "react";
+import JobCard from "./JobCard";
+import jobspostApi from "../../api/jobspostApi";
+import recruiterApi from "../../api/recruiterApi";
+const RecruiterJobs = () => {
+  const [jobs, setJobs] = useState(null);
+  const logined = JSON.parse(sessionStorage.getItem("logined"));
+
+  useEffect(() => {
+    const fetchJobs = async () => {
+      try {
+        if (!logined?.id) return; // Kiểm tra nếu chưa đăng nhập thì không gọi API
+        const data = await jobspostApi.getByAccountId(logined.id);
+        setJobs(data.data.content); // Cập nhật state sau khi nhận dữ liệu từ API
+       console.log(data.data.content) 
+        console.log("jobs", data);
+        console.log("logined", logined);
+      } catch (error) {
+        console.error("Lỗi khi lấy dữ liệu công việc:", error);
+      }
+    };
+
+    fetchJobs();
+  }, [logined?.id]);
+
+  return (
+    <>
+      {jobs && jobs?.length > 0 ? (
+        // jobs?.map((apply) => <JobCard apply={apply} />)
+        jobs?.map((job) => <JobCard job={job} />)
+      ) : (
+        <div>Hiện tại không có công việc nào!</div>
+      )}
+    </>
+  );
+};
+
+export default RecruiterJobs;

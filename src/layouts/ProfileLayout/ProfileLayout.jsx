@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Row, Col, Menu, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
-import profileApi from "../../api/profileApi";
+import profileApi from "@api/profileApi";
 import {
   UserOutlined,
   ApartmentOutlined,
@@ -38,6 +38,48 @@ const ProfileLayout = ({ children, active }) => {
     window.location.reload();
   }
 
+  const menuItems = [
+    {
+      key: "profile",
+      icon: <IdcardOutlined />,
+      label: "Thông tin",
+      onClick: () => nagivate("/profile")
+    },
+    {
+      key: "freelancer",
+      icon: <UserOutlined />,
+      label: "Freelancer",
+      onClick: () => nagivate("/profile/freelancer")
+    },
+    {
+      key: "recruiters",
+      icon: <ApartmentOutlined />,
+      label: "Nhà tuyển dụng",
+      onClick: () => nagivate("/profile/recruiters")
+    },
+    {
+      key: "statistic",
+      icon: <BarChartOutlined />,
+      label: "Thống kê",
+      onClick: () => nagivate("/profile/statistic")
+    },
+    {
+      type: "divider"
+    },
+    {
+      key: "change-password",
+      icon: <RetweetOutlined />,
+      label: "Đổi mật khẩu",
+      onClick: () => nagivate("/change-password")
+    },
+    {
+      key: "logout",
+      icon: <LogoutOutlined />,
+      label: "Đăng xuất",
+      onClick: () => handleLogout()
+    }
+  ];
+
   return (
     <div>
       <Row>
@@ -55,51 +97,8 @@ const ProfileLayout = ({ children, active }) => {
             mode="inline"
             selectedKeys={[active]}
             style={{ height: "100%", borderRight: 0, marginTop: "20px" }}
-          >
-            <Menu.Item
-              key="profile"
-              icon={<IdcardOutlined />}
-              onClick={() => nagivate("/profile")}
-            >
-              Thông tin
-            </Menu.Item>
-            <Menu.Item
-              key="freelancer"
-              icon={<UserOutlined />}
-              onClick={() => nagivate("/profile/freelancer")}
-            >
-              Freelancer
-            </Menu.Item>
-            <Menu.Item
-              key="recruiters"
-              icon={<ApartmentOutlined />}
-              onClick={() => nagivate("/profile/recruiters")}
-            >
-              Nhà tuyển dụng
-            </Menu.Item>
-            <Menu.Item
-              key="statistic"
-              icon={<BarChartOutlined />}
-              onClick={() => nagivate("/profile/statistic")}
-            >
-              Thống kê
-            </Menu.Item>
-            <Menu.Divider></Menu.Divider>
-            <MenuItem
-              key="change-password"
-              icon={<RetweetOutlined />}
-              onClick={() => nagivate("/change-password")}
-            >
-              Đổi mật khẩu
-            </MenuItem>
-            <Menu.Item
-              key="logout"
-              icon={<LogoutOutlined />}
-              onClick={() => handleLogout()}
-            >
-              Đăng xuất
-            </Menu.Item>
-          </Menu>
+            items={menuItems}
+          />
         </Col>
         <Col span={18} className={"container"}>
           {children}
@@ -108,5 +107,6 @@ const ProfileLayout = ({ children, active }) => {
     </div>
   );
 };
+
 
 export default ProfileLayout;

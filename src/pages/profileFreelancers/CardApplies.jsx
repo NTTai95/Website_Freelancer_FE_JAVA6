@@ -16,6 +16,7 @@ const CardApplies = ({ apply }) => {
     try {
       const response = await jobspostApi.getById(apply.jobPostId);
       setJobPost(response.data);
+      console.log("jobPost", response.data);
     } catch (error) {
       console.error("Error fetching job post:", error);
     }
@@ -48,7 +49,12 @@ const CardApplies = ({ apply }) => {
           </p>
           <div className={scss.budgetContainer}>
             <span className={scss.bold}>Ngân sách: </span>
-            <span className={scss.text}>{jobPost?.budget?.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}</span>
+            <span className={scss.text}>
+              {jobPost?.budget?.toLocaleString("vi-VN", {
+                style: "currency",
+                currency: "VND",
+              })}
+            </span>
           </div>
           <div className={scss.dateCraetedContainer}>
             <span className={scss.bold}>Ngày nộp: </span>

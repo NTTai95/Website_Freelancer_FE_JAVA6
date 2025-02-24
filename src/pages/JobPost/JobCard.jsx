@@ -7,8 +7,9 @@ import { UserOutlined } from "@ant-design/icons";
 import { useState } from "react";
 import recruiterApi from "@api/recruiterApi";
 import skillApi from "@api/skillApi";
+import Highlighter from "react-highlight-words";
 
-const JobCard = ({ job }) => {
+const JobCard = ({ job, hightLight }) => {
   const navigate = useNavigate();
   const [recruiter, setRecruiter] = useState(null);
   const [skills, setSkills] = useState(null);
@@ -51,9 +52,14 @@ const JobCard = ({ job }) => {
             <div className={scss.text}>
               <span
                 className={scss.title}
-                onClick={() => navigate("/jobpostdetail")}
+                onClick={() => navigate(`/jobpostdetail/${job?.id}`)}
               >
-                {job?.title}
+                <Highlighter
+                  highlightStyle={{ backgroundColor: "#94dffa", padding: 0 }}
+                  searchWords={[hightLight]}
+                  autoEscape
+                  textToHighlight={job?.title || ""}
+                ></Highlighter>
               </span>
               <div className={scss.text2}>
                 <span
@@ -80,14 +86,30 @@ const JobCard = ({ job }) => {
               </span>
             </div>
             <div className={scss.description}>
-              <span className={scss.thin}>{job.description}</span>
+              <Highlighter
+                className={scss.thin}
+                highlightStyle={{ backgroundColor: "#94dffa", padding: 0 }}
+                searchWords={[hightLight]}
+                autoEscape
+                textToHighlight={job?.description || ""}
+              ></Highlighter>
             </div>
           </div>
           <div className={scss.footer}>
             {skills ? (
               <div>
                 {skills.map((skill) => (
-                  <Tag color="blue">{skill.name}</Tag>
+                  <Tag key={skill.id} color="blue">
+                    <Highlighter
+                      highlightStyle={{
+                        backgroundColor: "#94dffa",
+                        padding: 0,
+                      }}
+                      searchWords={[hightLight]}
+                      autoEscape
+                      textToHighlight={skill?.name || ""}
+                    ></Highlighter>
+                  </Tag>
                 ))}
               </div>
             ) : (
@@ -97,7 +119,12 @@ const JobCard = ({ job }) => {
                 <Skeleton.Button active />
               </div>
             )}
-            <Button type="primary">Ứng tuyển</Button>
+            <Button
+              onClick={() => navigate(`/jobpostdetail/${job?.id}`)}
+              type="primary"
+            >
+              Ứng tuyển
+            </Button>
           </div>
         </div>
       ) : (

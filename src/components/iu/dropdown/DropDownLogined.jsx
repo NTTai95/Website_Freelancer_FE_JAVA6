@@ -13,22 +13,40 @@ const DropDownLogined = ({ profile }) => {
     window.location.reload();
   }
 
-  const menu = (
-    <Menu>
-      <Menu.Item onClick={() => navigate("/profile")}>Trang cá nhân</Menu.Item>
-      <Menu.Divider></Menu.Divider>
-      <Menu.Item onClick={() => navigate("/profile/freelancer")}>
-        Freelancer
-      </Menu.Item>
-      <Menu.Item>Nhà tuyển dụng</Menu.Item>
-      <Menu.Divider></Menu.Divider>
-      <Menu.Item>Đổi mật khẩu</Menu.Item>
-      <Menu.Item onClick={() => handleLogout()}>Đăng xuất</Menu.Item>
-    </Menu>
-  );
-
+  const items = [
+    {
+      key: '1',
+      label: 'Trang cá nhân',
+      onClick: () => navigate("/profile")
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: '2',
+      label: 'Freelancer',
+      onClick: () => navigate("/profile/freelancer")
+    },
+    {
+      key: '3',
+      label: 'Nhà tuyển dụng',
+      onClick: () => navigate("/profile/recruiters")
+    },
+    {
+      type: 'divider'
+    },
+    {
+      key: '4',
+      label: 'Đổi mật khẩu'
+    },
+    {
+      key: '5',
+      label: 'Đăng xuất',
+      onClick: () => handleLogout()
+    }
+  ];
   return (
-    <Dropdown overlay={menu} trigger={["click"]}>
+    <Dropdown menu={{items}} trigger={["click"]}>
       <div className={"d-flex align-items-center " + scss["cursor-pointer"]}>
         <span className={scss.fullName}>{profile.fullName}</span>
         <Avatar size={40} icon={<UserOutlined />} />

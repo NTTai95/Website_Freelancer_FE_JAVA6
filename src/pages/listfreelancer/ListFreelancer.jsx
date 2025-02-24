@@ -1,38 +1,12 @@
 import React, { useState, useEffect } from "react";
 import FreelancerCard from "./FreelancerCard";
-import SidebarFilter from "./SidebarFilter";
-import { Pagination, Skeleton, Row, Col } from "antd";
+import SearchInput from "./SearchInput";
+import { Skeleton, Row, Col, Pagination, Divider, Typography } from "antd";
 import profileApi from "@api/profileApi";
 
 const ListFreelancer = () => {
-  const filters = {
-    "Ngày đăng": [
-      "Trong vòng 1 giờ",
-      "Trong vòng 24 giờ",
-      "Trong vòng 7 ngày",
-      "Trong vòng 14 ngày",
-      "Trong vòng 30 ngày",
-    ],
-    "Danh mục": [
-      "Digital & Creative",
-      "Kế toán",
-      "Ngân hàng",
-      "Mới tốt nghiệp",
-      "IT Contractor",
-    ],
-    "Kinh nghiệm": ["Tất cả", "1 năm", "3 năm", "5 năm", "Trên 5 năm"],
-    Lương: ["Tất cả", "2 triệu", "4 triệu", "6 triệu", "Trên 8 triệu"],
-    "Cấp bậc": [
-      "Tất cả",
-      "Nhân viên",
-      "Trưởng nhóm",
-      "Trưởng/Phó phòng",
-      "Giám đốc",
-    ],
-    "Hình thức công việc": ["Toàn thời gian", "Bán thời gian", "Thực tập"],
-  };
-
   const [profile, setProfile] = useState(null);
+  const [search, setSearch] = useState("");
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -44,6 +18,7 @@ const ListFreelancer = () => {
     const res = await profileApi.getPageFreelancerNotNull({
       page: pagination.current,
       size: pagination.pageSize,
+      search: `fullName,${search}`,
     });
 
     const { content, totalElements } = res.data;
@@ -57,7 +32,7 @@ const ListFreelancer = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pagination.current, pagination.pageSize]);
+  }, [pagination.current, pagination.pageSize, search]);
 
   const handlePageChange = (page, pageSize) => {
     setPagination((prev) => ({
@@ -68,21 +43,27 @@ const ListFreelancer = () => {
     window.scrollTo(0, 0);
   };
 
-  return (
-    <div className="container my-5">
-      <div className="row">
-        <aside className="col-md-3">
-          {Object.keys(filters).map((key) => (
-            <SidebarFilter key={key} title={key} options={filters[key]} />
-          ))}
-        </aside>
+  const onSearch = (value) => {
+    setSearch(value);
+  };
 
-        <div className="col-9">
+  return (
+    <div className="container">
+      <Row gutter={24}>
+        <Col span={6} className={"border-end mt-5"}>
+          <div>
+            <Typography.Title level={5}>Tìm kiếm</Typography.Title>
+            <SearchInput className={"mt-5"} onSearch={onSearch} />
+          </div>
+          <Divider />
+        </Col>
+
+        <Col span={18}>
           <Row gutter={[16, 16]}>
             {profile &&
               profile.map((profile, index) => (
-                <Col span={6}>
-                  <FreelancerCard key={index} profile={profile} />
+                <Col key={profile.id || index} span={6}>
+                  <FreelancerCard profile={profile} />
                 </Col>
               ))}
 
@@ -102,8 +83,15 @@ const ListFreelancer = () => {
               </div>
             )}
           </Row>
-        </div>
-      </div>
+          {profile && (
+            <Pagination
+              pagination={pagination}
+              align="end"
+              onChange={handlePageChange}
+            ></Pagination>
+          )}
+        </Col>
+      </Row>
     </div>
   );
 };

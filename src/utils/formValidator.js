@@ -158,7 +158,77 @@ const languages = ({ minLength = 1, maxLength = 20 } = {}) => [
     }),
 ];
 
+const title = ({ minLength = 20, maxLength = 100 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập tiêu đề!");
+            if (value.length < minLength) return Promise.reject(`Tiêu đề tối thiểu ${minLength} kí tự!`);
+            if (value.length > maxLength) return Promise.reject(`Tiêu đề tối đa ${maxLength} kí tự!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+const description = ({ minLength = 1000, maxLength = 100000 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập mô tả!");
+            if (value.length < minLength) return Promise.reject(`Mô tả tối thiểu ${minLength} kí tự!`);
+            if (value.length > maxLength) return Promise.reject(`Mô tả tối đa ${maxLength} kí tự!`);
+            return Promise.resolve();
+        },
+    }),
+];
+
+const startDate = () => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng chọn ngày bắt đầu!");
+            return Promise.resolve();
+        },
+    }),
+];
+
+const endDate = () => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng chọn ngày kết thúc!");
+            return Promise.resolve();
+        },
+    }),
+];
+
+const content = ({ minLength = 100, maxLength = 5000 } = {}) => [
+    () => ({
+        validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập nội dung!");
+            if (value.length < minLength) return Promise.reject(`Nội dung tối thiểu ${minLength} kí tự!`);
+            if (value.length > maxLength) return Promise.reject(`Nội dung tối đa ${maxLength} kí tự!`);
+        },
+    }),
+];
+
+const companyName = () => [
+    () => ({
+        async validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập tên công ty!");
+
+            value = value.trim();
+
+            const hasInvalidChars = /[^a-zA-ZÀ-ỹ0-9\s&.,'-]/u.test(value);
+            const hasExtraSpaces = /\s{2,}/.test(value);
+            const isTooShort = value.length < 2;
+            const isTooLong = value.length > 100;
+
+            if (hasInvalidChars) return Promise.reject("Tên công ty không hợp lệ!");
+            if (hasExtraSpaces) return Promise.reject("Tên công ty có khoảng trắng thừa!");
+            if (isTooShort) return Promise.reject("Tên công ty tối thiểu 2 ký tự!");
+            if (isTooLong) return Promise.reject("Tên công ty tối đa 100 ký tự!");
+
+            return Promise.resolve();
+        },
+    }),
+];
 
 
-
-export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages };
+export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate, content, companyName };

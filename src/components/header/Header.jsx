@@ -78,7 +78,7 @@ function Header() {
         <span className={scss.link} onClick={() => navigate("/")}>
           Trang chủ{" "}
         </span>
-        <DropDownHeader menuItems={menuItemsFindWork} label="Tìm việc" />
+        <DropDownHeader menuItems={menuItemsFindWork} label="Freelancer" />
         <DropDownHeader menuItems={menuItemsRecruitment} label="Tuyển dụng" />
         <DropDownHeader menuItems={menuItemsHelp} label="Trợ giúp" />
       </Col>
