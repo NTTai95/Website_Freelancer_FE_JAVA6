@@ -1,38 +1,12 @@
 import React, { useState, useEffect } from "react";
 import JobCard from "./JobCard";
-import SidebarFilter from "./SidebarFilter";
-import { Pagination, Skeleton } from "antd";
-import jobspostApi from "../../api/jobspostApi";
+import SearchInput from "./SearchInput";
+import { Pagination, Skeleton, Row, Col, Typography, Divider } from "antd";
+import jobspostApi from "@api/jobspostApi";
 
 const JobPost = () => {
-  const filters = {
-    "Ngày đăng": [
-      "Trong vòng 1 giờ",
-      "Trong vòng 24 giờ",
-      "Trong vòng 7 ngày",
-      "Trong vòng 14 ngày",
-      "Trong vòng 30 ngày",
-    ],
-    "Danh mục": [
-      "Digital & Creative",
-      "Kế toán",
-      "Ngân hàng",
-      "Mới tốt nghiệp",
-      "IT Contractor",
-    ],
-    "Kinh nghiệm": ["Tất cả", "1 năm", "3 năm", "5 năm", "Trên 5 năm"],
-    Lương: ["Tất cả", "2 triệu", "4 triệu", "6 triệu", "Trên 8 triệu"],
-    "Cấp bậc": [
-      "Tất cả",
-      "Nhân viên",
-      "Trưởng nhóm",
-      "Trưởng/Phó phòng",
-      "Giám đốc",
-    ],
-    "Hình thức công việc": ["Toàn thời gian", "Bán thời gian", "Thực tập"],
-  };
-
   const [jobs, setJobs] = useState(null);
+  const [search, setSearch] = useState("");
 
   const [pagination, setPagination] = useState({
     current: 1,
@@ -44,6 +18,7 @@ const JobPost = () => {
     const res = await jobspostApi.getPage({
       page: pagination.current,
       size: pagination.pageSize,
+      search: `keyword,${search}`,
     });
 
     const { content, totalElements } = res.data;
@@ -57,7 +32,7 @@ const JobPost = () => {
 
   useEffect(() => {
     fetchData();
-  }, [pagination.current, pagination.pageSize]);
+  }, [pagination.current, pagination.pageSize, search]);
 
   const handlePageChange = (page, pageSize) => {
     setPagination((prev) => ({
@@ -68,17 +43,26 @@ const JobPost = () => {
     window.scrollTo(0, 0);
   };
 
+  const onSearch = (value) => {
+    setSearch(value);
+  };
+
   return (
     <div className="container my-5">
-      <div className="row">
-        <aside className="col-md-3">
-          {Object.keys(filters).map((key) => (
-            <SidebarFilter key={key} title={key} options={filters[key]} />
-          ))}
-        </aside>
+      <Row gutter={24}>
+        <Col span={6}>
+          <div>
+            <Typography.Title level={5}>Tìm kiếm</Typography.Title>
+            <SearchInput onSearch={onSearch} />
+            <Divider />
+          </div>
+        </Col>
 
-        <div className="col-9">
-          {jobs && jobs.map((job, index) => <JobCard key={index} job={job} />)}
+        <Col span={18}>
+          {jobs &&
+            jobs.map((job, index) => (
+              <JobCard key={index} job={job} hightLight={search} />
+            ))}
           {jobs && (
             <Pagination
               pageSize={pagination.pageSize}
@@ -103,8 +87,8 @@ const JobPost = () => {
               <Skeleton.Input className={"ms-auto d-block"} active={true} />
             </div>
           )}
-        </div>
-      </div>
+        </Col>
+      </Row>
     </div>
   );
 };

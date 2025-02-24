@@ -1,7 +1,7 @@
 import apiClient from './index';
 
 const jobspostApi = {
-    getPage: ({ page, size }) => apiClient.get('/jobposts', { params: { page, size } }),
+    getPage: ({ page, size, search }) => apiClient.get('/jobposts', { params: { page, size, search } }),
     getById: (id) => apiClient.get(`/jobposts/${id}`),
     getByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}`),
     add: (jobpost) => apiClient.post('/jobposts', jobpost),

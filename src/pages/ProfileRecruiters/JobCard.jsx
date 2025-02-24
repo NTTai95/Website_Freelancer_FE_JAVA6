@@ -10,6 +10,7 @@ import jobspostApi from "@api/jobspostApi";
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
+  const [jobPost, setJobPost] = useState(null);
 
   const fetchJobPost = async () => {
     try {

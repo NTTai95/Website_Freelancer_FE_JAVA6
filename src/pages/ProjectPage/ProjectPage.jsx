@@ -9,7 +9,8 @@ import jobspostApi from "@api/jobspostApi";
 import recruiterApi from "@api/recruiterApi";
 import { useState } from "react";
 import dayjs from "dayjs";
-import { Alert, message } from "antd";
+import { Alert, message, Result, Button } from "antd";
+import { SmileOutlined } from "@ant-design/icons";
 import scss from "./ProjectPage.module.scss";
 
 const ProjectPage = () => {
@@ -18,6 +19,7 @@ const ProjectPage = () => {
   const [initialValues, setInitialValues] = useState(null);
   const [recruiter, setRecruiter] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
+  const logined = JSON.parse(sessionStorage.getItem("logined"));
 
   const checkMyJobPost = async () => {
     let found = false;
@@ -92,7 +94,6 @@ const ProjectPage = () => {
   };
 
   const fetchRecruiter = async () => {
-    const logined = JSON.parse(localStorage.getItem("logined"));
     const resRecruiter = await recruiterApi.getByAccountId(logined.id);
     setRecruiter(resRecruiter.data);
   };
@@ -120,7 +121,7 @@ const ProjectPage = () => {
     },
   ];
 
-  return (
+  return logined ? (
     <div className="container">
       {contextHolder}
       <Alert
@@ -136,6 +137,14 @@ const ProjectPage = () => {
         initialValues={initialValues}
       />
     </div>
+  ) : (
+    <Result
+      className={scss.result}
+      icon={<SmileOutlined className={scss.icon} />}
+      title="Đăng bài tuyển dụng!"
+      subTitle="Bạn cần đăng nhập và có thông tin nhà tuyển dụng để đăng bài đăng tuyển dụng."
+      extra={<Button type="primary" className={scss.btn} onClick={() => {navigate("/login")}}>Đăng nhập</Button>}
+    />
   );
 };
 

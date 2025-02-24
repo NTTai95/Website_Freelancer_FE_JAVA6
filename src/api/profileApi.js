@@ -5,7 +5,7 @@ const profileApi = {
     getByAccountId: (id) => apiClient.get(`/profiles/account/${id}`),
     getByRecruiterId: (id) => apiClient.get(`/profiles/recruiter/${id}`),
     getById: (id) => apiClient.get(`/profiles/${id}`),
-    getPageFreelancerNotNull: ({page, size}) => apiClient.get(`/profiles/freelancers`, {params: {page, size}}),
+    getPageFreelancerNotNull: ({page, size, search}) => apiClient.get(`/profiles/freelancers`, {params: {page, size, search}}),
     uploadImage: (id, image) => apiClient.patch(`/profiles/${id}/image`, image, {
         headers: {
             "Content-Type": "multipart/form-data",
