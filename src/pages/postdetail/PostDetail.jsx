@@ -120,39 +120,38 @@ function PostDetail() {
   };
 
   return (
-    <div className={"container"}>
+    <div className="container">
       {contextHolder}
       <Row gutter={24}>
-        <Col span={16} className={"border-end"}>
-          <JobDescription 
-            jobpost={jobpost}
-            lastDatePost={lastDatePost}
-            skills={skills}
-          />
+        {/* Cột trái - Thông tin công việc */}
+        <Col span={16} className="border-end">
+          <JobDescription jobpost={jobpost} lastDatePost={lastDatePost} skills={skills} />
           <hr />
           <JobActivity jobpost={jobpost} />
         </Col>
-
+  
+        {/* Cột phải - Thông tin nhà tuyển dụng và ứng tuyển */}
         <Col span={8}>
           <RecruiterInfo profile={profile} navigate={navigate} />
           <Divider />
-          {freelancer?.profileId == profile?.id ? (
+          
+          {freelancer?.profileId === profile?.id ? (
             <div>
-              <p>Đây là bài đăng của bạn không thể tự nộp hồ sơ.</p>
+              <p>Đây là bài đăng của bạn, không thể tự nộp hồ sơ.</p>
             </div>
           ) : !logined ? (
             <div>
               <p>
-                <Button type="link" className={"p-0"} onClick={() => navigate("/login")}>
+                <Button type="link" className="p-0" onClick={() => navigate("/login")}>
                   Đăng nhập
-                </Button>
+                </Button>{" "}
                 để nộp hồ sơ ứng tuyển.
               </p>
             </div>
           ) : !freelancer ? (
             <div>
               <p>
-                <Button type="link" className={"p-0"} onClick={() => navigate("/profile/freelancer")}>
+                <Button type="link" className="p-0" onClick={() => navigate("/profile/freelancer")}>
                   Thêm hồ sơ
                 </Button>{" "}
                 Freelancer để có thể nộp hồ sơ.
@@ -175,6 +174,7 @@ function PostDetail() {
       </Row>
     </div>
   );
+  
 }
 
 export default PostDetail;
