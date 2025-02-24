@@ -33,6 +33,7 @@ import StaffForm from "@pages/form/StaffForm";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
 import PaymentSuccess from "@pages/paymentsuccess/PaymentSuccess";
+import ChangePasswordAdmin from "@pages/changePassword/ChangePasswordAdmin";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -155,7 +156,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      
+
       <Route
         path="/profile/recruiters"
         element={
@@ -415,6 +416,14 @@ const AppRoutes = () => {
           <MainLayout>
             <Recruiter />
           </MainLayout>
+        }
+      />
+      <Route
+        path="/admin/changepassword"
+        element={
+          <AdminLayout active="changePassword">
+            <ChangePasswordAdmin />
+          </AdminLayout>
         }
       />
     </Routes>
