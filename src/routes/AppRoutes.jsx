@@ -19,6 +19,7 @@ import StaffForm from "@pages/form/StaffForm";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
+import Profile from "@pages/profile/Profile";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
 import Page404 from "@pages/page404/Page404";
