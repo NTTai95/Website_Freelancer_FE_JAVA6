@@ -11,15 +11,15 @@ import {
 
 const arrays = [
   {
-    fullName: "Nguyễn Tấn Tài",
+    fullName: "Nguyễn Tấn Tài ",
     description: "Người lap trinh",
   },
   {
-    fullName: "Nguyễn Thị Ngọc Nghi",
+    fullName: "Nguyễn Thị Ngọc Nghi ",
     description: "Người lap trinh",
   },
   {
-    fullName: "Nguyễn Long Nhi",
+    fullName: "Nguyễn Long Nhi ",
     description: "Người lap trinh",
   },
   {
