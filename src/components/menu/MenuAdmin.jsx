@@ -76,7 +76,7 @@ function MenuAdmin({ active }) {
       label: "Đổi mật khẩu",
       icon: <UserOutlined />,
       onClick: () => {
-        navgate("/admin/staff");
+        navgate("/admin/changepassword");
       },
     },
   ];
