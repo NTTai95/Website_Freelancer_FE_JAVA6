@@ -421,8 +421,9 @@ const AppRoutes = () => {
       <Route
         path="/admin/changepassword"
         element={
-          <AdminLayout active="changePassword">
+          <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
             <ChangePasswordAdmin />
+
           </AdminLayout>
         }
       />
