@@ -1,6 +1,16 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { Input, Button, Typography, Space, Layout, Form, Spin, message } from "antd";
+import {
+  Input,
+  Button,
+  Typography,
+  Space,
+  Layout,
+  Form,
+  Spin,
+  notification,
+  message,
+} from "antd";
 import { MailOutlined } from "@ant-design/icons";
 import formValidator from "@utils/formValidator";
 import forgotPasswordApi from "@api/forgotPasswordApi";
@@ -10,7 +20,8 @@ const { Content } = Layout;
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
-  const [messageApi, contextHolder] = message.useMessage();
+  const [notificationApi, contextNotification] = notification.useNotification();
+  const [messageApi, contextMessage] = message.useMessage();
   const [Calling, setCalling] = React.useState(false);
 
   const onFinish = async (values) => {
@@ -18,9 +29,16 @@ const ForgotPassword = () => {
     try {
       const res = await forgotPasswordApi.create(values?.email);
       if (res.status == 200) {
-        messageApi.open({
-          type: "success",
-          content: res.data,
+        notificationApi.success({
+          message: "Gửi yêu cầu thành công",
+          description: (
+            <>
+              <p className={"m-0"}>Vui lòng kiểm tra email để đổi mật khẩu!</p>
+              <p className={"text-warning"}>Yêu cầu có hiệu lực trong 15 phút.</p>
+            </>
+          ),
+          duration: 5,
+          showProgress: true,
         });
       }
     } catch (error) {
@@ -34,7 +52,8 @@ const ForgotPassword = () => {
 
   return (
     <Content className="bg-light p-3 p-md-4 p-xl-5">
-      {contextHolder}
+      {contextNotification}
+      {contextMessage}
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-xxl-11">

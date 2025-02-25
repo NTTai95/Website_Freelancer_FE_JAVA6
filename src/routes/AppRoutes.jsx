@@ -23,6 +23,7 @@ import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
+import ChangePassword from "@pages/ForgotPassword/ChangePassword";
 
 // Admin Pages
 import Dashboard from "@pages/dashboard/Dashboard";
@@ -424,6 +425,14 @@ const AppRoutes = () => {
           <AdminLayout active="changePassword">
             <ChangePasswordAdmin />
           </AdminLayout>
+        }
+      />
+      <Route
+        path="/changepassword/:token"
+        element={
+          <MainLayout>
+            <ChangePassword />
+          </MainLayout>
         }
       />
     </Routes>
