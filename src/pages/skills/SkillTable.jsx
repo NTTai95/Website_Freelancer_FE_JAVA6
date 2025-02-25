@@ -42,7 +42,7 @@ const SkillTable = () => {
         total: totalElements,
       }));
     } catch (error) {
-      console.error("Error fetching skills:", error);
+      console.error("Error fetching skills:đâsdsadsdss", error);
     }
   };
 
