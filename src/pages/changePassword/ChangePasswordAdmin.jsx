@@ -1,13 +1,30 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Button, Input, Form, Typography, Card, Divider } from 'antd';
 import FancyText from "@carefully-coded/react-text-gradient";
 import scss from './ChangePasswordAdmin.module.scss';
 import formValidator from "../../utils/formValidator";
+import accountApi from '@api/accountApi';
+import { use } from 'react';
 
 const { Title, Text } = Typography;
 
 const ChangePasswordAdmin = () => {
     const [loading, setLoading] = useState(false);
+    const [account, setAccount] = useState(null);
+    const fetchAccount = async () => {
+        try {
+            const logined = JSON.parse(sessionStorage.getItem("logined"));
+            if (!logined) return;
+            const resAccount = await accountApi.getById(logined.id);
+            setAccount(resAccount.data);
+        } catch (error) {
+            console.error("Error fetching account data:", error);
+        }
+    }
+    useEffect(() => {
+        fetchAccount();
+    }, []);
+
 
     const onFinish = (values) => {
         setLoading(true);
@@ -42,15 +59,10 @@ const ChangePasswordAdmin = () => {
                     name="changePassword"
                     layout="vertical"
                     onFinish={onFinish}
-                    autoComplete="off"
                 >
-                    <Form.Item
-                        name="email"
-                        disabled={true}
-                    >
-                        <Input size="large" placeholder="Email" disabled />
+                    <Form.Item>
+                        <Input value={account?.email} size="large" placeholder="Email" disabled />
                     </Form.Item>
-
                     <Form.Item
                         name="oldPassword"
                         rules={[{ required: true, message: `Vui lòng nhập mật khẩu cũ` }]}
@@ -58,7 +70,6 @@ const ChangePasswordAdmin = () => {
                         <Input.Password
                             size="large"
                             placeholder="Nhập mật khẩu cũ"
-
                         />
                     </Form.Item>
 
