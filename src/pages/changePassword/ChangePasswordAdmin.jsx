@@ -1,16 +1,28 @@
 import { useEffect, useState } from 'react';
-import { Button, Input, Form, Typography, Card, Divider } from 'antd';
+import { Button, Input, Form, Typography, Card, Divider, message } from 'antd';
 import FancyText from "@carefully-coded/react-text-gradient";
 import scss from './ChangePasswordAdmin.module.scss';
 import formValidator from "../../utils/formValidator";
 import accountApi from '@api/accountApi';
-import { use } from 'react';
 
 const { Title, Text } = Typography;
 
 const ChangePasswordAdmin = () => {
-    const [loading, setLoading] = useState(false);
+
     const [account, setAccount] = useState(null);
+    const [messageApi, contextHolder] = message.useMessage();
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Đổi mật khẩu thành công!',
+        });
+    };
+    const error = (text) => {
+        messageApi.open({
+            type: 'error',
+            content: text,
+        });
+    };
     const fetchAccount = async () => {
         try {
             const logined = JSON.parse(sessionStorage.getItem("logined"));
@@ -26,17 +38,32 @@ const ChangePasswordAdmin = () => {
     }, []);
 
 
-    const onFinish = (values) => {
-        setLoading(true);
-        console.log('Form values:', values);
-        setTimeout(() => {
-            setLoading(false);
-        }, 1500);
-    };
+    const onFinish = async (values) => {
+
+        console.log(values);
+        console.log(account);
+        const checkPassword = await accountApi.checkPassword(account.id, values.oldPassword);
+        if (checkPassword.data === false) {
+            error("Mật khẩu cũ không đúng!")
+            return
+        }
+        try {
+            const res = await accountApi.changePassword(account.id, values.newPassword);
+            if (res.status === 200) {
+                success();
+            }
+        }
+        catch (error) {
+            error(error.response.data);
+            console.log(error);
+        }
+
+
+    }
 
     return (
         <div className={scss.container}>
-
+            {contextHolder}
             <Card
                 className={scss.card}
                 bordered={false}
@@ -111,7 +138,7 @@ const ChangePasswordAdmin = () => {
                             type="primary"
                             htmlType="submit"
                             size="large"
-                            loading={loading}
+
                             block
                             style={{
                                 height: 45,

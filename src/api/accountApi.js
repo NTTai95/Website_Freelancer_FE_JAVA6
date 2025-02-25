@@ -1,3 +1,4 @@
+import { changeConfirmLocale } from 'antd/es/modal/locale';
 import apiClient from './index';
 
 const accountApi = {
@@ -6,6 +7,9 @@ const accountApi = {
   create: (accountData) => apiClient.post('/accounts', accountData), // Tạo user mới
   update: (id, accountData) => apiClient.put(`/accounts/${id}`, accountData), // Cập nhật user
   delete: (id) => apiClient.delete(`/accounts/${id}`), // Xóa user
+  checkPassword: (id, password) => apiClient.get(`/accounts/${id}/check/password/${password}`),
+
+  changePassword: (id, password) => apiClient.put(`/accounts/changepassword/${id}`, { password: password }),
 };
 
 export default accountApi;
