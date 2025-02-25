@@ -71,7 +71,7 @@ function Profile() {
       <div className="row">
         <div className="col-8">
           <ProfileInfo
-            isEdit={isEdit}
+            isEdit={isEdit}ádasdádasd
             initialValues={initialValues}
             onEdit={() => setIsEdit(true)}
             onFinish={onFinish}
