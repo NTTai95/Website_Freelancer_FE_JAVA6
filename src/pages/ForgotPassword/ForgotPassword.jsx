@@ -1,12 +1,40 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import {Input} from "antd"
-import {MailOutlined} from "@ant-design/icons"
+import { Input, Button, Typography, Space, Layout, Form, Spin, message } from "antd";
+import { MailOutlined } from "@ant-design/icons";
+import formValidator from "@utils/formValidator";
+import forgotPasswordApi from "@api/forgotPasswordApi";
+
+const { Title, Text } = Typography;
+const { Content } = Layout;
 
 const ForgotPassword = () => {
   const navigate = useNavigate();
+  const [messageApi, contextHolder] = message.useMessage();
+  const [Calling, setCalling] = React.useState(false);
+
+  const onFinish = async (values) => {
+    setCalling(true);
+    try {
+      const res = await forgotPasswordApi.create(values?.email);
+      if (res.status == 200) {
+        messageApi.open({
+          type: "success",
+          content: res.data,
+        });
+      }
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.response.data,
+      });
+    }
+    setCalling(false);
+  };
+
   return (
-    <section className="bg-light p-3 p-md-4 p-xl-5">
+    <Content className="bg-light p-3 p-md-4 p-xl-5">
+      {contextHolder}
       <div className="container">
         <div className="row justify-content-center">
           <div className="col-12 col-xxl-11">
@@ -23,59 +51,62 @@ const ForgotPassword = () => {
                 <div className="col-12 col-md-6 d-flex align-items-center justify-content-center">
                   <div className="col-12 col-lg-11 col-xl-10">
                     <div className="card-body p-3 p-md-4 p-xl-5">
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="mb-5">
-                            <div className="text-center mb-4">
-                              <h1 className="fw-bold">FREELANCER</h1>
-                            </div>
-                            <h2 className="h4 text-center">Quên mật khẩu!</h2>
-                            <h3 className="fs-6 fw-normal text-secondary text-center m-0">
-                              Cung cấp địa chỉ email được liên kết với tài khoản
-                              của bạn để khôi phục mật khẩu.
-                            </h3>
-                          </div>
+                      <Space
+                        direction="vertical"
+                        className="w-100"
+                        size="large"
+                      >
+                        <div className="text-center">
+                          <Title level={1}>FREELANCER</Title>
+                          <Title level={4}>Quên mật khẩu!</Title>
+                          <Text type="secondary">
+                            Cung cấp địa chỉ email được liên kết với tài khoản
+                            của bạn để khôi phục mật khẩu.
+                          </Text>
                         </div>
-                      </div>
-                      <form action="#!">
-                        <div className="row gy-3 overflow-hidden">
-                          <div className="col-12">
-                            <div className="form-floating mb-3">
-                            <Input size="large" placeholder="Email" prefix={<MailOutlined />}/>
-                            </div>
-                          </div>
-                          <div className="col-12">
-                            <div className="d-grid">
-                              <button
-                                className="btn btn-dark btn-lg"
-                                type="submit"
+                        <Spin spinning={Calling}>
+                          <Form onFinish={onFinish}>
+                            <Space
+                              direction="vertical"
+                              className="w-100"
+                              size="middle"
+                            >
+                              <Form.Item
+                                name="email"
+                                rules={formValidator.email("", "", false)}
+                              >
+                                <Input
+                                  size="large"
+                                  placeholder="Email"
+                                  prefix={<MailOutlined />}
+                                />
+                              </Form.Item>
+                              <Button
+                                type="primary"
+                                size="large"
+                                block
+                                htmlType="submit"
                               >
                                 Gửi yêu cầu
-                              </button>
-                            </div>
-                          </div>
-                        </div>
-                      </form>
-                      <div className="row">
-                        <div className="col-12">
-                          <div className="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-5">
-                            <a
-                              href="#!"
-                              onClick={() => navigate("/login")}
-                              className="link-secondary text-decoration-none"
-                            >
-                              Đăng nhập
-                            </a>
-                            <a
-                              href="#!"
-                              onClick={() => navigate("/register")}
-                              className="link-secondary text-decoration-none"
-                            >
-                              Đăng ký
-                            </a>
-                          </div>
-                        </div>
-                      </div>
+                              </Button>
+                            </Space>
+                          </Form>
+                        </Spin>
+                        <Space className="w-100 justify-content-center">
+                          <Button
+                            type="link"
+                            onClick={() => navigate("/login")}
+                          >
+                            Đăng nhập
+                          </Button>
+                          <Button
+                            type="link"
+                            onClick={() => navigate("/register")}
+                          >
+                            Đăng ký
+                          </Button>
+                        </Space>
+                      </Space>
                     </div>
                   </div>
                 </div>
@@ -84,7 +115,7 @@ const ForgotPassword = () => {
           </div>
         </div>
       </div>
-    </section>
+    </Content>
   );
 };
 

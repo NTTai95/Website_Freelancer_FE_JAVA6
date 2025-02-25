@@ -6,6 +6,7 @@ import { SearchOutlined } from "@ant-design/icons";
 import { motion, AnimatePresence } from "framer-motion";
 import Highlighter from "react-highlight-words";
 import skillApi from "@api/skillApi";
+import { locale } from "moment/moment";
 
 const SkillTable = () => {
   const navigate = useNavigate();
@@ -24,6 +25,7 @@ const SkillTable = () => {
       const res = await skillApi.getPage({
         page: pagination.current,
         size: pagination.pageSize,
+        search: searchText,
       });
       const { content, totalElements } = res.data;
 

@@ -16,9 +16,9 @@ import PostDetail from "@pages/postDetail/PostDetail";
 import JobPost from "@pages/JobPost/JobPost";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import Profile from "../pages/profile/Profile";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
+import Profile from "@pages/profile/Profile";
 import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
@@ -33,6 +33,7 @@ import StaffForm from "@pages/form/StaffForm";
 import LanguageTable from "@pages/language/LanguageTable";
 import LanguageForm from "@pages/language/LanguageForm";
 import PaymentSuccess from "@pages/paymentsuccess/PaymentSuccess";
+import ChangePasswordAdmin from "@pages/changePassword/ChangePasswordAdmin";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -155,7 +156,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      
+
       <Route
         path="/profile/recruiters"
         element={
@@ -415,6 +416,14 @@ const AppRoutes = () => {
           <MainLayout>
             <Recruiter />
           </MainLayout>
+        }
+      />
+      <Route
+        path="/admin/changepassword"
+        element={
+          <AdminLayout active="changePassword">
+            <ChangePasswordAdmin />
+          </AdminLayout>
         }
       />
     </Routes>

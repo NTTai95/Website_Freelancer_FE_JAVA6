@@ -121,7 +121,43 @@ const ProjectPage = () => {
     },
   ];
 
-  return logined ? (
+  return !logined ? (
+    <Result
+      className={scss.result}
+      icon={<SmileOutlined className={scss.icon} />}
+      title="Đăng bài tuyển dụng!"
+      subTitle="Bạn cần đăng nhập và có thông tin nhà tuyển dụng để đăng bài đăng tuyển dụng."
+      extra={
+        <Button
+          type="primary"
+          className={scss.btn}
+          onClick={() => {
+            navigate("/login");
+          }}
+        >
+          Đăng nhập
+        </Button>
+      }
+    />
+  ) : !recruiter ? (
+    <Result
+      className={scss.result}
+      icon={<SmileOutlined className={scss.icon} />}
+      title="Đăng bài tuyển dụng!"
+      subTitle="Bạn cần thêm thông tin nhà tuyển dụng để tạo bài đăng!"
+      extra={
+        <Button
+          type="primary"
+          className={scss.btn}
+          onClick={() => {
+            navigate("/profile/recruiters");
+          }}
+        >
+          Thêm thông tin
+        </Button>
+      }
+    />
+  ) : (
     <div className="container">
       {contextHolder}
       <Alert
@@ -137,14 +173,6 @@ const ProjectPage = () => {
         initialValues={initialValues}
       />
     </div>
-  ) : (
-    <Result
-      className={scss.result}
-      icon={<SmileOutlined className={scss.icon} />}
-      title="Đăng bài tuyển dụng!"
-      subTitle="Bạn cần đăng nhập và có thông tin nhà tuyển dụng để đăng bài đăng tuyển dụng."
-      extra={<Button type="primary" className={scss.btn} onClick={() => {navigate("/login")}}>Đăng nhập</Button>}
-    />
   );
 };
 
