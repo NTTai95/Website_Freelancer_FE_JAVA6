@@ -16,6 +16,7 @@ import PostDetail from "@pages/postDetail/PostDetail";
 import JobPost from "@pages/JobPost/JobPost";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
+import ChangePassword from "@pages/changePassword/ChangePassword";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import Profile from "@pages/profile/Profile";
@@ -169,6 +170,21 @@ const AppRoutes = () => {
               </MainLayout>
             }
           />
+        }
+      />
+
+<Route
+        path="/changePassword"
+        element={
+          // <PrivateRoute
+          //   element={
+              <MainLayout>
+                <ProfileLayout active="changePassword">
+                  <ChangePassword />
+                </ProfileLayout>
+              </MainLayout>
+          //  }
+          ///>
         }
       />
 
