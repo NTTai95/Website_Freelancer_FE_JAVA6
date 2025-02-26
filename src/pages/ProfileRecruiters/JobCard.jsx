@@ -1,5 +1,5 @@
 import React from "react";
-import { Card, Tag, Row, Col } from "antd";
+import { Card, Tag, Row, Col, Button } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -10,41 +10,35 @@ import jobspostApi from "@api/jobspostApi";
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
-  const [jobPost, setJobPost] = useState(null);
-
-  const fetchJobPost = async () => {
-    try {
-      const response = await jobspostApi.getByAccountId(job.RecruiterId);
-      setJobPost(response.data);
-      console.log("jobPost", response.data);
-    } catch (error) {
-      console.error("Error fetching job post:", error);
-    }
-  };
 
   useEffect(() => {
-    fetchJobPost();
-
-    switch (job.status) {
+    switch (job?.status) {
       case State.JobPost.PENDING:
         setStatus({ text: "Chờ xác nhận", color: "blue" });
         break;
       case State.JobPost.WORKING:
         setStatus({ text: "Đang làm", color: "success" });
         break;
+      case State.JobPost.EDITING:
+        setStatus({ text: "Đang chỉnh sửa", color: "warning" });
+        break;
+      case State.JobPost.PUBLISHED:
+        setStatus({ text: "Đang đăng", color: "purple" });
+        break;
       default:
         setStatus({ text: "Không xác định" });
     }
   }, []);
+
   return (
     <Card className={scss.card} loading={!job}>
       <Row>
         <Col span={20}>
           <p
             className={scss.title}
-            onClick={() => navigate(`/jobpostdetail/${jobPost.id}`)}
+            onClick={() => navigate(`/jobpostdetail/${job.id}`)}
           >
-            {job.title}
+            {job?.title ?? "Không xác định"}
           </p>
           <div className={scss.budgetContainer}>
             <span className={scss.bold}>Ngân sách: </span>
@@ -52,20 +46,38 @@ const JobCard = ({ job }) => {
               {job.budget?.toLocaleString("vi-VN", {
                 style: "currency",
                 currency: "VND",
-              })}
+              }) ?? "Không xác định"}
             </span>
           </div>
           <div className={scss.datePostedContainer}>
             <span className={scss.bold}>Ngày đăng: </span>
             <span className={scss.text}>
-              {dayjs(job.datePosted).format("DD/MM/YYYY")}
+              {dayjs(job?.datePosted).format("DD/MM/YYYY") ?? "Không xác định"}
             </span>
           </div>
         </Col>
         <Col span={4}>
-          <Tag className={scss.tag} color={status?.color}>
-            {status?.text}
-          </Tag>
+          <div className={scss.statusContainer}>
+            <Tag className={scss.tag} color={status?.color}>
+              {status?.text}
+            </Tag>
+            {job?.status === State.JobPost.WORKING && (
+              <Button
+                className={scss.button}
+                onClick={() => navigate(`/jobpostdetail/${job.id}`)}
+              >
+                Xem chi tiết
+              </Button>
+            )}
+            {job?.status === State.JobPost.EDITING && (
+              <Button
+                type="primary"
+                onClick={() => navigate(`/jobpost/edit/${job?.id}`)}
+              >
+                Chỉnh sửa
+              </Button>
+            )}
+          </div>
         </Col>
       </Row>
     </Card>

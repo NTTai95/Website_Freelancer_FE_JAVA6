@@ -10,11 +10,8 @@ const RecruiterJobs = () => {
     const fetchJobs = async () => {
       try {
         if (!logined?.id) return; // Kiểm tra nếu chưa đăng nhập thì không gọi API
-        const data = await jobspostApi.getByAccountId(logined.id);
+        const data = await jobspostApi. getActiveByAccountId(logined.id);
         setJobs(data.data.content); // Cập nhật state sau khi nhận dữ liệu từ API
-       console.log(data.data.content) 
-        console.log("jobs", data);
-        console.log("logined", logined);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu công việc:", error);
       }
@@ -27,7 +24,7 @@ const RecruiterJobs = () => {
     <>
       {jobs && jobs?.length > 0 ? (
         // jobs?.map((apply) => <JobCard apply={apply} />)
-        jobs?.map((job) => <JobCard job={job} />)
+        jobs?.map((job) => <JobCard key={job?.id} job={job} />)
       ) : (
         <div>Hiện tại không có công việc nào!</div>
       )}

@@ -15,7 +15,7 @@ const JobPost = () => {
   });
 
   const fetchData = async () => {
-    const res = await jobspostApi.getPage({
+    const res = await jobspostApi.getPageActive({
       page: pagination.current,
       size: pagination.pageSize,
       search: `keyword,${search}`,

@@ -9,6 +9,9 @@ const jobspostApi = {
     delete: (id) => apiClient.delete(`/jobposts/${id}`),
     getStatusById: (id) => apiClient.get(`/jobposts/${id}/status`),
     post: (id) => apiClient.post(`/jobposts/${id}/post`),
+    getActiveByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/active`),
+    getDraftByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/draft`),
+    getPageActive: ({page, size, search}) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search }} ),
 };
 
 export default jobspostApi;
