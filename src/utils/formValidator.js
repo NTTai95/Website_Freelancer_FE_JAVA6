@@ -114,6 +114,8 @@ const iso = (setLoading, initialISO = "") => [
             if (!value) return Promise.reject("Vui lòng nhập ISO!");
             if (value.length < 2) return Promise.reject("ISO tối thiểu 2 kí tự!");
             if (value.length > 3) return Promise.reject("ISO tối đa 3 kí tự!");
+            if (/[0-9]/.test(value)) return Promise.reject("ISO không được chứa số!");
+            if (/[!@#$%^&*(),.?":{}|<>\s]/.test(value)) return Promise.reject("ISO không được chứa kí tự đặc biệt hoặc khoảng trắng!");
 
             const isSameAsInitial = value === initialISO;
             if (isSameAsInitial) return Promise.resolve();
@@ -124,8 +126,8 @@ const iso = (setLoading, initialISO = "") => [
             return Promise.resolve();
         },
     }),
-];
 
+];
 const introduce = ({ minLength = 100, maxLength = 10000 } = {}) => [
     () => ({
         validator(_, value) {
@@ -230,5 +232,28 @@ const companyName = () => [
     }),
 ];
 
+const languageName = () => [
+    () => ({
+        async validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập tên ngôn ngữ!")
 
-export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate, content, companyName };
+            value = value.trim()
+
+            const hasNumbers = /\d/.test(value)
+            const hasSpecialChars = /[^a-zA-ZÀ-ỹ\s]/u.test(value)
+            const hasExtraSpaces = /\s{2,}/.test(value)
+            const isTooShort = value.length < 3
+            const isTooLong = value.length > 50
+
+            if (hasNumbers) return Promise.reject("Tên ngôn ngữ không được chứa số!")
+            if (hasSpecialChars) return Promise.reject("Tên ngôn ngữ không được chứa ký tự đặc biệt!")
+            if (hasExtraSpaces) return Promise.reject("Tên ngôn ngữ có khoảng trắng thừa!")
+            if (isTooShort) return Promise.reject("Tên ngôn ngữ tối thiểu 3 ký tự!")
+            if (isTooLong) return Promise.reject("Tên ngôn ngữ tối đa 50 ký tự!")
+
+            return Promise.resolve()
+        },
+    }),
+]
+
+export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate, content, companyName, languageName};
