@@ -102,9 +102,7 @@ const LanguageForm = () => {
               <Form.Item
                 label={<b>Tên ngôn ngữ</b>}
                 name="name"
-                rules={[
-                  { required: true, message: "Vui lòng nhập tên ngôn ngữ!" },
-                ]}
+                rules={formValidator.languageName()}
               >
                 <Input type="text" placeholder="Tên ngôn ngữ..." />
               </Form.Item>
