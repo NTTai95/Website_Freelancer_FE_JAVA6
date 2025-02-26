@@ -38,9 +38,8 @@ const arrays = [
 function About() {
   return (
     <div>
-      {" "}
       <div className={"container"}>
-        <Row gutter={16}>
+        <Row className={"mb-5"} gutter={[16, 120]}>
           {arrays.map((item, index) => (
             <Col key={index} className={scss.div1} span={8}>
               <CardAbout
@@ -51,7 +50,7 @@ function About() {
             </Col>
           ))}
         </Row>
-        <div className={scss.cardimg}>
+        <div className={scss.cardimg + " mt-5"}>
           <img src="src/assets/images/img_about.webp" />
           <div className={scss.cardAbsolute}>
             <div className={scss.cardBody}>
