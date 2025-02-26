@@ -26,6 +26,9 @@ import Page404 from "@pages/page404/Page404";
 import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
 
 
+import ListApplies from "@pages/listapplies/ListApplies";
+import ChangePassword from "@pages/ForgotPassword/ChangePassword";
+
 // Admin Pages
 import Dashboard from "@pages/dashboard/Dashboard";
 import SkillTable from "@pages/skills/SkillTable";
@@ -423,16 +426,35 @@ const AppRoutes = () => {
       <Route
         path="/admin/changepassword"
         element={
-          <AdminLayout active="changePassword">
+          <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
             <ChangePasswordAdmin />
+
           </AdminLayout>
         }
       />
       <Route
+
         path="/jobpost/apply/:id"
         element={
           <MainLayout>
             <ApplyDetail />
+          </MainLayout>
+        }      
+/>
+          <Route
+        path="/applies/jobpost/:id"
+        element={
+          <MainLayout>
+            <ListApplies />
+          </MainLayout>
+        }
+      />
+   
+        path="/changepassword/:token"
+        element={
+          <MainLayout>
+            <ChangePassword />
+
           </MainLayout>
         }
       />

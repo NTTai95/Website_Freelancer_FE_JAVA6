@@ -1,4 +1,3 @@
-
 import apiClient from './index';
 
 const applyApi = {
@@ -8,6 +7,12 @@ const applyApi = {
     getByJobId: (id) => apiClient.get(`/applies/job/${id}`),
     update: (id, data) => apiClient.put(`/applies/${id}`, data),
     delete: (id) => apiClient.delete(`/applies/${id}`),
+
+    getAppliesByJobPost: ({ jobPostId, page = 1, size = 10, search }) =>
+        apiClient.get(`/applies/jobpost/${jobPostId}`, {
+            params: { page, size, search }
+        }),
+    
 };
 
 export default applyApi;

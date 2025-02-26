@@ -5,15 +5,16 @@ import { Avatar, Card, Image, Button, Flex } from 'antd';
 import scss from "./card.module.scss"
 const CardAbout = ({ image, context, context1 }) => {
     return (
-        <>
             <Card className={scss.card}>
                 <div className={scss.avatar}>
                     <img src={image} />
                 </div>
-                <strong className={scss.title}><Card.Meta title={context} style={{ textAlign: 'center', marginTop: '100px' }}></Card.Meta></strong>
-                <p style={{ textAlign: 'center' }}>{context1}</p>        
-                </Card>
-        </>);
+                <div className={scss.context}>
+                    <p className={scss.title}>{context}</p>
+                    <p style={{ textAlign: 'center' }}>{context1}</p>
+                </div>
+            </Card>
+        );
 };
 
 export default CardAbout;

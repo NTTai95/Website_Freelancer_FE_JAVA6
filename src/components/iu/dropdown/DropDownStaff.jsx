@@ -24,7 +24,8 @@ const DropDownLogined = ({ staff }) => {
     },
     {
       key: '2',
-      label: 'Đổi mật khẩu'
+      label: 'Đổi mật khẩu',
+      onClick: () => navigate("/admin/changepassword")
     },
     {
       key: '3',

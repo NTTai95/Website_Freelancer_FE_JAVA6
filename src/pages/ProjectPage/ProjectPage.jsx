@@ -17,6 +17,8 @@ const ProjectPage = () => {
   const { mode, id } = useParams();
   const navigate = useNavigate();
   const [initialValues, setInitialValues] = useState(null);
+  const [key, setKey] = useState(0);
+  const [current, setCurrent] = useState(0);
   const [recruiter, setRecruiter] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
   const logined = JSON.parse(sessionStorage.getItem("logined"));
@@ -26,7 +28,7 @@ const ProjectPage = () => {
     recruiter?.jobPostIds.forEach(async (jobPostId) => {
       if (jobPostId == id) {
         const status = await jobspostApi.getStatusById(id);
-        if (status.data === State.JobPost.EDITING) {
+        if (status.data == State.JobPost.EDITING) {
           found = true;
         }
       }
@@ -52,12 +54,13 @@ const ProjectPage = () => {
       };
 
       const res = await jobspostApi.add(formatData);
+      setRecruiter(null);
       navigate(`/jobpost/edit/${res.data.id}`);
     }
   };
 
   const post = async (values) => {
-    save(values);
+    await save(values);
     try {
       const res = await jobspostApi.post(id);
       if (res.status === 200) {
@@ -65,7 +68,7 @@ const ProjectPage = () => {
           type: "success",
           content: res.data,
         });
-        navigate("/jobpost");
+        navigate("/profile/recruiters");
       }
     } catch (error) {
       if (error.status === 422) {
@@ -104,7 +107,13 @@ const ProjectPage = () => {
       checkMyJobPost();
       fetchJobPost();
     }
-  }, [id]);
+
+    setKey(mode);
+    if (mode == "add") {
+      setInitialValues(null);
+      setCurrent(0);
+    }
+  }, [id, mode]);
 
   const stepsData = [
     {
@@ -167,6 +176,9 @@ const ProjectPage = () => {
         showIcon
       />
       <Stepper
+        current={current}
+        setCurrent={setCurrent}
+        key={key}
         post={post}
         save={save}
         steps={stepsData}
