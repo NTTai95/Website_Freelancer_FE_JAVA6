@@ -23,6 +23,8 @@ import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
+import ListApplies from "@pages/listapplies/ListApplies";
+
 
 // Admin Pages
 import Dashboard from "@pages/dashboard/Dashboard";
@@ -426,7 +428,15 @@ const AppRoutes = () => {
           </AdminLayout>
         }
       />
-    </Routes>
+      <Route
+        path="/applies/jobpost/:id"
+        element={
+          <MainLayout>
+            <ListApplies />
+          </MainLayout>
+        }
+      />
+    </Routes >
   );
 };
 
