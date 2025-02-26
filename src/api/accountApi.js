@@ -9,7 +9,7 @@ const accountApi = {
   delete: (id) => apiClient.delete(`/accounts/${id}`), // Xóa user
   checkPassword: (id, password) => apiClient.get(`/accounts/${id}/check/password/${password}`),
 
-  changePassword: (id, password) => apiClient.put(`/accounts/changepassword/${id}`, { password: password }),
+  changePassword: (id, password) => apiClient.put(`/accounts/changepassword/${id}`, password ),
 };
 
 export default accountApi;
