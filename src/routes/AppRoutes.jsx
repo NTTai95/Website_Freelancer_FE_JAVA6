@@ -23,6 +23,8 @@ import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
 import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
+import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
+
 
 import ListApplies from "@pages/listapplies/ListApplies";
 import ChangePassword from "@pages/ForgotPassword/ChangePassword";
@@ -431,6 +433,15 @@ const AppRoutes = () => {
         }
       />
       <Route
+
+        path="/jobpost/apply/:id"
+        element={
+          <MainLayout>
+            <ApplyDetail />
+          </MainLayout>
+        }      
+/>
+          <Route
         path="/applies/jobpost/:id"
         element={
           <MainLayout>
@@ -438,11 +449,12 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-    </Routes >
+   
         path="/changepassword/:token"
         element={
           <MainLayout>
             <ChangePassword />
+
           </MainLayout>
         }
       />
