@@ -12,6 +12,7 @@ const profileApi = {
         }
     }),
     update: (id, profile) => apiClient.put(`/profiles/${id}`, profile),
+    getByFreelancerId: (id) => apiClient.get(`/profiles/freelancer/${id}`),
 };
 
 export default profileApi;
