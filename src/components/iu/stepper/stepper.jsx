@@ -3,8 +3,7 @@ import { Button, Steps, Form, message } from "antd";
 import scss from "./Stepper.module.scss";
 import { useEffect } from "react";
 
-const Stepper = ({ steps, post, save, initialValues }) => {
-  const [current, setCurrent] = useState(0);
+const Stepper = ({ current, setCurrent, steps, post, save, initialValues }) => {
   const isLastStep = current === steps.length - 1;
   const [form] = Form.useForm();
 
