@@ -13,6 +13,8 @@ const applyApi = {
             params: { page, size, search }
         }),
     
+    selectApply: (id) => apiClient.put(`/applies/select/${id}`),
+    
 };
 
 export default applyApi;

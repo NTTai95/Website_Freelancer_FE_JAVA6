@@ -25,8 +25,6 @@ import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
 import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
-
-
 import ListApplies from "@pages/listapplies/ListApplies";
 import ChangePassword from "@pages/ForgotPassword/ChangePassword";
 
@@ -178,7 +176,7 @@ const AppRoutes = () => {
         }
       />
 
-<Route
+      <Route
         path="/changePassword"
         element={
           // <PrivateRoute
@@ -444,20 +442,18 @@ const AppRoutes = () => {
         element={
           <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
             <ChangePasswordAdmin />
-
           </AdminLayout>
         }
       />
       <Route
-
         path="/jobpost/apply/:id"
         element={
           <MainLayout>
             <ApplyDetail />
           </MainLayout>
-        }      
-/>
-          <Route
+        }
+      />
+      <Route
         path="/applies/jobpost/:id"
         element={
           <MainLayout>
@@ -470,11 +466,10 @@ const AppRoutes = () => {
         element={
           <MainLayout>
             <ChangePassword />
-
           </MainLayout>
         }
       />
-    </Routes>
+    </Routes >
   );
 };
 
