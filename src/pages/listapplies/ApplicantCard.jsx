@@ -18,7 +18,7 @@ const ApplicantCard = ({ applicant }) => {
       }
     };
     fetchProfile();
-  }
+  }, []
   )
   const navigate = useNavigate();
   return (
