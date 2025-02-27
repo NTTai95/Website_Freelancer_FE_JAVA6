@@ -1,13 +1,16 @@
 import React, { useState } from "react";
 import scss from "./FlInput.module.scss"; // Tùy chọn: Thêm file CSS để chỉnh kiểu dáng
 
-const FlInputText = ({
-  icon,
-  label,
-  value,
-  onChange,
-}) => {
+const FlInputText = ({ icon, label, onChange }) => {
   const [isFocused, setIsFocused] = useState(false);
+  const [value, setValue] = useState("");
+
+  function handleOnChange(e) {
+    setValue(e.target.value);
+    if (onChange) {
+      onChange(e);
+    }
+  }
 
   return (
     <div className={scss.flInput}>
@@ -19,11 +22,9 @@ const FlInputText = ({
           {label}
         </label>
         <input
-          type="text"
           className={scss["input-field"]}
-          autoComplete="off"
           value={value}
-          onChange={onChange}
+          onChange={handleOnChange}
           onFocus={() => setIsFocused(true)}
           onBlur={() => setIsFocused(false)}
         />

@@ -1,0 +1,18 @@
+import apiClient from './index';
+
+const jobspostApi = {
+    getPage: ({ page, size, search }) => apiClient.get('/jobposts', { params: { page, size, search } }),
+    getById: (id) => apiClient.get(`/jobposts/${id}`),
+    getByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}`),
+    add: (jobpost) => apiClient.post('/jobposts', jobpost),
+    update: (id, staff) => apiClient.put(`/jobposts/${id}`, staff),
+    updateProduct : (id, productId) => apiClient.put(`/jobposts/${id}`, {productId: productId}),
+    delete: (id) => apiClient.delete(`/jobposts/${id}`),
+    getStatusById: (id) => apiClient.get(`/jobposts/${id}/status`),
+    post: (id) => apiClient.post(`/jobposts/${id}/post`),
+    getActiveByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/active`),
+    getDraftByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/draft`),
+    getPageActive: ({page, size, search}) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search }} ),
+};
+
+export default jobspostApi;
