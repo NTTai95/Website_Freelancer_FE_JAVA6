@@ -1,16 +1,22 @@
 import React from "react";
-import { Card, Tag, Row, Col } from "antd";
+import { Card, Tag, Row, Col, Input } from "antd";
 import { useEffect, useState } from "react";
 import jobspostApi from "@api/jobspostApi";
 import { useNavigate } from "react-router-dom";
 import dayjs from "dayjs";
 import State from "@utils/State";
 import scss from "./CardApplies.module.scss";
+import productApi from "../../api/productApi";
+
+
+
 
 const CardApplies = ({ apply }) => {
   const [jobPost, setJobPost] = useState(null);
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
+
+
 
   const fetchJobPost = async () => {
     try {
@@ -37,10 +43,17 @@ const CardApplies = ({ apply }) => {
     }
   }, []);
 
+  const onSubmit = async (value, _e, info) => {
+    const product = await productApi.create({ link: value ,jobPostId: apply?.jobPostId});
+    await jobspostApi.updateProduct(apply?.jobPostId,product?.data?.id)
+    window.location.reload();
+    console.log(info?.source, value);
+  }
+
   return (
     <Card className={scss.card} loading={!jobPost}>
       <Row>
-        <Col span={20}>
+        <Col span={18}>
           <p
             className={scss.title}
             onClick={() => navigate(`/jobpostdetail/${jobPost?.id}`)}
@@ -63,10 +76,15 @@ const CardApplies = ({ apply }) => {
             </span>
           </div>
         </Col>
-        <Col span={4}>
+        <Col span={6}>
           <Tag className={scss.tag} color={status?.color}>
             {status?.text}
           </Tag>
+          {apply?.status === State.Apply.WORKING && !jobPost?.productId && (
+    
+            <Input.Search enterButton="Nộp" className="mt-3" onSearch={onSubmit}>
+            </Input.Search>
+          )}
         </Col>
       </Row>
     </Card>

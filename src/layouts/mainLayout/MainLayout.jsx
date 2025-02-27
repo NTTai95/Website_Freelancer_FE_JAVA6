@@ -8,17 +8,20 @@ import { useNavigate } from "react-router-dom";
 
 const MainLayout = ({ children }) => {
   const navgate = useNavigate();
+  const logined = JSON.parse(sessionStorage.getItem("logined"));
+
   return (
     <div>
       <Header />
       <main className={scss["container-main"]}>{children}</main>
       <div className={scss["float-button"]}>
-        <Tooltip title="Chuyển sang giao diện admin">
-          <FloatButton
-            icon={<RetweetOutlined />}
-            onClick={() => navgate("/admin/dashboard")}
-          />
-        </Tooltip>
+        {logined && logined.isStaff &&
+          <Tooltip title="Chuyển sang giao diện admin">
+            <FloatButton
+              icon={<RetweetOutlined />}
+              onClick={() => navgate("/admin/dashboard")}
+            />
+          </Tooltip>}
       </div>
       <Footer />
     </div>
