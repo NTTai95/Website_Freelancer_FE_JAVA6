@@ -67,10 +67,10 @@ const ProfileLayout = ({ children, active }) => {
       type: "divider"
     },
     {
-      key: "change-password",
+      key: "changePassword",
       icon: <RetweetOutlined />,
       label: "Đổi mật khẩu",
-      onClick: () => nagivate("/change-password")
+      onClick: () => nagivate("/changePassword")
     },
     {
       key: "logout",

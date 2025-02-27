@@ -77,16 +77,15 @@ const JobCard = ({ job }) => {
                 Chỉnh sửa
               </Button>
             )}
-            {
-              job?.status === State.JobPost.PUBLISHED && (
-                <Button
-                  type="primary"
-                  onClick={() => navigate(`/applies/jobpost/${job?.id}`)}
-                >
-                  Danh sách ứng tuyển
-                </Button>
-              )
-            }
+
+            {job?.status === State.JobPost.PUBLISHED && (
+              <Button
+                type="primary"
+                onClick={() => navigate(`/applies/jobpost/${job.id}`)}
+              >
+                Danh sách ứng tuyển
+              </Button>
+            )}
           </div>
         </Col>
       </Row>
