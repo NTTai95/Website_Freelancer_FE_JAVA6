@@ -438,7 +438,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-    </Routes >
+      <Route
         path="/changepassword/:token"
         element={
           <MainLayout>
@@ -446,7 +446,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-    </Routes>
+    </Routes >
   );
 };
 
