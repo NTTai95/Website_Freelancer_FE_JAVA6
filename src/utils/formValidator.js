@@ -256,4 +256,35 @@ const languageName = () => [
     }),
 ]
 
-export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate, content, companyName, languageName};
+const skillName = () => [
+    () => ({
+        async validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập tên kỹ năng!")
+
+            value = value.trim()
+
+            const hasNumbers = /\d/.test(value)
+            const hasExtraSpaces = /\s{2,}/.test(value)
+            const isTooShort = value.length < 2
+            const isTooLong = value.length > 40
+
+            if (hasNumbers) return Promise.reject("Tên kỹ năng không được chứa số!")
+            if (hasExtraSpaces) return Promise.reject("Tên kỹ năng có khoảng trắng thừa!")
+            if (isTooShort) return Promise.reject("Tên kỹ năng tối thiểu 2 ký tự!")
+            if (isTooLong) return Promise.reject("Tên kỹ năng tối đa 40 ký tự!")
+
+            return Promise.resolve()
+        },
+    }),
+]
+
+const skillDescription = () => [
+    () => ({
+        async validator(_, value) {
+            if (!value) return Promise.reject("Vui lòng nhập mô tả kỹ năng!")
+            value = value.trim()
+            return Promise.resolve()
+        },
+    }),
+]
+export default { phone, email, fullName, birthday, password, iso, introduce, skills, languages, title, description, startDate, endDate, content, companyName, languageName, skillName, skillDescription};

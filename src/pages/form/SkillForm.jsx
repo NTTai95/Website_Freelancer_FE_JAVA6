@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import skillApi from "@api/skillApi";
 import { useParams } from "react-router-dom";
+import formValidator from "../../utils/formValidator";
 
 function SkillForm() {
   const { mode, id } = useParams();
@@ -91,19 +92,14 @@ function SkillForm() {
           <Form.Item
             label={<b>Tên kỹ năng</b>}
             name="name"
-            rules={[{ required: true, message: "Vui lòng nhập tên kỹ năng!" }]}
+            rules={formValidator.skillName()}
           >
             <Input type="text" placeholder="Tên hiển thị kỹ năng..." />
           </Form.Item>
           <Form.Item
             label={<b>Mô tả</b>}
             name="description"
-            rules={[
-              {
-                required: true,
-                message: "Vui lòng nhập mô tả!",
-              },
-            ]}
+            rules={formValidator.skillDescription()}
           >
             <Input.TextArea
               rows={5}
