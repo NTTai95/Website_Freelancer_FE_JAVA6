@@ -16,7 +16,6 @@ import PostDetail from "@pages/postDetail/PostDetail";
 import JobPost from "@pages/JobPost/JobPost";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import ChangePassword from "@pages/changePassword/ChangePassword";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import Profile from "@pages/profile/Profile";
@@ -25,8 +24,6 @@ import Freelancer from "@pages/freelancer/Freelancer";
 import Recruiter from "@pages/recruiter/Recruiter";
 import Page404 from "@pages/page404/Page404";
 import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
-
-
 import ListApplies from "@pages/listapplies/ListApplies";
 import ChangePassword from "@pages/ForgotPassword/ChangePassword";
 
@@ -178,16 +175,16 @@ const AppRoutes = () => {
         }
       />
 
-<Route
+      <Route
         path="/changePassword"
         element={
           // <PrivateRoute
           //   element={
-              <MainLayout>
-                <ProfileLayout active="changePassword">
-                  <ChangePassword />
-                </ProfileLayout>
-              </MainLayout>
+          <MainLayout>
+            <ProfileLayout active="changePassword">
+              <ChangePassword />
+            </ProfileLayout>
+          </MainLayout>
           //  }
           ///>
         }
@@ -444,20 +441,18 @@ const AppRoutes = () => {
         element={
           <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
             <ChangePasswordAdmin />
-
           </AdminLayout>
         }
       />
       <Route
-
         path="/jobpost/apply/:id"
         element={
           <MainLayout>
             <ApplyDetail />
           </MainLayout>
-        }      
-/>
-          <Route
+        }
+      />
+      <Route
         path="/applies/jobpost/:id"
         element={
           <MainLayout>
@@ -465,12 +460,11 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-   
+      <Route
         path="/changepassword/:token"
         element={
           <MainLayout>
             <ChangePassword />
-
           </MainLayout>
         }
       />

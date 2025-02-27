@@ -31,7 +31,6 @@ function PostDetail() {
   const [freelancer, setFreelancer] = useState(null);
   const [apply, setApply] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
-  const [openPopconfirm, setOpenPopconfirm] = useState(false);
 
   const fetchData = async () => {
     try {
@@ -110,15 +109,6 @@ function PostDetail() {
     setLoadingCall(false);
   };
 
-  const handleSubmit = async () => {
-    try {
-      await form.validateFields();
-      setOpenPopconfirm(true);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   return (
     <div className="container">
       {contextHolder}
@@ -162,9 +152,6 @@ function PostDetail() {
               form={form}
               onFinish={onFinish}
               loadingCall={loadingCall}
-              openPopconfirm={openPopconfirm}
-              setOpenPopconfirm={setOpenPopconfirm}
-              handleSubmit={handleSubmit}
               genreateContent={genreateContent}
               setContent={setContent}
               apply={apply}

@@ -202,10 +202,12 @@ const endDate = () => [
 
 const content = ({ minLength = 100, maxLength = 5000 } = {}) => [
     () => ({
-        validator(_, value) {
+        async validator(_, value) {
             if (!value) return Promise.reject("Vui lòng nhập nội dung!");
             if (value.length < minLength) return Promise.reject(`Nội dung tối thiểu ${minLength} kí tự!`);
             if (value.length > maxLength) return Promise.reject(`Nội dung tối đa ${maxLength} kí tự!`);
+        
+            return Promise.resolve();
         },
     }),
 ];
