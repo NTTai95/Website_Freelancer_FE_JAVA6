@@ -1,4 +1,5 @@
-import { Avatar, Button } from "antd";
+import { Avatar, Button, message } from "antd";
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import profileApi from "../../api/profileApi";
 import { useParams } from "react-router-dom";
@@ -7,19 +8,36 @@ import applyApi from "../../api/applyApi";
 
 
 function ApplyDetail() {
-    function selectApply(){
-        
-    }
     const { id } = useParams();
+    const [messageApi, contextHolder] = message.useMessage();
+    const navigate = useNavigate();
+    const success = () => {
+        messageApi.open({
+            type: 'success',
+            content: 'Chọn ứng viên thành công',
+        });
+    };
+    async function selectApply() {
+        try {
+            await applyApi.selectApply(id);
+            success();
+            setTimeout(() => {
+                navigate("/profile/recruiters");
+            }, 2000);
+        } catch (e) {
+            console.log(e);
+        }
+    }
+
     console.log(id);
     const [profile, setProfile] = useState(null);
     const [apply, setApply] = useState(null);
     const fetchData = async () => {
         try {
-            const res = await profileApi.getByFreelancerId(id);
             const resA = await applyApi.getById(id);
-            setProfile(res.data);
             setApply(resA.data);
+            const res = await profileApi.getByFreelancerId(resA?.data?.freelancerId);
+            setProfile(res.data);
         } catch (error) {
             console.error("Error fetching profile:", error);
         }
@@ -29,6 +47,7 @@ function ApplyDetail() {
     }, []);
     return (
         <div className="container" style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {contextHolder}
             {/* Phần trên gồm infor và contact nằm ngang */}
             <div className="top" style={{ display: 'flex', gap: '20px' }}>
                 <div
@@ -56,7 +75,6 @@ function ApplyDetail() {
 
                 <div className="contact" style={{ flex: '1', border: '1px solid #ccc', padding: '20px', borderRadius: '8px' }}>
                     <h3>Thông tin liên hệ</h3>
-                    <p>Công ty ABC</p>
                     <p>Số điện thoại: {profile?.phone}</p>
                     <p>Email: {profile?.account?.email}</p>
                 </div>

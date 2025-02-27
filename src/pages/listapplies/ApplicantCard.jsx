@@ -22,7 +22,7 @@ const ApplicantCard = ({ applicant }) => {
   )
   const navigate = useNavigate();
   return (
-    <Card onClick={() => navigate(`/jobpost/apply/${profile?.freelancer?.id}`)} hoverable className={scss.card}>
+    <Card onClick={() => navigate(`/jobpost/apply/${applicant?.id}`)} hoverable className={scss.card}>
       <div className={scss.containerAvatar}>
         <Avatar className={scss.avatar} size={80} src={profile?.avatar} />
       </div>

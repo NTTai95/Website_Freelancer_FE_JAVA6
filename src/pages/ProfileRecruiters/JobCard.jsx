@@ -25,6 +25,9 @@ const JobCard = ({ job }) => {
       case State.JobPost.PUBLISHED:
         setStatus({ text: "Đang đăng", color: "purple" });
         break;
+      case State.JobPost.STARTED:
+        setStatus({ text: "Đang làm", color: "orange" });
+        break;
       default:
         setStatus({ text: "Không xác định" });
     }

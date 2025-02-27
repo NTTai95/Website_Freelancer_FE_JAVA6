@@ -6,6 +6,7 @@ const jobspostApi = {
     getByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}`),
     add: (jobpost) => apiClient.post('/jobposts', jobpost),
     update: (id, staff) => apiClient.put(`/jobposts/${id}`, staff),
+    updateProduct : (id, productId) => apiClient.put(`/jobposts/${id}`, {productId: productId}),
     delete: (id) => apiClient.delete(`/jobposts/${id}`),
     getStatusById: (id) => apiClient.get(`/jobposts/${id}/status`),
     post: (id) => apiClient.post(`/jobposts/${id}/post`),
