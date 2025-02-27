@@ -468,7 +468,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-    </Routes>
+    </Routes >
   );
 };
 

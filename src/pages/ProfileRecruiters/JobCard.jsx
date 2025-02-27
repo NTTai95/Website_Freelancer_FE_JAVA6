@@ -77,6 +77,7 @@ const JobCard = ({ job }) => {
                 Chỉnh sửa
               </Button>
             )}
+
             {job?.status === State.JobPost.PUBLISHED && (
               <Button
                 type="primary"
