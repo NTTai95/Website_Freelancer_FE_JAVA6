@@ -11,7 +11,20 @@ const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
 
+  const [product, setProduct] = useState(null);
+
+const fetchProduct = async () => {
+  try {
+    const res = await productApi.getById(job?.productId);
+    setProduct(res.data);
+  } catch (error) {
+    console.error("Error fetching product:", error);
+  }
+}
+
   useEffect(() => {
+    fetchProduct();
+
     switch (job?.status) {
       case State.JobPost.PENDING:
         setStatus({ text: "Chờ xác nhận", color: "blue" });
@@ -84,6 +97,14 @@ const JobCard = ({ job }) => {
                 onClick={() => navigate(`/applies/jobpost/${job.id}`)}
               >
                 Danh sách ứng tuyển
+              </Button>
+            )}
+            {product && (
+              <Button
+                type="primary"
+                onClick={() => window.open(product?.link, "_blank")}
+              >
+                Xem sản phẩm
               </Button>
             )}
           </div>
