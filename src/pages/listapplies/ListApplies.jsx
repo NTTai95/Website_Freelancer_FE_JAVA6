@@ -6,7 +6,7 @@ import applyApi from "@api/applyApi";
 import { useParams } from "react-router-dom";
 
 const ListApplicant = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   console.log("jobPostId:", id);
   const [applicant, setApplicant] = useState(null);
   const [search, setSearch] = useState("");
@@ -19,7 +19,6 @@ const ListApplicant = () => {
 
   const fetchData = async () => {
     try {
-
       const res = await applyApi.getAppliesByJobPost({
         jobPostId: id,
         page: pagination.current,
@@ -37,7 +36,6 @@ const ListApplicant = () => {
       console.error("Lỗi khi lấy danh sách Apply:", error);
     }
   };
-
 
   useEffect(() => {
     fetchData();
@@ -76,7 +74,7 @@ const ListApplicant = () => {
                 </Col>
               ))}
 
-            {(!applicant || applicant?.length == 0) && (
+            {!applicant && (
               <div>
                 {Array.from({ length: 10 }).map((_, index) => (
                   <Skeleton
@@ -91,8 +89,13 @@ const ListApplicant = () => {
                 <Skeleton.Input className={"ms-auto d-block"} active={true} />
               </div>
             )}
+            {applicant?.length < 1 && (
+              <div className="text-center">
+                <h3>Không có ứng viên nào</h3>
+              </div>
+            )}
           </Row>
-          {applicant && (
+          {(applicant && applicant.length > 0) && (
             <Pagination
               pagination={pagination}
               align="end"

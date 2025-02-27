@@ -1,8 +1,18 @@
-import { Typography, Form, Input, Button, Popconfirm, Tooltip, Spin, Divider } from "antd";
+import {
+  Typography,
+  Form,
+  Input,
+  Button,
+  Popconfirm,
+  Tooltip,
+  Spin,
+  Divider,
+} from "antd";
 import { QuestionCircleOutlined } from "@ant-design/icons";
 import scss from "./PostDetail.module.scss";
 import formValidator from "@utils/formValidator";
 import TooltipAI from "./TooltipAI";
+import { useState } from "react";
 
 const { Title, Paragraph } = Typography;
 
@@ -10,13 +20,20 @@ function ApplyForm({
   form,
   onFinish,
   loadingCall,
-  openPopconfirm,
-  setOpenPopconfirm,
-  handleSubmit,
   genreateContent,
   setContent,
   apply,
 }) {
+  const [openPopconfirm, setOpenPopconfirm] = useState(false);
+
+  const handleSubmit = async () => {
+    try {
+      await form.validateFields();
+    } catch (error) {
+      console.log(error);
+    }
+    setOpenPopconfirm(true);
+  };
   if (apply) {
     return (
       <div>
