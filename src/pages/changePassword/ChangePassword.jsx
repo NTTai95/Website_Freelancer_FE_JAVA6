@@ -1,17 +1,17 @@
 import { useState } from "react";
-import scss from "./ChangePassword.module.scss";
 import { Button, Input, notification } from "antd";
 import accountApi from "@api/accountApi";
+import scss from "./ChangePassword.module.scss";
 
 const ChangePassword = () => {
   const [currentPassword, setCurrentPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loading, setLoading] = useState(false); 
+  const [loading, setLoading] = useState(false);
 
   const loginedUser = JSON.parse(sessionStorage.getItem("logined"));
   const userId = loginedUser ? loginedUser.id : null;
- console.log(loginedUser);
+
   const handleChangePassword = async () => {
     if (!userId) {
       notification.error({
@@ -33,7 +33,7 @@ const ChangePassword = () => {
 
     if (newPassword.length < 6) {
       notification.warning({
-        message: "Mật khẩu yếu",
+        message: "Lỗi",
         description: "Mật khẩu mới phải có ít nhất 6 ký tự!",
         placement: "topRight",
       });
@@ -42,7 +42,7 @@ const ChangePassword = () => {
 
     if (newPassword !== confirmPassword) {
       notification.warning({
-        message: "Lỗi xác nhận mật khẩu",
+        message: "Lỗi",
         description: "Mật khẩu mới và xác nhận mật khẩu không khớp!",
         placement: "topRight",
       });
@@ -51,10 +51,21 @@ const ChangePassword = () => {
 
     try {
       setLoading(true);
-      await accountApi.update(userId, {
-        currentPassword,
-        newPassword,
-      });
+
+      
+      const checkRes = await accountApi.checkPassword(userId, currentPassword);
+      if (!checkRes.data) {
+        notification.error({
+          message: "Lỗi",
+          description: "Mật khẩu hiện tại không đúng!",
+          placement: "topRight",
+        });
+        setLoading(false);
+        return;
+      }
+      console.log("Dữ liệu gửi đi:", { password: newPassword });
+      
+      await accountApi.changePassword(userId, { password: newPassword });
 
       notification.success({
         message: "Thành công",
@@ -104,11 +115,11 @@ const ChangePassword = () => {
         />
       </div>
       <Button
-        type="submit"
+        type="primary"
         onClick={handleChangePassword}
         className={scss.button}
-        loading={loading} 
-        disabled={loading} 
+        loading={loading}
+        disabled={loading}
       >
         Đổi mật khẩu
       </Button>

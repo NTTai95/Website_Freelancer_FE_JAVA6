@@ -16,6 +16,7 @@ import PostDetail from "@pages/postDetail/PostDetail";
 import JobPost from "@pages/JobPost/JobPost";
 import ProjectPage from "@pages/ProjectPage/ProjectPage";
 import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
+import ChangePasswordDN from "@pages/changePassword/changePassword";
 import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
 import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
 import Profile from "@pages/profile/Profile";
@@ -180,11 +181,11 @@ const AppRoutes = () => {
         element={
           // <PrivateRoute
           //   element={
-          <MainLayout>
-            <ProfileLayout active="changePassword">
-              <ChangePassword />
-            </ProfileLayout>
-          </MainLayout>
+              <MainLayout>
+                <ProfileLayout active="changePassword">
+                <ChangePasswordDN />
+                </ProfileLayout>
+              </MainLayout>
           //  }
           ///>
         }
@@ -460,7 +461,7 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-      <Route
+   <Route
         path="/changepassword/:token"
         element={
           <MainLayout>
