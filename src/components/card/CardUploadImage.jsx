@@ -1,6 +1,7 @@
 import profileApi from "../../api/profileApi";
 import scss from "./CardUploadImage.module.scss";
 import { Card, Button, Upload, message, ConfigProvider } from "antd";
+import ImgCrop from 'antd-img-crop';
 import { useEffect, useState } from "react";
 
 const CardUpLoadImage = ({ profile }) => {
@@ -52,9 +53,11 @@ const CardUpLoadImage = ({ profile }) => {
       <Card className={scss.card} cover={<img src={avatar} />}>
         <p className={scss.fullName}>{profile?.fullName}</p>
         {contextHolder}
-        <Upload {...props} className={scss.upload}>
-          <Button className={scss.button}>Thay đổi</Button>
-        </Upload>
+        <ImgCrop rotationSlider>
+          <Upload {...props} className={scss.upload}>
+            <Button className={scss.button}>Thay đổi</Button>
+          </Upload>
+        </ImgCrop>
       </Card>
     </ConfigProvider>
   );
