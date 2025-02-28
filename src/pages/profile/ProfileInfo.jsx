@@ -1,8 +1,10 @@
 import { Button, Input, DatePicker, Form, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import formValidator from "@utils/formValidator";
+import { useEffect, useState } from "react";
 
-const ProfileInfo = ({ isEdit, initialValues, onEdit, onFinish, form, errorPhoneLoading,setErrorPhoneLoading }) => {
+const ProfileInfo = ({ isEdit, initialValues, onEdit, onFinish, form }) => {
+  const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const formatDate = (dateString) => {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString("vi-VN", {
@@ -11,6 +13,8 @@ const ProfileInfo = ({ isEdit, initialValues, onEdit, onFinish, form, errorPhone
       year: "numeric",
     });
   };
+
+console.log(initialValues);
 
   if (!isEdit) {
     return (

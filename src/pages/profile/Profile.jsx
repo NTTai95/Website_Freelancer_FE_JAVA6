@@ -15,7 +15,6 @@ function Profile() {
   const [form] = Form.useForm();
   const [isEdit, setIsEdit] = useState(false);
   const [messageApi, contextHolder] = notification.useNotification();
-  const [errorPhoneLoading, setErrorPhoneLoading] = useState(false);
   const [initialValues, setInitialValues] = useState({
     fullName: "",
     birthday: "",
@@ -27,6 +26,7 @@ function Profile() {
     id: data.id,
     fullName: data.fullName,
     birthday: dayjs(data.birthday),
+    email: data.account.email,
     phone: data.phone,
     wallet: data.wallet,
   });
@@ -76,8 +76,6 @@ function Profile() {
             onEdit={() => setIsEdit(true)}
             onFinish={onFinish}
             form={form}
-            errorPhoneLoading={errorPhoneLoading}
-            setErrorPhoneLoading={setErrorPhoneLoading}
           />
         </div>
         <div className={`col-4 ${scss.col3}`}>
