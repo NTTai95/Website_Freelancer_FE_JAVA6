@@ -86,7 +86,7 @@ function ApplyDetail() {
                 <p>{apply?.context}</p>
             </div>
             <Button className="mt-4 w-25" type="primary" onClick={selectApply} >
-                Click Test
+                Chọn ứng viên
             </Button >
         </div >
 

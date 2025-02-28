@@ -10,6 +10,7 @@ const accountApi = {
   checkPassword: (id, password) => apiClient.get(`/accounts/${id}/check/password/${password}`),
 
   changePassword: (id, password) => apiClient.put(`/accounts/changepassword/${id}`, password ),
+  changePasswordProfile: (id, password) => apiClient.put(`/accounts/profile/changepassword/${id}`, password ),
 };
 
 export default accountApi;
