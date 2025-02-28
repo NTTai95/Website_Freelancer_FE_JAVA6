@@ -71,12 +71,13 @@ function Profile() {
       <div className="row">
         <div className="col-8">
           <ProfileInfo
-            isEdit={isEdit}ádasdádasd
+            isEdit={isEdit}
             initialValues={initialValues}
             onEdit={() => setIsEdit(true)}
             onFinish={onFinish}
             form={form}
             errorPhoneLoading={errorPhoneLoading}
+            setErrorPhoneLoading={setErrorPhoneLoading}
           />
         </div>
         <div className={`col-4 ${scss.col3}`}>

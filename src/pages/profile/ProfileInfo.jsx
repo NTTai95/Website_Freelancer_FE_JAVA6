@@ -2,7 +2,7 @@ import { Button, Input, DatePicker, Form, Spin } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
 import formValidator from "@utils/formValidator";
 
-const ProfileInfo = ({ isEdit, initialValues, onEdit, onFinish, form, errorPhoneLoading }) => {
+const ProfileInfo = ({ isEdit, initialValues, onEdit, onFinish, form, errorPhoneLoading,setErrorPhoneLoading }) => {
   const formatDate = (dateString) => {
     if (!dateString) return "";
     return new Date(dateString).toLocaleDateString("vi-VN", {
