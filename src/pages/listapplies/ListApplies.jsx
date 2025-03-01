@@ -27,7 +27,6 @@ const ListApplicant = () => {
       const { content, totalElements } = res.data;
 
       setApplicant(content);
-      console.log(content);
       setPagination((prev) => ({
         ...prev,
         total: totalElements,

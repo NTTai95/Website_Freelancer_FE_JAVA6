@@ -1,73 +1,88 @@
 const State = {
     Apply: {
-        PENDING: 0,
-        APPROVED: 1,
-        REJECTED: 2,
-        WORKING: 3,
+        PENDING: 0, // Chờ duyệt
+        APPROVED: 1, // Đã duyệt
+        REJECTED: 2, // Bị từ chối
+        WORKING: 3, // Đang làm việc
     },
+
     Level: {
-        LOW: 0,
-        MEDIUM: 1,
-        HIGH: 2,
+        LOW: 0, // Thấp
+        MEDIUM: 1, // Trung bình
+        HIGH: 2, // Cao
     },
+
     Permission: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Profile: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Freelancer: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Language: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Recruiter: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Skill: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Staff: {
-        SHOW: 0,
-        HIDDEN: 1,
+        SHOW: 0, // Hiển thị
+        HIDDEN: 1, // Ẩn
     },
+
     Product: {
-        SHOW: 0,
-        HIDDEN: 1,
+        REVIEWING: 0, // Đang xem xét
+        EDITING: 1, // Ẩn
+        APPROVED: 2, // Chấp nhận
     },
+
     Account: {
-        USE: 0,
-        BLOCK: 1,
+        USE: 0, // Đang sử dụng
+        BLOCK: 1, // Bị khóa
     },
+
     Wallet: {
-        USE: 0,
-        BLOCK: 1,
+        USE: 0, // Đang sử dụng
+        BLOCK: 1, // Bị khóa
     },
+
     HistoryTransaction: {
-        USE: 0,
-        DELETE: 1,
+        USE: 0, // Đang sử dụng
+        DELETE: 1, // Đã xóa
     },
+
     JobPost: {
-        PENDING: 0,
-        APPROVED: 1,
-        REJECTED: 2,
-        LOADING: 3,
-        PUBLISHED: 4,
-        STARTED: 5,
-        CANCELED: 6,
-        FINISHED: 7,
-        HIDDEN: 8,
-        DELETED: 9,
-        DOING: 10,
-        EDITING: 11
+        PENDING: 0, // Đang chờ duyệt
+        APPROVED: 1, // Đã duyệt
+        REJECTED: 2, // Bị từ chối
+        LOADING: 3, // Đang tải dữ liệu
+        PUBLISHED: 4, // Đã đăng
+        STARTED: 5, // Đã bắt đầu
+        CANCELED: 6, // Đã hủy
+        FINISHED: 7, // Đã hoàn thành
+        HIDDEN: 8, // Đã ẩn
+        DELETED: 9, // Đã xóa
+        DOING: 10, // Đang thực hiện
+        EDITING: 11, // Đang chỉnh sửa
     },
 };
+
 
 export default State;

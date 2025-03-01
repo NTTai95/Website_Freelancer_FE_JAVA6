@@ -3,11 +3,11 @@ import CardApplies from "./CardApplies";
 import State from "../../utils/State";
 
 const FreelancerApplies = ({ freelancer }) => {
+  console.log(freelancer);
   const applies = freelancer?.applies?.filter(
     (apply) =>
       apply.status == State.Apply.PENDING || apply.status == State.Apply.WORKING
   )
-
 
   return (
     <>
