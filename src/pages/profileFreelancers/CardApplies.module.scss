@@ -31,3 +31,25 @@
     padding: 4px 8px;
   }
 }
+.product {
+  display: flex;
+  justify-content: end;
+  margin-top: 4rem;
+
+  .textN {
+    text-decoration: none;
+  }
+}
+
+.divCopy {
+  display: flex;
+  justify-content: end;
+  .copy {
+    cursor: pointer;
+    margin-left: 20px;
+    font-size: 18px;
+    &:hover {
+      filter: brightness(0.6);
+    }
+  }
+}

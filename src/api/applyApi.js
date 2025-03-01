@@ -14,7 +14,7 @@ const applyApi = {
         }),
     
     selectApply: (id) => apiClient.put(`/applies/select/${id}`),
-    
+    getWorkingByJobPostId: (jobPostId) => apiClient.get(`/applies/working/${jobPostId}`),
 };
 
 export default applyApi;

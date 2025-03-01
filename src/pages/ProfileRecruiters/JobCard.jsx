@@ -1,29 +1,53 @@
 import React from "react";
-import { Card, Tag, Row, Col, Button } from "antd";
+import { Card, Tag, Row, Col, Button, Tooltip, message } from "antd";
+import { CopyOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
 import State from "@utils/State";
 import scss from "./JobCard.module.scss";
-import jobspostApi from "@api/jobspostApi";
+import applyApi from "@api/applyApi";
+import productApi from "@api/productApi";
 
 const JobCard = ({ job }) => {
   const navigate = useNavigate();
   const [status, setStatus] = useState(null);
 
+  const [messageApi, contextHolder] = message.useMessage();
+  const [apply, setApply] = useState(null);
   const [product, setProduct] = useState(null);
 
-const fetchProduct = async () => {
-  try {
-    const res = await productApi.getById(job?.productId);
-    setProduct(res.data);
-  } catch (error) {
-    console.error("Error fetching product:", error);
-  }
-}
+  const handleCopy = async () => {
+    if (!product?.link) return;
+    try {
+      await navigator.clipboard.writeText(product.link);
+      messageApi.open({
+        type: "success",
+        content: "Đã sao chép liên kết sản phẩm!",
+      });
+    } catch (err) {
+      messageApi.open({
+        type: "error",
+        content: "Không thể sao chép liên kết sản phẩm!",
+      });
+    }
+  };
+
+  const fetchApply = async () => {
+    try {
+      const res = await applyApi.getWorkingByJobPostId(job?.id);
+      setApply(res.data);
+      if (res.data.productId) {
+        const resProduct = await productApi.getById(res.data.productId);
+        setProduct(resProduct.data);
+      }
+    } catch (error) {
+      console.error("Error fetching product:", error);
+    }
+  };
 
   useEffect(() => {
-    fetchProduct();
+    fetchApply();
 
     switch (job?.status) {
       case State.JobPost.PENDING:
@@ -48,6 +72,7 @@ const fetchProduct = async () => {
 
   return (
     <Card className={scss.card} loading={!job}>
+      {contextHolder}
       <Row>
         <Col span={20}>
           <p
@@ -77,14 +102,6 @@ const fetchProduct = async () => {
             <Tag className={scss.tag} color={status?.color}>
               {status?.text}
             </Tag>
-            {job?.status === State.JobPost.WORKING && (
-              <Button
-                className={scss.button}
-                onClick={() => navigate(`/jobpostdetail/${job.id}`)}
-              >
-                Xem chi tiết
-              </Button>
-            )}
             {job?.status === State.JobPost.EDITING && (
               <Button
                 type="primary"
@@ -102,13 +119,50 @@ const fetchProduct = async () => {
                 Danh sách ứng tuyển
               </Button>
             )}
-            {product && (
-              <Button
-                type="primary"
-                onClick={() => window.open(product?.link, "_blank")}
-              >
-                Xem sản phẩm
-              </Button>
+            {apply && (
+              <div className={scss.divWorker}>
+                <Tooltip title="Xem thông tin hồ sơ đã ứng tuyển vào công việc này!">
+                  <Button
+                    className={scss.btn}
+                    type="primary"
+                    onClick={() => navigate(`/jobpost/apply/${apply.id}`)}
+                  >
+                    Ứng tuyển
+                  </Button>
+                </Tooltip>
+                {product ? (
+                  <Tooltip
+                    title={
+                      <div>
+                        <p className={"m-0"}>{product?.link}</p>
+                        <div className={scss.copy}>
+                          <Tooltip title="Sao chép">
+                            <CopyOutlined
+                              onClick={handleCopy}
+                              className={scss.icon}
+                            />
+                          </Tooltip>
+                        </div>
+                      </div>
+                    }
+                    color="geekblue"
+                  >
+                    <Button
+                      className={scss.btn}
+                      href={product?.link}
+                      target="_blank"
+                    >
+                      Sản phẩm
+                    </Button>
+                  </Tooltip>
+                ) : (
+                  <Tooltip title="Freelancer chưa nộp sản phẩm nào!">
+                    <Button className={scss.btn} disabled>
+                      Sản phẩm
+                    </Button>
+                  </Tooltip>
+                )}
+              </div>
             )}
           </div>
         </Col>
