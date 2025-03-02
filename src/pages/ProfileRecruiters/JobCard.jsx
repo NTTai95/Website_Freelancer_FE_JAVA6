@@ -1,6 +1,10 @@
 import React from "react";
 import { Card, Tag, Row, Col, Button, Tooltip, message } from "antd";
-import { CopyOutlined } from "@ant-design/icons";
+import {
+  CopyOutlined,
+  CheckCircleOutlined,
+  CloseCircleOutlined,
+} from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import dayjs from "dayjs";
@@ -35,8 +39,12 @@ const JobCard = ({ job }) => {
 
   const fetchApply = async () => {
     try {
-      const res = await applyApi.getWorkingByJobPostId(job?.id);
+      const res = await (job?.status !== State.JobPost.FINISHED
+        ? applyApi.getWorkingByJobPostId(job?.id)
+        : applyApi.getFinishedByJobPostId(job?.id));
+
       setApply(res.data);
+
       if (res.data.productId) {
         const resProduct = await productApi.getById(res.data.productId);
         setProduct(resProduct.data);
@@ -46,8 +54,41 @@ const JobCard = ({ job }) => {
     }
   };
 
+  const handleAppoved = async () => {
+    try {
+      const res = await applyApi.finish(apply?.id);
+      messageApi.open({
+        type: "success",
+        content: res.data,
+      });
+      fetchApply();
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.response.data,
+      });
+      console.error("Error approving apply:", error);
+    }
+  };
+
+  const handleReturn = async () => {
+    try {
+      const res = await productApi.update(product.id, {
+        status: State.Product.EDITING,
+      });
+      fetchApply();
+    } catch (error) {
+      messageApi.open({
+        type: "error",
+        content: error.response.data,
+      });
+      console.error("Error approving apply:", error);
+    }
+  };
+
   useEffect(() => {
     fetchApply();
+    console.log(job);
 
     switch (job?.status) {
       case State.JobPost.PENDING:
@@ -64,6 +105,9 @@ const JobCard = ({ job }) => {
         break;
       case State.JobPost.STARTED:
         setStatus({ text: "Đang làm", color: "orange" });
+        break;
+      case State.JobPost.FINISHED:
+        setStatus({ text: "Hoàn thành", color: "#87d068" });
         break;
       default:
         setStatus({ text: "Không xác định" });
@@ -131,30 +175,85 @@ const JobCard = ({ job }) => {
                   </Button>
                 </Tooltip>
                 {product ? (
-                  <Tooltip
-                    title={
-                      <div>
-                        <p className={"m-0"}>{product?.link}</p>
-                        <div className={scss.copy}>
-                          <Tooltip title="Sao chép">
-                            <CopyOutlined
-                              onClick={handleCopy}
-                              className={scss.icon}
-                            />
+                  (() => {
+                    switch (product?.status) {
+                      case State.Product.EDITING:
+                        return (
+                          <Tooltip title="Freelancer đang chỉnh sửa sản phẩm!">
+                            <Button className={scss.btn} disabled>
+                              Sản phẩm
+                            </Button>
                           </Tooltip>
-                        </div>
-                      </div>
+                        );
+                      case State.Product.BLOCKED:
+                        return (
+                          <Tooltip
+                            title={
+                              <div>
+                                <b>Sản phẩm Freelancer đã nộp</b>
+                                <p className={"m-0"}>{product?.link}</p>
+                                <div className={scss.copy}>
+                                  <Tooltip title="Sao chép">
+                                    <CopyOutlined
+                                      onClick={handleCopy}
+                                      className={scss.icon}
+                                    />
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            }
+                            color="geekblue"
+                          >
+                            <Button
+                              className={scss.btn}
+                              href={product?.link}
+                              target="_blank"
+                            >
+                              Sản phẩm
+                            </Button>
+                          </Tooltip>
+                        );
+                      default:
+                        return (
+                          <Tooltip
+                            title={
+                              <div>
+                                <p className={"m-0"}>{product?.link}</p>
+                                <div className={scss.copy}>
+                                  <Tooltip title="Yêu cầu freelancer chỉnh sửa sản phẩm.">
+                                    <CloseCircleOutlined
+                                      onClick={handleReturn}
+                                      className={scss.icon}
+                                    />
+                                  </Tooltip>
+                                  <Tooltip title="Chấp nhận sản phấm.">
+                                    <CheckCircleOutlined
+                                      onClick={handleAppoved}
+                                      className={scss.icon}
+                                    />
+                                  </Tooltip>
+                                  <Tooltip title="Sao chép">
+                                    <CopyOutlined
+                                      onClick={handleCopy}
+                                      className={scss.icon}
+                                    />
+                                  </Tooltip>
+                                </div>
+                              </div>
+                            }
+                            color="geekblue"
+                          >
+                            <Button
+                              className={scss.btn}
+                              href={product?.link}
+                              target="_blank"
+                            >
+                              Sản phẩm
+                            </Button>
+                          </Tooltip>
+                        );
                     }
-                    color="geekblue"
-                  >
-                    <Button
-                      className={scss.btn}
-                      href={product?.link}
-                      target="_blank"
-                    >
-                      Sản phẩm
-                    </Button>
-                  </Tooltip>
+                  })()
                 ) : (
                   <Tooltip title="Freelancer chưa nộp sản phẩm nào!">
                     <Button className={scss.btn} disabled>

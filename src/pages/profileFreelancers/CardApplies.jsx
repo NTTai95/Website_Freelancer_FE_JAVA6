@@ -63,6 +63,12 @@ const CardApplies = ({ apply }) => {
       case State.Apply.WORKING:
         setStatusApply({ text: "Đang làm", color: "success" });
         break;
+      case State.Apply.REJECTED:
+        setStatusApply({ text: "Đã từ chối", color: "red" });
+        break;
+      case State.Apply.FINISHED:
+        setStatusApply({ text: "Đã hoàn thành", color: "green" });
+        break;
       default:
         setStatusApply({ text: "Không xác định" });
     }
@@ -168,9 +174,11 @@ const CardApplies = ({ apply }) => {
           )}
           {product && product?.status != State.Product.EDITING && (
             <div className={scss.product}>
-              <Tag className={scss.tag} color={statusProduct.color}>
-                {statusProduct.text}
-              </Tag>
+              {apply?.status != State.Apply.FINISHED && (
+                <Tag className={scss.tag} color={statusProduct.color}>
+                  {statusProduct.text}
+                </Tag>
+              )}
               <Tooltip
                 title={
                   <div>

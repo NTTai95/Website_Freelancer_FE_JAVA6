@@ -8,6 +8,7 @@ import profileApi from "@api/profileApi";
 import { useEffect, useState } from "react";
 import RecruiterFormAdd from "./RecruiterFormAdd";
 import RecruiterDraft from "./RecruiterDraft";
+import RecruiterHistory from "./RecruiterHistory";
 
 function ProfileRecruiters() {
   const [recruiter, setRecruiter] = useState(null);
@@ -43,6 +44,11 @@ function ProfileRecruiters() {
       key: "3",
       label: "Bản nháp",
       children: <RecruiterDraft />,
+    },
+    {
+      key: "4",
+      label: "Lịch sử làm việc",
+      children: <RecruiterHistory />,
     },
   ];
 

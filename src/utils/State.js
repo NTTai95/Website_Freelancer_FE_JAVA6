@@ -4,6 +4,7 @@ const State = {
         APPROVED: 1, // Đã duyệt
         REJECTED: 2, // Bị từ chối
         WORKING: 3, // Đang làm việc
+        FINISHED: 4, // Hoàn thành
     },
 
     Level: {
@@ -49,8 +50,9 @@ const State = {
 
     Product: {
         REVIEWING: 0, // Đang xem xét
-        EDITING: 1, // Ẩn
+        EDITING: 1, // Chỉnh sửa
         APPROVED: 2, // Chấp nhận
+        BLOCKED: 3, // Bị khóa
     },
 
     Account: {

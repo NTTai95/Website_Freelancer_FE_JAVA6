@@ -11,6 +11,7 @@ const jobspostApi = {
     post: (id) => apiClient.post(`/jobposts/${id}/post`),
     getActiveByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/active`),
     getDraftByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/draft`),
+    getFinishByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/finish`),
     getPageActive: ({page, size, search}) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search }} ),
 };
 
