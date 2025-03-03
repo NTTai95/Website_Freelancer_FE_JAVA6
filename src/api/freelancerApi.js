@@ -9,6 +9,7 @@ const freelancerApi = {
   delete: (id) => apiClient.delete(`/freelancers/${id}`),
   search: (search) => apiClient.get('/freelancers/search', { params: { search } }),
   getByAccountId: (accountId) => apiClient.get(`/freelancers/account/${accountId}`),
+  getTop10: () => apiClient.get('/freelancers/top10'),
 };
 
 export default freelancerApi;

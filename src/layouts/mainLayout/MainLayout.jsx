@@ -15,13 +15,14 @@ const MainLayout = ({ children }) => {
       <Header />
       <main className={scss["container-main"]}>{children}</main>
       <div className={scss["float-button"]}>
-        {logined && logined.isStaff &&
+        {logined && logined.isStaff && (
           <Tooltip title="Chuyển sang giao diện admin">
             <FloatButton
               icon={<RetweetOutlined />}
               onClick={() => navgate("/admin/dashboard")}
             />
-          </Tooltip>}
+          </Tooltip>
+        )}
       </div>
       <Footer />
     </div>

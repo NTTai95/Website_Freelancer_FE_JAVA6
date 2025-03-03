@@ -52,7 +52,6 @@ const ProjectPage = () => {
         ...values,
         recruiterId: recruiter.id,
       };
-
       const res = await jobspostApi.add(formatData);
       setRecruiter(null);
       navigate(`/jobpost/edit/${res.data.id}`);

@@ -63,8 +63,7 @@ const Leaderboard = ({ title, columns, data }) => {
       title: safeColumns[2].title,
       dataIndex: safeColumns[2].dataIndex,
       key: safeColumns[2].key,
-      width: "25%",
-      sorter: (a, b) => b.total - a.total,
+      width: "20%",
       render: (text, record) => (
         <motion.span
           initial={{ scale: 0.8 }}
