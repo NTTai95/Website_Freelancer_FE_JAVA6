@@ -12,7 +12,11 @@ const jobspostApi = {
     getActiveByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/active`),
     getDraftByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/draft`),
     getFinishByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/finish`),
-    getPageActive: ({page, size, search}) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search }} ),
+    getPageActive: ({ page, size, search }) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search } }),
+    countInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month`),
+    countFinishedInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/finished`),
+    countWorkingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/working`),
+    countPendingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/pending`),
 };
 
 export default jobspostApi;
