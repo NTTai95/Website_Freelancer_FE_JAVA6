@@ -13,7 +13,7 @@ const RecruiterView = ({ recruiter, setIsEditing }) => {
       <div className={scss.part}>
         <p className={scss.title}>Giới thiệu</p>
         <Divider />
-        <p className={scss.text}>{recruiter?.introduce}</p>
+        <p style={{whiteSpace: "pre-line"}} className={scss.text}>{recruiter?.introduce}</p>
       </div>
       <Divider />
       <Button
