@@ -97,7 +97,7 @@ function StatisticJobs() {
                                 </Col>
                                 <Col span={8}>
                                     <Statistic
-                                        title="Total Earnings"
+                                        title="Tổng thu nhập"
                                         value={totalMoney}
                                         prefix={<DollarOutlined />}
                                         precision={2}
