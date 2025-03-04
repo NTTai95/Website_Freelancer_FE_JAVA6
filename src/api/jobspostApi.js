@@ -17,6 +17,7 @@ const jobspostApi = {
     countFinishedInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/finished`),
     countWorkingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/working`),
     countPendingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/pending`),
+    getTotalByRecruiter: (recruiterId) => apiClient.get(`/jobposts/count/${recruiterId}`),
 };
 
 export default jobspostApi;
