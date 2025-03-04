@@ -27,6 +27,7 @@ import Page404 from "@pages/page404/Page404";
 import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
 import ListApplies from "@pages/listapplies/ListApplies";
 import ChangePassword from "@pages/ForgotPassword/ChangePassword";
+import ProfileStatistic from "../pages/statistic/ProfileStatistic";
 
 // Admin Pages
 import Dashboard from "@pages/dashboard/Dashboard";
@@ -181,11 +182,11 @@ const AppRoutes = () => {
         element={
           // <PrivateRoute
           //   element={
-              <MainLayout>
-                <ProfileLayout active="changePassword">
-                <ChangePasswordDN />
-                </ProfileLayout>
-              </MainLayout>
+          <MainLayout>
+            <ProfileLayout active="changePassword">
+              <ChangePasswordDN />
+            </ProfileLayout>
+          </MainLayout>
           //  }
           ///>
         }
@@ -461,11 +462,21 @@ const AppRoutes = () => {
           </MainLayout>
         }
       />
-   <Route
+      <Route
         path="/changepassword/:token"
         element={
           <MainLayout>
             <ChangePassword />
+          </MainLayout>
+        }
+      />
+      <Route
+        path="/profile/statistic"
+        element={
+          <MainLayout>
+            <ProfileLayout active="statistic">
+              <ProfileStatistic />
+            </ProfileLayout>
           </MainLayout>
         }
       />

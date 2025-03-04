@@ -12,9 +12,13 @@ const applyApi = {
         apiClient.get(`/applies/jobpost/${jobPostId}`, {
             params: { page, size, search }
         }),
-    
-    selectApply: (id) => apiClient.put(`/applies/select/${id}`),
-    
+
+    selectApply: (id) => apiClient.put(`/applies/${id}/select`),
+    finish: (id) => apiClient.put(`/applies/${id}/finish`),
+    getWorkingByJobPostId: (jobPostId) => apiClient.get(`/applies/jobpost/${jobPostId}/working`),
+    getFinishedByJobPostId: (jobPostId) => apiClient.get(`/applies/jobpost/${jobPostId}/finished`),
+    getTotalCompletedJobsByFreelancer: (freelancerId) =>
+        apiClient.get(`/applies/freelancer/${freelancerId}/completed/count`),
 };
 
 export default applyApi;

@@ -37,3 +37,26 @@
     }
   }
 }
+
+.divWorker {
+  display: flex;
+  flex-direction: column;
+  align-items: end;
+  gap: 10px;
+  .btn {
+    width: 100%;
+    text-decoration: none;
+  }
+}
+
+.copy {
+  width: 100%;
+  display: flex;
+  justify-content: end;
+  .icon {
+    font-size: 18px;
+    &:hover {
+      filter: brightness(0.8);
+    }
+  }
+}

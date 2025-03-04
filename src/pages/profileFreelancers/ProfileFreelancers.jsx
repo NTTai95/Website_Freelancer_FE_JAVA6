@@ -6,6 +6,7 @@ import freelancerApi from "@api/freelancerApi";
 import profileApi from "@api/profileApi";
 import { useEffect, useState } from "react";
 import FreelancerFormAdd from "./FreelancerFormAdd";
+import FreelancerHistory from "./FreelancerHistory";
 
 function ProfileFreelancers() {
   const [freelancer, setFreelancer] = useState(null);
@@ -40,7 +41,7 @@ function ProfileFreelancers() {
     {
       key: "3",
       label: "Lịch sử làm việc",
-      children: "Lịch sử làm việc",
+      children: <FreelancerHistory freelancer={freelancer} />,
     },
   ];
 

@@ -6,6 +6,7 @@ const walletApi = {
     create: (wallet) => apiClient.post('/wallets', wallet),
     deposit: (id, amount) => apiClient.post(`/wallets/${id}/deposit`, amount),
     callback: (params) => apiClient.get('/wallets/callback', { params }),
+    getByProfileId: (id) => apiClient.get(`/wallets/profile/${id}`),
 
 };
 

@@ -15,14 +15,6 @@ const DropDownLogined = ({ staff }) => {
 
   const items = [
     {
-      key: '1',
-      label: 'Trang cá nhân',
-      onClick: () => navigate("/admin/profile")
-    },
-    {
-      type: 'divider'
-    },
-    {
       key: '2',
       label: 'Đổi mật khẩu',
       onClick: () => navigate("/admin/changepassword")

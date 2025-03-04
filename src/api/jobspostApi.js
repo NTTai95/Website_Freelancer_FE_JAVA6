@@ -6,13 +6,18 @@ const jobspostApi = {
     getByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}`),
     add: (jobpost) => apiClient.post('/jobposts', jobpost),
     update: (id, staff) => apiClient.put(`/jobposts/${id}`, staff),
-    updateProduct : (id, productId) => apiClient.put(`/jobposts/${id}`, {productId: productId}),
     delete: (id) => apiClient.delete(`/jobposts/${id}`),
     getStatusById: (id) => apiClient.get(`/jobposts/${id}/status`),
     post: (id) => apiClient.post(`/jobposts/${id}/post`),
     getActiveByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/active`),
     getDraftByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/draft`),
-    getPageActive: ({page, size, search}) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search }} ),
+    getFinishByAccountId: (accountId) => apiClient.get(`/jobposts/account/${accountId}/finish`),
+    getPageActive: ({ page, size, search }) => apiClient.get(`/jobposts/status/active`, { params: { page, size, search } }),
+    countInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month`),
+    countFinishedInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/finished`),
+    countWorkingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/working`),
+    countPendingInCurrentMonth: () => apiClient.get(`/jobposts/count/current-month/pending`),
+    getTotalByRecruiter: (recruiterId) => apiClient.get(`/jobposts/count/${recruiterId}`),
 };
 
 export default jobspostApi;

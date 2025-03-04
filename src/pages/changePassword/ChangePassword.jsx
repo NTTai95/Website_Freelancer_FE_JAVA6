@@ -65,7 +65,7 @@ const ChangePassword = () => {
       }
       console.log("Dữ liệu gửi đi:", { password: newPassword });
       
-      await accountApi.changePassword(userId, { password: newPassword });
+      await accountApi.changePasswordProfile(userId, { password: newPassword });
 
       notification.success({
         message: "Thành công",
