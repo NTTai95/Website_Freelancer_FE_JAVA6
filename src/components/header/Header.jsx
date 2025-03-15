@@ -1,8 +1,8 @@
 import { Col, Row, Button, Input, Select } from "antd";
 import scss from "./Header.module.scss";
-import DropDownHeader from "@components/iu/dropdown/DropDownHeader";
-import DropDownLogined from "@components/iu/dropdown/DropDownLogined";
-import DropDownStaff from "@components/iu/dropdown/DropDownStaff";
+import DropDownHeader from "@components/ui/dropdown/DropDownHeader";
+import DropDownLogined from "@components/ui/dropdown/DropDownLogined";
+import DropDownStaff from "@components/ui/dropdown/DropDownStaff";
 import { useNavigate } from "react-router-dom";
 import FancyText from "@carefully-coded/react-text-gradient";
 import { useState, useEffect } from "react";

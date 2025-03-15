@@ -9,36 +9,36 @@ import AdminLayout from "@layouts/AdminLayout/AdminLayout";
 import ProfileLayout from "@layouts/ProfileLayout/ProfileLayout";
 
 // Pages
-import Home from "@pages/home/home";
-import About from "@pages/about/about";
-import Authentication from "@pages/authentication/Authentication";
-import PostDetail from "@pages/postDetail/PostDetail";
-import JobPost from "@pages/JobPost/JobPost";
-import ProjectPage from "@pages/ProjectPage/ProjectPage";
-import ForgotPassword from "@pages/ForgotPassword/ForgotPassword";
-import ChangePasswordDN from "@pages/changePassword/changePassword";
-import ProfileFreelancers from "@pages/profileFreelancers/ProfileFreelancers";
-import ProfileRecruiters from "@pages/ProfileRecruiters/ProfileRecruiters";
-import Profile from "@pages/profile/Profile";
-import ListFreelancer from "@pages/listfreelancer/ListFreelancer";
-import Freelancer from "@pages/freelancer/Freelancer";
-import Recruiter from "@pages/recruiter/Recruiter";
-import Page404 from "@pages/page404/Page404";
-import ApplyDetail from "../pages/ApplyDetail/ApplyDetail";
-import ListApplies from "@pages/listapplies/ListApplies";
-import ChangePassword from "@pages/ForgotPassword/ChangePassword";
-import ProfileStatistic from "../pages/statistic/ProfileStatistic";
+import Home from "@pages/basic/home/home";
+import About from "@pages/basic/about/about";
+import Authentication from "@pages/basic/authentication/Authentication";
+import PostDetail from "@pages/basic/postDetail/PostDetail";
+import JobPost from "@pages/private/jobPost/JobPost";
+import ProjectPage from "@pages/private/projectPage/ProjectPage";
+import ForgotPassword from "@pages/basic/forgotPassword/ForgotPassword";
+import ChangePasswordDN from "@pages/private/changePassword/changePassword";
+import ProfileFreelancers from "@pages/private/profileFreelancers/ProfileFreelancers";
+import ProfileRecruiters from "@pages/private/profileRecruiters/ProfileRecruiters";
+import Profile from "@pages/private/profile/Profile";
+import ListFreelancer from "@pages/basic/listFreelancer/ListFreelancer";
+import Freelancer from "@pages/basic/freelancer/Freelancer";
+import Recruiter from "@pages/basic/recruiter/Recruiter";
+import Page404 from "@pages/exceptions/page404/Page404";
+import ApplyDetail from "@pages/private/applyDetail/ApplyDetail";
+import ListApplies from "@pages/private/listApplies/ListApplies";
+import ChangePassword from "@pages/private/changePassword/ChangePassword";
+import ProfileStatistic from "@pages/private/statistic/ProfileStatistic";
 
 // Admin Pages
-import Dashboard from "@pages/dashboard/Dashboard";
-import SkillTable from "@pages/skills/SkillTable";
-import SkillForm from "@pages/form/SkillForm";
-import StaffTable from "@pages/StaffTable/StaffTable";
-import StaffForm from "@pages/form/StaffForm";
-import LanguageTable from "@pages/language/LanguageTable";
-import LanguageForm from "@pages/language/LanguageForm";
-import PaymentSuccess from "@pages/paymentsuccess/PaymentSuccess";
-import ChangePasswordAdmin from "@pages/changePassword/ChangePasswordAdmin";
+import Dashboard from "@pages/admin/dashboard/Dashboard";
+import SkillTable from "@pages/admin/skills/SkillTable";
+import SkillForm from "@pages/admin/skills/SkillForm";
+import StaffTable from "@pages/admin/staff/StaffTable";
+import StaffForm from "@pages/admin/staff/StaffForm";
+import LanguageTable from "@pages/admin/languages/LanguageTable";
+import LanguageForm from "@pages/admin/languages/LanguageForm";
+import PaymentSuccess from "@pages/private/paymentSuccess/PaymentSuccess";
+import ChangePasswordAdmin from "@pages/private/changePassword/ChangePasswordAdmin";
 
 const AppRoutes = () => {
   const location = useLocation();
@@ -332,104 +332,6 @@ const AppRoutes = () => {
         }
       />
 
-      {/* Admin Routes */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="home">
-                <Dashboard />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/skills"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/skills/:mode/:id?"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/staff"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/staff/:mode/:id?"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/languages"
-        element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/languages/:mode/:id?"
-        element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/payment/success"
-        element={
-          <MainLayout>
-            <PaymentSuccess />
-          </MainLayout>
-        }
-      />
       <Route
         path="/recruiter/:id"
         element={
