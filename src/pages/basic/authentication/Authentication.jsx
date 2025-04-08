@@ -108,7 +108,7 @@ function Authentication({ isLogin }) {
         );
 
         if (res.status == 200) {
-          sessionStorage.setItem("logined", JSON.stringify(res.data));
+          sessionStorage.setItem("token", res.data);
           sessionStorage.removeItem("urlPrev");
           navigate(urlPrev || "/");
           window.location.reload();

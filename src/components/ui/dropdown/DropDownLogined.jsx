@@ -8,45 +8,45 @@ const DropDownLogined = ({ profile }) => {
   const navigate = useNavigate();
 
   function handleLogout() {
-    sessionStorage.removeItem("logined");
+    sessionStorage.removeItem("token");
     navigate("/home");
     window.location.reload();
   }
 
   const items = [
     {
-      key: '1',
-      label: 'Trang cá nhân',
-      onClick: () => navigate("/profile")
+      key: "1",
+      label: "Trang cá nhân",
+      onClick: () => navigate("/profile"),
     },
     {
-      type: 'divider'
+      type: "divider",
     },
     {
-      key: '2',
-      label: 'Freelancer',
-      onClick: () => navigate("/profile/freelancer")
+      key: "2",
+      label: "Freelancer",
+      onClick: () => navigate("/profile/freelancer"),
     },
     {
-      key: '3',
-      label: 'Nhà tuyển dụng',
-      onClick: () => navigate("/profile/recruiters")
+      key: "3",
+      label: "Nhà tuyển dụng",
+      onClick: () => navigate("/profile/recruiters"),
     },
     {
-      type: 'divider'
+      type: "divider",
     },
     {
-      key: '4',
-      label: 'Đổi mật khẩu'
+      key: "4",
+      label: "Đổi mật khẩu",
     },
     {
-      key: '5',
-      label: 'Đăng xuất',
-      onClick: () => handleLogout()
-    }
+      key: "5",
+      label: "Đăng xuất",
+      onClick: () => handleLogout(),
+    },
   ];
   return (
-    <Dropdown menu={{items}} trigger={["click"]}>
+    <Dropdown menu={{ items }} trigger={["click"]}>
       <div className={"d-flex align-items-center " + scss["cursor-pointer"]}>
         <span className={scss.fullName}>{profile.fullName}</span>
         <Avatar size={40} icon={<UserOutlined />} />

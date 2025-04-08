@@ -8,6 +8,7 @@ import FancyText from "@carefully-coded/react-text-gradient";
 import { useState, useEffect } from "react";
 import profileApi from "@api/profileApi";
 import staffApi from "@api/staffApi";
+import authenticationApi from "@api/authenticationApi";
 const { Option } = Select;
 
 function Header() {
@@ -30,15 +31,18 @@ function Header() {
     }
   };
 
-  useEffect(() => {
-    const logined = JSON.parse(sessionStorage.getItem("logined"));
-    if (logined) {
-      if (logined.isStaff) {
-        fetchStaff(logined.id);
-      } else {
-        fetchProfile(logined.id);
-      }
+  const fetchData = async () => {
+    const res = await authenticationApi.isStaff();
+    const { id, isStaff } = res.data;
+    if (isStaff) {
+      fetchStaff(id);
+    } else {
+      fetchProfile(id);
     }
+  };
+
+  useEffect(() => {
+    fetchData();
   }, []);
 
   const menuItemsFindWork = [
