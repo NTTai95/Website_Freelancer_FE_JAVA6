@@ -67,10 +67,11 @@ function ProfileRecruiters() {
       const recruiterDTO = {
         profileId: resProfile.data.id,
         introduce: values.introduce,
-        company: values.company,
+        name: values.name,
       };
 
       await recruiterApi.add(recruiterDTO);
+      debugger
       checkRecruiterId();
     } catch (error) {
       console.error("Error creating recruiter:", error);
