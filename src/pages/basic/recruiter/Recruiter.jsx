@@ -18,25 +18,18 @@ function Recruiter() {
   const [profile, setProfile] = useState(null);
   const [recruiter, setRecruiters] = useState(null);
   const navigate = useNavigate();
-
+  const token = sessionStorage.getItem("token");
   useEffect(() => {
-    const logined = JSON.parse(sessionStorage.getItem("logined"));
-    if (logined) {
-      if (logined.type) {
-        navigate("/404");
-      } else {
-        profileApi.getByRecruiterId(id).then((response) => {
-          if (response.status == 200) {
-            setProfile(response.data);
-          }
-          RecruiterApi.getById(id).then((res) => {
-            if (res.status == 200) {
-              setRecruiters(res.data);
-            }
-          });
-        });
+    profileApi.getByRecruiterId(id).then((response) => {
+      if (response.status == 200) {
+        setProfile(response.data);
       }
-    }
+      RecruiterApi.getById(id).then((res) => {
+        if (res.status == 200) {
+          setRecruiters(res.data);
+        }
+      });
+    });
   }, []);
   return (
     <div className="container">
@@ -52,7 +45,7 @@ function Recruiter() {
         <Col span={16}>
           <Card>
             <Typography.Title level={3}>Giới thiệu</Typography.Title>
-            <Typography.Paragraph style={{whiteSpace: "pre-line"}}>
+            <Typography.Paragraph style={{ whiteSpace: "pre-line" }}>
               {recruiter?.introduce || "Chưa có thông tin giới thiệu"}
             </Typography.Paragraph>
           </Card>

@@ -15,6 +15,7 @@ import JobDescription from "./JobDescription";
 import JobActivity from "./JobActivity";
 import RecruiterInfo from "./RecruiterInfo";
 import ApplyForm from "./ApplyForm";
+import authenticationApi from "@api/authenticationApi";
 
 function PostDetail() {
   const navigate = useNavigate();
@@ -27,7 +28,7 @@ function PostDetail() {
   const [form] = Form.useForm();
   const [content, setContent] = useState("");
   const [loadingCall, setLoadingCall] = useState(false);
-  const logined = JSON.parse(sessionStorage.getItem("logined"));
+  const token = sessionStorage.getItem("token");
   const [freelancer, setFreelancer] = useState(null);
   const [apply, setApply] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
@@ -48,8 +49,10 @@ function PostDetail() {
       setSkills(skillsRes.data);
       setProfile(profileRes.data);
 
-      if (logined) {
-        const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+      if (token) {
+        const res = await authenticationApi.isStaff();
+        const { id } = res.data;
+        const resFreelancer = await freelancerApi.getByAccountId(id);
         setFreelancer(resFreelancer.data);
         for (const item of resFreelancer?.data?.applies || []) {
           if (item.jobPostId == jobRes?.data?.id) {
@@ -115,24 +118,32 @@ function PostDetail() {
       <Row gutter={24}>
         {/* Cột trái - Thông tin công việc */}
         <Col span={16} className="border-end">
-          <JobDescription jobpost={jobpost} lastDatePost={lastDatePost} skills={skills} />
+          <JobDescription
+            jobpost={jobpost}
+            lastDatePost={lastDatePost}
+            skills={skills}
+          />
           <hr />
           <JobActivity jobpost={jobpost} />
         </Col>
-  
+
         {/* Cột phải - Thông tin nhà tuyển dụng và ứng tuyển */}
         <Col span={8}>
           <RecruiterInfo profile={profile} navigate={navigate} />
           <Divider />
-          
+
           {freelancer?.profileId === profile?.id ? (
             <div>
               <p>Đây là bài đăng của bạn, không thể tự nộp hồ sơ.</p>
             </div>
-          ) : !logined ? (
+          ) : !token ? (
             <div>
               <p>
-                <Button type="link" className="p-0" onClick={() => navigate("/login")}>
+                <Button
+                  type="link"
+                  className="p-0"
+                  onClick={() => navigate("/login")}
+                >
                   Đăng nhập
                 </Button>{" "}
                 để nộp hồ sơ ứng tuyển.
@@ -141,7 +152,11 @@ function PostDetail() {
           ) : !freelancer ? (
             <div>
               <p>
-                <Button type="link" className="p-0" onClick={() => navigate("/profile/freelancer")}>
+                <Button
+                  type="link"
+                  className="p-0"
+                  onClick={() => navigate("/profile/freelancer")}
+                >
                   Thêm hồ sơ
                 </Button>{" "}
                 Freelancer để có thể nộp hồ sơ.
@@ -161,7 +176,6 @@ function PostDetail() {
       </Row>
     </div>
   );
-  
 }
 
 export default PostDetail;

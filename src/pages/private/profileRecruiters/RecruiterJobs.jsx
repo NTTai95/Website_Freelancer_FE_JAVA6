@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import JobCard from "./JobCard";
 import jobspostApi from "@api/jobspostApi";
-import recruiterApi from "@api/recruiterApi";
+import authenticationApi from "@api/authenticationApi";
 const RecruiterJobs = () => {
   const [jobs, setJobs] = useState(null);
-  const logined = JSON.parse(sessionStorage.getItem("logined"));
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
     const fetchJobs = async () => {
+      if (!token) return;
+
       try {
-        if (!logined?.id) return;
-        const data = await jobspostApi.getActiveByAccountId(logined.id);
+        const res = await authenticationApi.isStaff();
+        const id = res.data.id;
+        const data = await jobspostApi.getActiveByAccountId(id);
         setJobs(data.data.content);
       } catch (error) {
         console.error("Lỗi khi lấy dữ liệu công việc:", error);
@@ -18,7 +21,7 @@ const RecruiterJobs = () => {
     };
 
     fetchJobs();
-  }, [logined?.id]);
+  }, [token]);
 
   return (
     <>

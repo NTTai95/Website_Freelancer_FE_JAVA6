@@ -1,7 +1,8 @@
-import { GoogleGenerativeAI } from "@google/generative-ai"
+import { GoogleGenerativeAI } from "@google/generative-ai";
 import profileApi from "@api/profileApi";
 import jobPostApi from "@api/jobspostApi";
 import skillApi from "@api/skillApi";
+import authenticationApi from "@api/authenticationApi";
 
 const genAI = new GoogleGenerativeAI("AIzaSyDXn4J0zCXwHa52WWD9soClmz7Q8Mg76-E");
 const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
@@ -22,28 +23,28 @@ const model = genAI.getGenerativeModel({ model: "gemini-2.0-flash" });
  * @returns {Promise<string>} - Nội dung bài tuyển dụng (đoạn text tiếng Việt).
  */
 async function generateRecruitmentContent(details) {
-  const {
-    freelancerName,
-    freelancerDOB,
-    freelancerIntro,
-    freelancerSkills,
-    jobTitle,
-    jobContent,
-    jobSkills,
-    recruiterName,
-    representativeName,
-    exp
-  } = details;
+    const {
+        freelancerName,
+        freelancerDOB,
+        freelancerIntro,
+        freelancerSkills,
+        jobTitle,
+        jobContent,
+        jobSkills,
+        recruiterName,
+        representativeName,
+        exp
+    } = details;
 
-  // Tính tuổi từ ngày sinh của freelancer.
-  const birthDate = new Date(freelancerDOB);
-  const ageDifMs = Date.now() - birthDate.getTime();
-  const ageDate = new Date(ageDifMs);
-  const age = Math.abs(ageDate.getUTCFullYear() - 1970);
+    // Tính tuổi từ ngày sinh của freelancer.
+    const birthDate = new Date(freelancerDOB);
+    const ageDifMs = Date.now() - birthDate.getTime();
+    const ageDate = new Date(ageDifMs);
+    const age = Math.abs(ageDate.getUTCFullYear() - 1970);
 
-  // Xây dựng prompt bằng tiếng Anh để tối ưu hiệu suất của Gemini API,
-  // nhưng kết quả trả về yêu cầu là tiếng Việt.
-  const prompt = `Act as a professional freelancer applying for a job. You must generate a highly professional and engaging job application letter in Vietnamese that captivates the recruiter's attention. Your output should be structured and clearly divided, using technical and impressive language. Base your response on the following provided freelancer sample data:
+    // Xây dựng prompt bằng tiếng Anh để tối ưu hiệu suất của Gemini API,
+    // nhưng kết quả trả về yêu cầu là tiếng Việt.
+    const prompt = `Act as a professional freelancer applying for a job. You must generate a highly professional and engaging job application letter in Vietnamese that captivates the recruiter's attention. Your output should be structured and clearly divided, using technical and impressive language. Base your response on the following provided freelancer sample data:
 
 Freelancer Name: ${freelancerName}
 Age: ${age} (Date of Birth: ${freelancerDOB})
@@ -72,59 +73,59 @@ Output plain text only without any markdown characters (such as **, [], or /*).
 The entire output must be written in Vietnamese.
 Generate the job application letter accordingly.`;
 
-  console.log(prompt);
+    console.log(prompt);
 
-  try {
-    const result = await model.generateContent({
-      contents: [
-        {
-          role: 'user',
-          parts: [
-            {
-              text: prompt,
+    try {
+        const result = await model.generateContent({
+            contents: [
+                {
+                    role: "user",
+                    parts: [
+                        {
+                            text: prompt
+                        }
+                    ]
+                }
+            ],
+            generationConfig: {
+                maxOutputTokens: 1000,
+                temperature: 0.1
             }
-          ],
-        }
-      ],
-      generationConfig: {
-        maxOutputTokens: 1000,
-        temperature: 0.1,
-      }
-    });
-    return result.response.text();
-  } catch (error) {
-    console.error('Error calling Gemini API:', error);
-    throw error;
-  }
+        });
+        return result.response.text();
+    } catch (error) {
+        console.error("Error calling Gemini API:", error);
+        throw error;
+    }
 }
 
 const generateContentApply = async (jobPostId, exp = "") => {
+    const resJobPost = await jobPostApi.getById(jobPostId);
+    const resJobSkills = await skillApi.getByIds(resJobPost?.data?.skillIds);
+    const res = await authenticationApi.isStaff();
+    const { id } = res.data;
+    const resProfile = await profileApi.getByAccountId(id);
+    const resFreelancerSkills = await skillApi.getByIds(resProfile?.data?.freelancer?.skillIds);
+    const resProfileRecruiter = await profileApi.getByRecruiterId(resJobPost?.data?.recruiterId);
 
-  const resJobPost = await jobPostApi.getById(jobPostId);
-  const resJobSkills = await skillApi.getByIds(resJobPost?.data?.skillIds);
-  const logined = JSON.parse(sessionStorage.getItem("logined"));
-  const resProfile = await profileApi.getByAccountId(logined?.id);
-  const resFreelancerSkills = await skillApi.getByIds(resProfile?.data?.freelancer?.skillIds);
-  const resProfileRecruiter = await profileApi.getByRecruiterId(resJobPost?.data?.recruiterId);
+    const details = {
+        freelancerName: resProfile?.data?.fullName,
+        freelancerDOB: resProfile?.data?.birthday,
+        freelancerIntro: resProfile?.data?.freelancer?.introduce,
+        freelancerSkills: resFreelancerSkills?.data?.map(skill => skill?.name).join(", "),
+        jobTitle: resJobPost?.data?.title,
+        jobContent: resJobPost?.data?.description,
+        jobSkills: resJobSkills?.data?.map(skill => skill?.name).join(", "),
+        recruiterName: resProfileRecruiter?.data?.recruiter?.name,
+        representativeName: resProfileRecruiter?.data?.fullName,
+        exp: exp
+    };
 
-  const details = {
-    freelancerName: resProfile?.data?.fullName,
-    freelancerDOB: resProfile?.data?.birthday,
-    freelancerIntro: resProfile?.data?.freelancer?.introduce,
-    freelancerSkills: resFreelancerSkills?.data?.map((skill => skill?.name)).join(", "),
-    jobTitle: resJobPost?.data?.title,
-    jobContent: resJobPost?.data?.description,
-    jobSkills: resJobSkills?.data?.map((skill => skill?.name)).join(", "),
-    recruiterName: resProfileRecruiter?.data?.recruiter?.name,
-    representativeName: resProfileRecruiter?.data?.fullName,
-    exp: exp
-  };
-
-  try {
-    return await generateRecruitmentContent(details);
-  } catch (err) {
-    console.error("Failed to generate recruitment content:", err);
-  }
-}
+    try {
+        return await generateRecruitmentContent(details);
+    } catch (err) {
+        console.error("Failed to generate recruitment content:", err);
+    }
+};
 
 export default { generateContentApply };

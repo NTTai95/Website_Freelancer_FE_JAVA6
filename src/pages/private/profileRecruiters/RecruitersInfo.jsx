@@ -4,6 +4,7 @@ import recruiterApi from "@api/recruiterApi";
 import RecruiterView from "./RecruiterView";
 import RecruiterForm from "./RecruiterForm";
 import { Spin } from "antd";
+import authenticationApi from "@api/authenticationApi";
 
 function RecruiterInfo() {
   const [recruiter, setRecruiter] = useState(null);
@@ -17,10 +18,13 @@ function RecruiterInfo() {
   const fetchRecruiterData = async () => {
     setIsLoading(true);
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-      const resRecruiter = await recruiterApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id } = res.data;
+
+      const resRecruiter = await recruiterApi.getByAccountId(id);
       setRecruiter(resRecruiter.data);
 
       setInitialValues({
@@ -63,7 +67,11 @@ function RecruiterInfo() {
   return (
     <Spin spinning={isLoading}>
       {isEditing ? (
-        <RecruiterForm initialValues={initialValues} onFinish={onFinish} onCancel={onCancel} />
+        <RecruiterForm
+          initialValues={initialValues}
+          onFinish={onFinish}
+          onCancel={onCancel}
+        />
       ) : (
         <RecruiterView recruiter={recruiter} setIsEditing={setIsEditing} />
       )}

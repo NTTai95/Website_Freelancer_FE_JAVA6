@@ -3,6 +3,7 @@ import formater from "@utils/formater";
 import profileApi from "@api/profileApi";
 import walletApi from "@api/walletApi";
 import { useState } from "react";
+import authenticationApi from "@api/authenticationApi";
 
 const WalletCard = ({ wallet }) => {
   const [notificationApi, contextNotification] = notification.useNotification();
@@ -20,11 +21,12 @@ const WalletCard = ({ wallet }) => {
   };
 
   const handleCreateWallet = async () => {
-    const logined = JSON.parse(sessionStorage.getItem("logined"));
-    if (!logined) return;
-    const accountId = logined.id;
+    const token = sessionStorage.getItem("token");
+    if (!token) return;
+    const res = await authenticationApi.isStaff();
+    const { id } = res.data;
 
-    const resProfile = await profileApi.getByAccountId(accountId);
+    const resProfile = await profileApi.getByAccountId(id);
 
     await walletApi.create({
       profileId: resProfile.data.id,
@@ -49,7 +51,7 @@ const WalletCard = ({ wallet }) => {
     window.open(res.data);
     setIsModalOpen(false);
   };
-  
+
   const handleCancel = () => {
     setIsModalOpen(false);
   };

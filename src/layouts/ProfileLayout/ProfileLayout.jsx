@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Row, Col, Menu, Skeleton } from "antd";
 import { useNavigate } from "react-router-dom";
 import profileApi from "@api/profileApi";
+import authenticationApi from "@api/authenticationApi"; // bạn đã quên import dòng này
 import {
   UserOutlined,
   ApartmentOutlined,
@@ -10,87 +11,107 @@ import {
   LogoutOutlined,
   IdcardOutlined,
 } from "@ant-design/icons";
-import MenuItem from "antd/es/menu/MenuItem";
 import CardUpLoadImage from "@components/card/CardUploadImage";
 
 const ProfileLayout = ({ children, active }) => {
   const [profile, setProfile] = useState(null);
-  const nagivate = useNavigate();
+  const [isStaff, setIsStaff] = useState(null); // ban đầu là null để phân biệt chưa load
+  const navigate = useNavigate();
+  const token = sessionStorage.getItem("token");
 
   useEffect(() => {
-    const logined = JSON.parse(sessionStorage.getItem("logined"));
-    if (logined) {
-      if (logined.type) {
-        nagivate("/404");
-      } else {
-        profileApi.getByAccountId(logined.id).then((response) => {
-          if (response.status == 200) {
-            setProfile(response.data);
-          }
-        });
+    const fetchData = async () => {
+      if (!token) {
+        navigate("/login");
+        return;
       }
-    }
-  }, []);
 
-  function handleLogout() {
+      try {
+        const res = await authenticationApi.isStaff();
+        const { isStaff, id } = res.data;
+        setIsStaff(isStaff);
+
+        if (isStaff) {
+          navigate("/404");
+        } else {
+          const profileRes = await profileApi.getByAccountId(id);
+          if (profileRes.status === 200) {
+            setProfile(profileRes.data);
+          }
+        }
+      } catch (error) {
+        console.error("Error loading profile:", error);
+      }
+    };
+
+    fetchData();
+  }, [token, navigate]);
+
+  const handleLogout = () => {
     sessionStorage.removeItem("logined");
-    nagivate("/home");
+    navigate("/home");
     window.location.reload();
-  }
+  };
 
   const menuItems = [
     {
       key: "profile",
       icon: <IdcardOutlined />,
       label: "Thông tin",
-      onClick: () => nagivate("/profile")
+      onClick: () => navigate("/profile"),
     },
     {
       key: "freelancer",
       icon: <UserOutlined />,
       label: "Freelancer",
-      onClick: () => nagivate("/profile/freelancer")
+      onClick: () => navigate("/profile/freelancer"),
     },
     {
       key: "recruiters",
       icon: <ApartmentOutlined />,
       label: "Nhà tuyển dụng",
-      onClick: () => nagivate("/profile/recruiters")
+      onClick: () => navigate("/profile/recruiters"),
     },
     {
       key: "statistic",
       icon: <BarChartOutlined />,
       label: "Thống kê",
-      onClick: () => nagivate("/profile/statistic")
+      onClick: () => navigate("/profile/statistic"),
     },
     {
-      type: "divider"
+      type: "divider",
     },
     {
       key: "changePassword",
       icon: <RetweetOutlined />,
       label: "Đổi mật khẩu",
-      onClick: () => nagivate("/changePassword")
+      onClick: () => navigate("/changePassword"),
     },
     {
       key: "logout",
       icon: <LogoutOutlined />,
       label: "Đăng xuất",
-      onClick: () => handleLogout()
-    }
+      onClick: handleLogout,
+    },
   ];
+
+  // Hiển thị loading trong lúc kiểm tra
+  if (isStaff === null) {
+    return (
+      <div className="container p-5">
+        <Skeleton active />
+      </div>
+    );
+  }
 
   return (
     <div>
       <Row>
-        <Col span={6} className={"container border-end"}>
+        <Col span={6} className="container border-end">
           {profile ? (
-            <CardUpLoadImage profile={profile}></CardUpLoadImage>
+            <CardUpLoadImage profile={profile} />
           ) : (
-            <Skeleton.Image
-              className={"w-100"}
-              style={{ height: "250px" }}
-            ></Skeleton.Image>
+            <Skeleton.Image className="w-100" style={{ height: "250px" }} />
           )}
 
           <Menu
@@ -100,13 +121,12 @@ const ProfileLayout = ({ children, active }) => {
             items={menuItems}
           />
         </Col>
-        <Col span={18} className={"container"}>
+        <Col span={18} className="container">
           {children}
         </Col>
       </Row>
     </div>
   );
 };
-
 
 export default ProfileLayout;

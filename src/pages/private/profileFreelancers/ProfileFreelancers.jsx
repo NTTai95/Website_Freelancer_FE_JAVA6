@@ -7,16 +7,20 @@ import profileApi from "@api/profileApi";
 import { useEffect, useState } from "react";
 import FreelancerFormAdd from "./FreelancerFormAdd";
 import FreelancerHistory from "./FreelancerHistory";
+import authenticationApi from "@api/authenticationApi";
 
 function ProfileFreelancers() {
   const [freelancer, setFreelancer] = useState(null);
 
   const checkFreelancerId = async () => {
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-      const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id, isStaff } = res.data;
+
+      const resFreelancer = await freelancerApi.getByAccountId(id);
       setFreelancer(resFreelancer?.data);
     } catch (error) {
       console.error("Error checking freelancer:", error);
@@ -47,10 +51,13 @@ function ProfileFreelancers() {
 
   const onFinish = async (values) => {
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-      const resProfile = await profileApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id, isStaff } = res.data;
+
+      const resProfile = await profileApi.getByAccountId(id);
 
       const freelancerDTO = {
         profileId: resProfile.data.id,

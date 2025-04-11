@@ -21,7 +21,7 @@ const ProjectPage = () => {
   const [current, setCurrent] = useState(0);
   const [recruiter, setRecruiter] = useState(null);
   const [messageApi, contextHolder] = message.useMessage();
-  const logined = JSON.parse(sessionStorage.getItem("logined"));
+  const token = sessionStorage.getItem("token");
 
   const checkMyJobPost = async () => {
     let found = false;
@@ -96,7 +96,9 @@ const ProjectPage = () => {
   };
 
   const fetchRecruiter = async () => {
-    const resRecruiter = await recruiterApi.getByAccountId(logined.id);
+    const res = await authenticationApi.isStaff();
+    const id = res.data.id;
+    const resRecruiter = await recruiterApi.getByAccountId(id);
     setRecruiter(resRecruiter.data);
   };
 
@@ -129,7 +131,7 @@ const ProjectPage = () => {
     },
   ];
 
-  return !logined ? (
+  return !token ? (
     <Result
       className={scss.result}
       icon={<SmileOutlined className={scss.icon} />}

@@ -9,16 +9,19 @@ import { useEffect, useState } from "react";
 import RecruiterFormAdd from "./RecruiterFormAdd";
 import RecruiterDraft from "./RecruiterDraft";
 import RecruiterHistory from "./RecruiterHistory";
+import authenticationApi from "@api/authenticationApi";
 
 function ProfileRecruiters() {
   const [recruiter, setRecruiter] = useState(null);
+  const token = sessionStorage.getItem("token");
 
   const checkRecruiterId = async () => {
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      if (!token) return;
 
-      const resRecruiter = await recruiterApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id } = res.data;
+      const resRecruiter = await recruiterApi.getByAccountId(id);
       setRecruiter(resRecruiter?.data);
     } catch (error) {
       console.error("Error checking recruiter:", error);
@@ -54,10 +57,13 @@ function ProfileRecruiters() {
 
   const onFinish = async (values) => {
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-      const resProfile = await profileApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id } = res.data;
+
+      const resProfile = await profileApi.getByAccountId(id);
       const recruiterDTO = {
         profileId: resProfile.data.id,
         introduce: values.introduce,

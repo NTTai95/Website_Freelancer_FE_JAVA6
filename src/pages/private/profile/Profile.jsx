@@ -7,6 +7,7 @@ import utc from "dayjs/plugin/utc";
 import ProfileInfo from "./ProfileInfo";
 import WalletCard from "./WalletCard";
 import SummaryCard from "./SummaryCard";
+import authenticationApi from "@api/authenticationApi";
 
 dayjs.extend(utc);
 dayjs.locale("vi");
@@ -39,8 +40,11 @@ function Profile() {
 
   async function getProfile() {
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      const { data } = await profileApi.getByAccountId(logined.id);
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
+      const res = await authenticationApi.isStaff();
+      const { id } = res.data;
+      const { data } = await profileApi.getByAccountId(id);
       updateFormData(data);
     } catch (error) {
       console.error(error);

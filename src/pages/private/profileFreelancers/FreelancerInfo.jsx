@@ -6,6 +6,7 @@ import freelancerApi from "@api/freelancerApi";
 import FreelancerView from "./FreelancerView";
 import FreelancerForm from "./FreelancerForm";
 import { Spin } from "antd";
+import authenticationApi from "@api/authenticationApi";
 
 function FreelancerInfo() {
   const [freelancer, setFreelancer] = useState(null);
@@ -37,10 +38,13 @@ function FreelancerInfo() {
   const fetchFreelancerData = async () => {
     setIsLoading(true);
     try {
-      const logined = JSON.parse(sessionStorage.getItem("logined"));
-      if (!logined) return;
+      const token = sessionStorage.getItem("token");
+      if (!token) return;
 
-      const resFreelancer = await freelancerApi.getByAccountId(logined.id);
+      const res = await authenticationApi.isStaff();
+      const { id, isStaff } = res.data;
+
+      const resFreelancer = await freelancerApi.getByAccountId(id);
       setFreelancer(resFreelancer.data);
       console.log(resFreelancer.data);
 
