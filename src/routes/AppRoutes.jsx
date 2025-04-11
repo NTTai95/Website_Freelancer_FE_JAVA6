@@ -26,7 +26,7 @@ import Recruiter from "@pages/basic/recruiter/Recruiter";
 import Page404 from "@pages/exceptions/page404/Page404";
 import ApplyDetail from "@pages/private/applyDetail/ApplyDetail";
 import ListApplies from "@pages/private/listApplies/ListApplies";
-import ChangePassword from "@pages/private/changePassword/ChangePassword";
+import ChangePassword from "@pages/basic/forgetPassword/ChangePassword";
 import ProfileStatistic from "@pages/private/statistic/ProfileStatistic";
 
 // Admin Pages
@@ -41,349 +41,349 @@ import PaymentSuccess from "@pages/private/paymentSuccess/PaymentSuccess";
 import ChangePasswordAdmin from "@pages/private/changePassword/ChangePasswordAdmin";
 
 const AppRoutes = () => {
-  const location = useLocation();
+    const location = useLocation();
 
-  useEffect(() => {
-    const currentPath = location.pathname;
-    if (currentPath != "/login" && currentPath != "/register") {
-      sessionStorage.setItem("urlPrev", currentPath);
-    }
-  }, [location]);
+    useEffect(() => {
+        const currentPath = location.pathname;
+        if (currentPath != "/login" && currentPath != "/register") {
+            sessionStorage.setItem("urlPrev", currentPath);
+        }
+    }, [location]);
 
-  return (
-    <Routes>
-      {/* Public Routes */}
-      <Route
-        path="/"
-        element={
-          <MainLayout>
-            <Home />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/home"
-        element={
-          <MainLayout>
-            <Home />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/login"
-        element={
-          <MainLayout>
-            <Authentication isLogin={true} />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/register"
-        element={
-          <MainLayout>
-            <Authentication isLogin={false} />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/about"
-        element={
-          <MainLayout>
-            <About />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/jobpost"
-        element={
-          <MainLayout>
-            <JobPost />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/jobpostdetail/:id"
-        element={
-          <MainLayout>
-            <PostDetail />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/jobpost/:mode/:id?"
-        element={
-          <MainLayout>
-            <ProjectPage />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/forgotpassword"
-        element={
-          <MainLayout>
-            <ForgotPassword />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/freelancers"
-        element={
-          <MainLayout>
-            <ListFreelancer />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/freelancers/:id"
-        element={
-          <MainLayout>
-            <Freelancer />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/404"
-        element={
-          <MainLayout>
-            <Page404 />
-          </MainLayout>
-        }
-      />
+    return (
+        <Routes>
+            {/* Public Routes */}
+            <Route
+                path="/"
+                element={
+                    <MainLayout>
+                        <Home />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/home"
+                element={
+                    <MainLayout>
+                        <Home />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/login"
+                element={
+                    <MainLayout>
+                        <Authentication isLogin={true} />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/register"
+                element={
+                    <MainLayout>
+                        <Authentication isLogin={false} />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/about"
+                element={
+                    <MainLayout>
+                        <About />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/jobpost"
+                element={
+                    <MainLayout>
+                        <JobPost />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/jobpostdetail/:id"
+                element={
+                    <MainLayout>
+                        <PostDetail />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/jobpost/:mode/:id?"
+                element={
+                    <MainLayout>
+                        <ProjectPage />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/forgotpassword"
+                element={
+                    <MainLayout>
+                        <ForgotPassword />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/freelancers"
+                element={
+                    <MainLayout>
+                        <ListFreelancer />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/freelancers/:id"
+                element={
+                    <MainLayout>
+                        <Freelancer />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/404"
+                element={
+                    <MainLayout>
+                        <Page404 />
+                    </MainLayout>
+                }
+            />
 
-      {/* Profile Routes */}
-      <Route
-        path="/profile"
-        element={
-          <MainLayout>
-            <ProfileLayout active="profile">
-              <Profile />
-            </ProfileLayout>
-          </MainLayout>
-        }
-      />
+            {/* Profile Routes */}
+            <Route
+                path="/profile"
+                element={
+                    <MainLayout>
+                        <ProfileLayout active="profile">
+                            <Profile />
+                        </ProfileLayout>
+                    </MainLayout>
+                }
+            />
 
-      <Route
-        path="/profile/recruiters"
-        element={
-          <PrivateRoute
-            element={
-              <MainLayout>
-                <ProfileLayout active="recruiters">
-                  <ProfileRecruiters />
-                </ProfileLayout>
-              </MainLayout>
-            }
-          />
-        }
-      />
+            <Route
+                path="/profile/recruiters"
+                element={
+                    <PrivateRoute
+                        element={
+                            <MainLayout>
+                                <ProfileLayout active="recruiters">
+                                    <ProfileRecruiters />
+                                </ProfileLayout>
+                            </MainLayout>
+                        }
+                    />
+                }
+            />
 
-      <Route
-        path="/changePassword"
-        element={
-          // <PrivateRoute
-          //   element={
-          <MainLayout>
-            <ProfileLayout active="changePassword">
-              <ChangePasswordDN />
-            </ProfileLayout>
-          </MainLayout>
-          //  }
-          ///>
-        }
-      />
+            <Route
+                path="/changePassword"
+                element={
+                    // <PrivateRoute
+                    //   element={
+                    <MainLayout>
+                        <ProfileLayout active="changePassword">
+                            <ChangePasswordDN />
+                        </ProfileLayout>
+                    </MainLayout>
+                    //  }
+                    ///>
+                }
+            />
 
-      {/* Admin Routes */}
-      <Route
-        path="/admin/dashboard"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="home">
-                <Dashboard />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/skills"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/skills/:mode/:id?"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="skills" breadcrumb="Kỹ năng">
-                <SkillForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/staff"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/staff/:mode/:id?"
-        element={
-          <PrivateRoute
-            requireStaff={true}
-            element={
-              <AdminLayout active="staff" breadcrumb="Nhân viên">
-                <StaffForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/languages"
-        element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageTable />
-              </AdminLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/admin/languages/:mode/:id?"
-        element={
-          <PrivateRoute
-            element={
-              <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
-                <LanguageForm />
-              </AdminLayout>
-            }
-          />
-        }
-      />
+            {/* Admin Routes */}
+            <Route
+                path="/admin/dashboard"
+                element={
+                    <PrivateRoute
+                        requireStaff={true}
+                        element={
+                            <AdminLayout active="home">
+                                <Dashboard />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/skills"
+                element={
+                    <PrivateRoute
+                        requireStaff={true}
+                        element={
+                            <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                                <SkillTable />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/skills/:mode/:id?"
+                element={
+                    <PrivateRoute
+                        requireStaff={true}
+                        element={
+                            <AdminLayout active="skills" breadcrumb="Kỹ năng">
+                                <SkillForm />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/staff"
+                element={
+                    <PrivateRoute
+                        requireStaff={true}
+                        element={
+                            <AdminLayout active="staff" breadcrumb="Nhân viên">
+                                <StaffTable />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/staff/:mode/:id?"
+                element={
+                    <PrivateRoute
+                        requireStaff={true}
+                        element={
+                            <AdminLayout active="staff" breadcrumb="Nhân viên">
+                                <StaffForm />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/languages"
+                element={
+                    <PrivateRoute
+                        element={
+                            <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                                <LanguageTable />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/admin/languages/:mode/:id?"
+                element={
+                    <PrivateRoute
+                        element={
+                            <AdminLayout active="languages" breadcrumb="Ngôn ngữ">
+                                <LanguageForm />
+                            </AdminLayout>
+                        }
+                    />
+                }
+            />
 
-      <Route
-        path="/payment/success"
-        element={
-          <MainLayout>
-            <PaymentSuccess />
-          </MainLayout>
-        }
-      />
+            <Route
+                path="/payment/success"
+                element={
+                    <MainLayout>
+                        <PaymentSuccess />
+                    </MainLayout>
+                }
+            />
 
-      {/* Profile Routes */}
-      <Route
-        path="/profile"
-        element={
-          <MainLayout>
-            <ProfileLayout active="profile">
-              <Profile />
-            </ProfileLayout>
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/profile/freelancer"
-        element={
-          <PrivateRoute
-            element={
-              <MainLayout>
-                <ProfileLayout active="freelancer">
-                  <ProfileFreelancers />
-                </ProfileLayout>
-              </MainLayout>
-            }
-          />
-        }
-      />
-      <Route
-        path="/profile/recruiters"
-        element={
-          <PrivateRoute
-            element={
-              <MainLayout>
-                <ProfileLayout active="recruiters">
-                  <ProfileRecruiters />
-                </ProfileLayout>
-              </MainLayout>
-            }
-          />
-        }
-      />
+            {/* Profile Routes */}
+            <Route
+                path="/profile"
+                element={
+                    <MainLayout>
+                        <ProfileLayout active="profile">
+                            <Profile />
+                        </ProfileLayout>
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/profile/freelancer"
+                element={
+                    <PrivateRoute
+                        element={
+                            <MainLayout>
+                                <ProfileLayout active="freelancer">
+                                    <ProfileFreelancers />
+                                </ProfileLayout>
+                            </MainLayout>
+                        }
+                    />
+                }
+            />
+            <Route
+                path="/profile/recruiters"
+                element={
+                    <PrivateRoute
+                        element={
+                            <MainLayout>
+                                <ProfileLayout active="recruiters">
+                                    <ProfileRecruiters />
+                                </ProfileLayout>
+                            </MainLayout>
+                        }
+                    />
+                }
+            />
 
-      <Route
-        path="/recruiter/:id"
-        element={
-          <MainLayout>
-            <Recruiter />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/admin/changepassword"
-        element={
-          <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
-            <ChangePasswordAdmin />
-          </AdminLayout>
-        }
-      />
-      <Route
-        path="/jobpost/apply/:id"
-        element={
-          <MainLayout>
-            <ApplyDetail />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/applies/jobpost/:id"
-        element={
-          <MainLayout>
-            <ListApplies />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/changepassword/:token"
-        element={
-          <MainLayout>
-            <ChangePassword />
-          </MainLayout>
-        }
-      />
-      <Route
-        path="/profile/statistic"
-        element={
-          <MainLayout>
-            <ProfileLayout active="statistic">
-              <ProfileStatistic />
-            </ProfileLayout>
-          </MainLayout>
-        }
-      />
-    </Routes >
-  );
+            <Route
+                path="/recruiter/:id"
+                element={
+                    <MainLayout>
+                        <Recruiter />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/admin/changepassword"
+                element={
+                    <AdminLayout active="changePassword" breadcrumb="Đổi mật khẩu">
+                        <ChangePasswordAdmin />
+                    </AdminLayout>
+                }
+            />
+            <Route
+                path="/jobpost/apply/:id"
+                element={
+                    <MainLayout>
+                        <ApplyDetail />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/applies/jobpost/:id"
+                element={
+                    <MainLayout>
+                        <ListApplies />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/changepassword/:token"
+                element={
+                    <MainLayout>
+                        <ChangePassword />
+                    </MainLayout>
+                }
+            />
+            <Route
+                path="/profile/statistic"
+                element={
+                    <MainLayout>
+                        <ProfileLayout active="statistic">
+                            <ProfileStatistic />
+                        </ProfileLayout>
+                    </MainLayout>
+                }
+            />
+        </Routes>
+    );
 };
 
 export default AppRoutes;
