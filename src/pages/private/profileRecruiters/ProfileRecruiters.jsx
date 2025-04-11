@@ -70,7 +70,7 @@ function ProfileRecruiters() {
         company: values.company,
       };
 
-      await recruiterApi.create(recruiterDTO);
+      await recruiterApi.add(recruiterDTO);
       checkRecruiterId();
     } catch (error) {
       console.error("Error creating recruiter:", error);
