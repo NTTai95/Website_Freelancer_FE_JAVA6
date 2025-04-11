@@ -26,7 +26,7 @@ import Recruiter from "@pages/basic/recruiter/Recruiter";
 import Page404 from "@pages/exceptions/page404/Page404";
 import ApplyDetail from "@pages/private/applyDetail/ApplyDetail";
 import ListApplies from "@pages/private/listApplies/ListApplies";
-import ChangePassword from "@pages/basic/forgetPassword/ChangePassword";
+import ChangePassword from "@pages/basic/forgotPassword/ChangePassword";
 import ProfileStatistic from "@pages/private/statistic/ProfileStatistic";
 
 // Admin Pages
