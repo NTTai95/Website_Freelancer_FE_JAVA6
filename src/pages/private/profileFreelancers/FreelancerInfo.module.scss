@@ -1,21 +1,21 @@
 @use "@assets/styles/variables" as *;
 
-.container{
-    font-family: 'Barlow', sans-serif;
+.container {
+    font-family: "Barlow", sans-serif;
     padding-right: 10%;
-    .part{
-        .title{
-            font-family: 'Barlow', sans-serif;
+    .part {
+        .title {
+            font-family: "Barlow", sans-serif;
             font-size: 20px;
             font-weight: 700;
             color: $color-bright-blue;
         }
-        .text{
-            font-family: 'Barlow', sans-serif;
+        .text {
+            font-family: "Barlow", sans-serif;
             font-size: 16px;
         }
-        .tag{
-            font-family: 'Barlow', sans-serif;
+        .tag {
+            font-family: "Barlow", sans-serif;
             font-family: "Barlow", sans-serif;
             font-size: 14px;
             font-weight: 500;
@@ -24,6 +24,81 @@
     }
 }
 
-.barlow{
+.barlow {
     font-family: "Barlow", sans-serif;
+}
+
+.certificate {
+    padding-left: 1%;
+    padding-right: 2.5%;
+    border-left: 3px solid $color-bright-blue;
+    margin-bottom: 10px;
+    p {
+        font-family: "Barlow", sans-serif;
+        margin: 0;
+        &.name {
+            font-weight: 700;
+        }
+        &.by {
+            font-weight: 700;
+            span {
+                font-weight: 400;
+                font-style: italic;
+            }
+        }
+        &.date {
+            text-align: right;
+            font-weight: 700;
+        }
+    }
+    &.certificateForm {
+        box-shadow: 3px 4px 10px 0px rgba(0, 0, 0, 0.2);
+        padding: 15px;
+        border-radius: 5px;
+        margin-bottom: 20px;
+        .formItem {
+            margin: 0;
+            margin-bottom: 12px;
+        }
+
+        .delete {
+            width: 100%;
+            margin-top: 15px;
+        }
+    }
+}
+
+.education {
+    padding-left: 1%;
+    padding-right: 2.5%;
+    border-left: 3px solid $color-bright-blue;
+    margin-bottom: 10px;
+    font-family: "Barlow", sans-serif;
+    p {
+        font-family: "Barlow", sans-serif;
+        margin: 0;
+        &.name {
+            font-weight: 700;
+        }
+        &.branch {
+            font-weight: 700;
+            span {
+                font-weight: 400;
+                font-style: italic;
+            }
+        }
+        &.date {
+            text-align: right;
+            span {
+                font-weight: 700;
+            }
+        }
+        &.gpa {
+            text-align: right;
+            font-weight: 700;
+            span {
+                font-weight: 400;
+            }
+        }
+    }
 }
