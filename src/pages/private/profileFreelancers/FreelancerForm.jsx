@@ -72,6 +72,11 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                             <Col span={20}>
                                                 <Form.Item
                                                     {...restField}
+                                                    name={[name, "id"]}
+                                                    hidden
+                                                ></Form.Item>
+                                                <Form.Item
+                                                    {...restField}
                                                     name={[name, "name"]}
                                                     label={<b>Tên chứng chỉ</b>}
                                                     rules={[
@@ -86,7 +91,7 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, "by"]}
+                                                    name={[name, "providedBy"]}
                                                     label={<b>Tổ chức cấp</b>}
                                                     rules={[
                                                         {
@@ -111,7 +116,7 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                             <Col span={4}>
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, "date"]}
+                                                    name={[name, "dateOfIssue"]}
                                                     label={<b>Ngày cấp</b>}
                                                     rules={[
                                                         {
@@ -121,7 +126,7 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                     ]}
                                                     className={scss.formItem}
                                                 >
-                                                    <DatePicker />
+                                                    <DatePicker format="YYYY-MM-DD" />
                                                 </Form.Item>
                                             </Col>
                                         </Row>
@@ -139,7 +144,12 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                 <Form.Item>
                                     <Button
                                         type="dashed"
-                                        onClick={() => add()}
+                                        onClick={() => add({
+                                            name: "",
+                                            providedBy: "",
+                                            note: "",
+                                            dateOfIssue: null
+                                        })}
                                         block
                                         icon={<PlusOutlined />}
                                     >

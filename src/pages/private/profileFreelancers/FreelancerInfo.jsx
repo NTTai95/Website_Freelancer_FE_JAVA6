@@ -7,6 +7,8 @@ import FreelancerView from "./FreelancerView";
 import FreelancerForm from "./FreelancerForm";
 import { Spin } from "antd";
 import authenticationApi from "@api/authenticationApi";
+import formater from "../../../utils/formater";
+import dayjs from "dayjs";
 
 function FreelancerInfo() {
     const [freelancer, setFreelancer] = useState(null);
@@ -31,6 +33,11 @@ function FreelancerInfo() {
             languages: languagesData.map(language => ({
                 value: language.id,
                 label: language.name
+            })),
+            certificates: freelancerData.certificates.map(certificate => ({
+                ...certificate,
+                dateOfIssue: certificate.dateOfIssue ? dayjs(certificate.dateOfIssue) : null,
+                freelancerId: freelancerData.id
             }))
         };
     };
@@ -90,19 +97,29 @@ function FreelancerInfo() {
     };
 
     const onFinish = async values => {
-        console.log("Received values of form:", values);
-        debugger;
         const freelancerLanguages = values.languages.map(language => ({
             freelancerId: freelancer.id,
             languageId: language.value,
             level: 1
         }));
 
+        const formattedCertificates = values.certificates ? values.certificates.map(certificate => ({
+            id: certificate.id || null,
+            name: certificate.name,
+            providedBy: certificate.providedBy,
+            note: certificate.note || '',
+            dateOfIssue: certificate.dateOfIssue ? certificate.dateOfIssue.format('YYYY-MM-DD') : null,
+            freelancerId: freelancer.id
+        })) : [];
+
         const freelancerDTO = {
             id: freelancer.id,
             introduce: values.introduce,
+            status: freelancer.status,
+            profileId: freelancer.profileId,
             skillIds: values.skills.map(skill => skill.value),
-            freelancerLanguages
+            freelancerLanguages,
+            certificates: formattedCertificates
         };
 
         try {

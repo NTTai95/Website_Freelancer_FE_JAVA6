@@ -1,5 +1,6 @@
 import scss from "./FreelancerInfo.module.scss";
 import { Button, Divider, Tag, Skeleton, Space, Typography, Card, Col, Row } from "antd";
+import formater from "@utils/formater";
 
 const { Paragraph } = Typography;
 
@@ -34,32 +35,24 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
             <Divider />
             <div className={scss.part}>
                 <p className={scss.title}>Chứng chỉ</p>
-                <Row className={scss.certificate}>
-                    <Col span={20}>
-                        <p className={scss.name}>Chứng chỉ Tiếng anh</p>
-                        <p className={scss.by}>
-                            Tổ chức cấp:<span> Xuongthuchang</span>
-                        </p>
-                        <p className={scss.note}>Ghi chú cho chứng chỉ</p>
-                    </Col>
-                    <Col span={4}>
-                        <p className={scss.date}>20/21/2022</p>
-                    </Col>
-                </Row>
-                <Row className={scss.certificate}>
-                    <Col span={20}>
-                        <p className={scss.name}>Chứng chỉ Tiếng anh</p>
-                        <p className={scss.by}>
-                            Tổ chức cấp:<span> Xuongthuchang</span>
-                        </p>
-                        <p className={scss.note}>Ghi chú cho chứng chỉ</p>
-                    </Col>
-                    <Col span={4}>
-                        <p className={scss.date}>20/21/2022</p>
-                    </Col>
-                </Row>
+                {freelancer?.certificates?.map(c => {
+                    return (
+                        <Row className={scss.certificate}>
+                            <Col span={20}>
+                                <p className={scss.name}>{c?.name}</p>
+                                <p className={scss.by}>
+                                    Tổ chức cấp:<span> {c?.providedBy}</span>
+                                </p>
+                                <p className={scss.note}>{c?.note}</p>
+                            </Col>
+                            <Col span={4}>
+                                <p className={scss.date}>{formater.formatDate(c?.dateOfIssue)}</p>
+                            </Col>
+                        </Row>
+                    );
+                })}
             </div>
-            <Divider />
+            {/* <Divider />
             <div className={scss.part}>
                 <p className={scss.title}>Học vấn</p>
                 <Row className={scss.education}>
@@ -82,7 +75,7 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                         </p>
                     </Col>
                 </Row>
-            </div>
+            </div> */}
             <Button className="ms-auto d-block" type="primary" onClick={() => setIsEditing(true)}>
                 Chỉnh sửa
             </Button>
