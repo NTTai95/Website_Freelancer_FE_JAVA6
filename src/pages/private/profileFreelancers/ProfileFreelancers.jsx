@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import FreelancerInfo from "./FreelancerInfo";
 import FreelancerApplies from "./FreelancerApplies";
 import scss from "./FreelancerInfo.module.scss";
