@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Input,
@@ -23,12 +23,17 @@ const ForgotPassword = () => {
   const [notificationApi, contextNotification] = notification.useNotification();
   const [messageApi, contextMessage] = message.useMessage();
   const [Calling, setCalling] = React.useState(false);
+  const [email, setEmail] = useState("");
 
   const onFinish = async (values) => {
     setCalling(true);
+    setEmail(values?.email);
     try {
       const res = await forgotPasswordApi.create(values?.email);
       if (res.status == 200) {
+        // Lưu email vào sessionStorage để sử dụng sau này
+        sessionStorage.setItem("resetPasswordEmail", values?.email);
+        
         notificationApi.success({
           message: "Gửi yêu cầu thành công",
           description: (

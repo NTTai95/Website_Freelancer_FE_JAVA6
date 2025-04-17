@@ -4,6 +4,7 @@ import FancyText from "@carefully-coded/react-text-gradient";
 import scss from "./ChangePasswordAdmin.module.scss";
 import formValidator from "@utils/formValidator";
 import accountApi from "@api/accountApi";
+import authenticationApi from "@api/authenticationApi";
 
 const { Title, Text } = Typography;
 
@@ -41,6 +42,11 @@ const ChangePasswordAdmin = () => {
   const onFinish = async (values) => {
     console.log(values);
     console.log(account);
+    if (!account || !account.id) {
+      error("Không tìm thấy thông tin tài khoản!");
+      return;
+    }
+    
     const checkPassword = await accountApi.checkPassword(
       account.id,
       values.oldPassword
@@ -82,7 +88,6 @@ const ChangePasswordAdmin = () => {
             gradient={{ from: "#cb5eee", to: "#4be1ec", type: "linear" }}
             animateTo={{ from: "#4be1ec", to: "#cb5eee" }}
             animateDuration={1500}
-            onClick={() => navigate("/")}
           >
             FREELANCER
           </FancyText>
@@ -92,27 +97,32 @@ const ChangePasswordAdmin = () => {
         </Title>
         <Divider style={{ margin: "0 0 24px" }} />
         <Form name="changePassword" layout="vertical" onFinish={onFinish}>
-          <Form.Item>
+          <Form.Item label="Email">
             <Input
-              value={account?.email}
+              value={account?.email || ""}
               size="large"
-              placeholder="Email"
               disabled
             />
           </Form.Item>
           <Form.Item
             name="oldPassword"
+            label="Mật khẩu cũ"
             rules={[{ required: true, message: `Vui lòng nhập mật khẩu cũ` }]}
           >
             <Input.Password size="large" placeholder="Nhập mật khẩu cũ" />
           </Form.Item>
 
-          <Form.Item name="newPassword" rules={formValidator.password()}>
+          <Form.Item 
+            name="newPassword" 
+            label="Mật khẩu mới"
+            rules={formValidator.password()}
+          >
             <Input.Password size="large" placeholder="Nhập mật khẩu mới" />
           </Form.Item>
 
           <Form.Item
             name="confirmPassword"
+            label="Xác nhận mật khẩu mới"
             dependencies={["newPassword"]}
             rules={[
               { required: true, message: "Vui lòng xác nhận mật khẩu!" },

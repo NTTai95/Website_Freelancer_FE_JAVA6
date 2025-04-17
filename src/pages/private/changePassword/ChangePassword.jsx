@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Input, notification } from "antd";
 import accountApi from "@api/accountApi";
 import scss from "./ChangePassword.module.scss";
@@ -9,24 +9,44 @@ const ChangePassword = () => {
     const [newPassword, setNewPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [loading, setLoading] = useState(false);
+    const [userEmail, setUserEmail] = useState("");
+    const [userId, setUserId] = useState(null);
 
     const token = sessionStorage.getItem("token");
-    async function fetchUserId() {
-        if (token) {
-            try {
-                const res = await authenticationApi.isStaff();
-                return res.data.id;
-            } catch (error) {
-                console.error("Failed to fetch user ID:", error);
-                return null;
+    
+    useEffect(() => {
+        const getUserInfo = async () => {
+            if (token) {
+                try {
+                    const res = await authenticationApi.isStaff();
+                    if (res.data && res.data.id) {
+                        const id = res.data.id;
+                        setUserId(id);
+                        
+                        try {
+                            const userInfo = await accountApi.getById(id);
+                            if (userInfo && userInfo.data) {
+                                setUserEmail(userInfo.data.email || "");
+                            }
+                        } catch (error) {
+                            console.error("Failed to fetch user details:", error);
+                            notification.error({
+                                message: "Lỗi",
+                                description: "Không thể lấy thông tin người dùng",
+                                placement: "topRight"
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error("Failed to fetch user info:", error);
+                }
             }
-        }
-        return null;
-    }
+        };
+        
+        getUserInfo();
+    }, [token]);
 
     const handleChangePassword = async () => {
-        const userId = await fetchUserId();
-
         if (!userId) {
             notification.error({
                 message: "Lỗi",
@@ -103,6 +123,16 @@ const ChangePassword = () => {
     return (
         <div className={scss.container}>
             <h2 className={scss.title}>Đổi mật khẩu</h2>
+            
+            <div className={scss.inputGroup}>
+                <label className={scss.label}>Email</label>
+                <Input
+                    value={userEmail}
+                    className={scss.input}
+                    disabled
+                />
+            </div>
+            
             <div className={scss.inputGroup}>
                 <label className={scss.label}>Mật khẩu hiện tại</label>
                 <Input.Password

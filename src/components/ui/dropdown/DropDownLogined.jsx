@@ -38,6 +38,7 @@ const DropDownLogined = ({ profile }) => {
     {
       key: "4",
       label: "Đổi mật khẩu",
+      onClick: () => navigate("/changePassword"),
     },
     {
       key: "5",

@@ -1,6 +1,6 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Input, Button, Card, message, Statistic } from "antd";
-import { LockOutlined } from "@ant-design/icons";
+import { LockOutlined, MailOutlined } from "@ant-design/icons";
 import formValidator from "@utils/formValidator";
 import { useParams, useNavigate } from "react-router-dom";
 import forgotPasswordApi from "@api/forgotPasswordApi";
@@ -12,6 +12,7 @@ const ChangePassword = () => {
   const [deadline, setDeadline] = React.useState(0);
   const { token } = parmas;
   const navigate = useNavigate();
+  const [email, setEmail] = useState("");
 
   const fetchDateCreated = async () => {
     try {
@@ -34,6 +35,12 @@ const ChangePassword = () => {
       return navigate("/404");
     }
     fetchDateCreated();
+    
+    // Lấy email từ sessionStorage nếu có
+    const savedEmail = sessionStorage.getItem("resetPasswordEmail");
+    if (savedEmail) {
+      setEmail(savedEmail);
+    }
   }, []);
 
   const onFinish = async (values) => {
@@ -47,6 +54,8 @@ const ChangePassword = () => {
         content: res.data,
       });
       setTimeout(() => {
+        // Xóa email khỏi sessionStorage sau khi đổi mật khẩu thành công
+        sessionStorage.removeItem("resetPasswordEmail");
         navigate("/login");
       }, 2000);
     } catch (error) {
@@ -72,6 +81,18 @@ const ChangePassword = () => {
         }
         className={"shadow-lg mt-4"}
       >
+        {email && (
+          <div className="mb-3">
+            <label className="form-label">Email</label>
+            <Input 
+              prefix={<MailOutlined />}
+              value={email}
+              disabled
+              className="mb-3"
+            />
+          </div>
+        )}
+        
         <Form
           form={form}
           name="change_password"
