@@ -1,4 +1,4 @@
-import { Form, Input, Button, Spin, Row, Col, DatePicker } from "antd";
+import { Form, Input, InputNumber, Button, Spin, Row, Col, DatePicker } from "antd";
 import scss from "./FreelancerInfo.module.scss";
 import DebounceSelect from "@components/ui/select/DebounceSelect";
 import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
@@ -58,6 +58,158 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                         fetchOptions={onSearchLanguage}
                     />
                 </Form.Item>
+                <div className={scss.part}>
+                    <p className={scss.title}>Học vấn</p>
+                    <Form.List name="academicInfos">
+                        {(fields, { add, remove }) => (
+                            <>
+                                {fields.map(({ key, name, ...restField }) => (
+                                    <div
+                                        className={scss.education + " " + scss.certificateForm}
+                                        key={key}
+                                    >
+                                        <Row className={scss.body} gutter={16}>
+                                            <Col span={18}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "id"]}
+                                                    hidden
+                                                />
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "schoolName"]}
+                                                    label={<b>Tên trường</b>}
+                                                    validateFirst={true}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: "Không được để trống"
+                                                        },
+                                                        {
+                                                            pattern: /^[^\d]*$/,
+                                                            message: "Tên trường không được chứa số"
+                                                        },
+                                                        {
+                                                            min: 10,
+                                                            message:
+                                                                "Tên trường phải có ít nhất 10 ký tự"
+                                                        },
+                                                        {
+                                                            max: 100,
+                                                            message:
+                                                                "Tên trường không được vượt quá 100 ký tự"
+                                                        }
+                                                    ]}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Input placeholder="Tên trường..." />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "major"]}
+                                                    label={<b>Chuyên ngành</b>}
+                                                    validateFirst={true} // Hiển thị lỗi đầu tiên
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: "Không được để trống"
+                                                        },
+                                                        {
+                                                            pattern: /^[^\d]*$/,
+                                                            message:
+                                                                "Chuyên ngành không được chứa số"
+                                                        },
+                                                        {
+                                                            min: 5,
+                                                            message:
+                                                                "Chuyên ngành phải có ít nhất 5 ký tự"
+                                                        },
+                                                        {
+                                                            max: 100,
+                                                            message:
+                                                                "Chuyên ngành không được vượt quá 100 ký tự"
+                                                        }
+                                                    ]}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Input placeholder="Chuyên ngành..." />
+                                                </Form.Item>
+
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "note"]}
+                                                    label={<b>Ghi chú</b>}
+                                                    validateFirst={true}
+                                                    rules={[
+                                                        {
+                                                            max: 1000,
+                                                            message:
+                                                                "Ghi chú không được vượt quá 1000 ký tự"
+                                                        }
+                                                    ]}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Input.TextArea
+                                                        placeholder="Ghi chú..."
+                                                        rows={4}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                            <Col span={6}>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "gpa"]}
+                                                    label={<b>GPA</b>}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message: "Không được để trống"
+                                                        },
+                                                        {
+                                                            type: "number",
+                                                            min: 0,
+                                                            max: 4,
+                                                            message: "GPA phải từ 0 đến 4"
+                                                        }
+                                                    ]}
+                                                    className={scss.formItem}
+                                                >
+                                                    <InputNumber
+                                                        placeholder="GPA"
+                                                        style={{ width: "100%" }}
+                                                        step={0.1}
+                                                    />
+                                                </Form.Item>
+                                            </Col>
+                                        </Row>
+                                        <Button
+                                            type="dashed"
+                                            icon={<MinusCircleOutlined />}
+                                            danger
+                                            style={{ width: "100%" }}
+                                            className={scss.delete}
+                                            onClick={() => remove(name)}
+                                        >
+                                            Xóa học vấn
+                                        </Button>
+                                    </div>
+                                ))}
+                                <Form.Item>
+                                    <Button
+                                        type="dashed"
+                                        onClick={() =>
+                                            add({ schoolName: "", major: "", gpa: null, note: "" })
+                                        }
+                                        block
+                                        icon={<PlusOutlined />}
+                                    >
+                                        Thêm học vấn
+                                    </Button>
+                                </Form.Item>
+                            </>
+                        )}
+                    </Form.List>
+                </div>
                 <div className={scss.part}>
                     <p className={scss.title}>Chứng chỉ</p>
                     <Form.List name="certificates">
@@ -144,12 +296,14 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                 <Form.Item>
                                     <Button
                                         type="dashed"
-                                        onClick={() => add({
-                                            name: "",
-                                            providedBy: "",
-                                            note: "",
-                                            dateOfIssue: null
-                                        })}
+                                        onClick={() =>
+                                            add({
+                                                name: "",
+                                                providedBy: "",
+                                                note: "",
+                                                dateOfIssue: null
+                                            })
+                                        }
                                         block
                                         icon={<PlusOutlined />}
                                     >

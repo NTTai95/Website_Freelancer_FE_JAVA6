@@ -1,3 +1,4 @@
+/* eslint-disable no-debugger */
 import { useState, useEffect } from "react";
 import skillApi from "@api/skillApi";
 import languageApi from "@api/languageApi";
@@ -33,8 +34,10 @@ const Freelancer = () => {
       const profileRes = await profileApi.getByAccountId(id);
       if (profileRes.status === 200) {
         setProfile(profileRes.data);
-      }
+        console.log(profileRes.data);
 
+      }
+    
       // Get skills data
       const skillsRes = await skillApi.getByIds(
         profileRes?.data?.freelancer?.skillIds

@@ -1,14 +1,12 @@
-import { Form } from "antd";
-import { useEffect, useState } from "react";
-import skillApi from "@api/skillApi";
-import languageApi from "@api/languageApi";
-import freelancerApi from "@api/freelancerApi";
-import FreelancerView from "./FreelancerView";
-import FreelancerForm from "./FreelancerForm";
-import { Spin } from "antd";
 import authenticationApi from "@api/authenticationApi";
-import formater from "../../../utils/formater";
+import freelancerApi from "@api/freelancerApi";
+import languageApi from "@api/languageApi";
+import skillApi from "@api/skillApi";
+import { Spin } from "antd";
 import dayjs from "dayjs";
+import { useEffect, useState } from "react";
+import FreelancerForm from "./FreelancerForm";
+import FreelancerView from "./FreelancerView";
 
 function FreelancerInfo() {
     const [freelancer, setFreelancer] = useState(null);
@@ -38,7 +36,8 @@ function FreelancerInfo() {
                 ...certificate,
                 dateOfIssue: certificate.dateOfIssue ? dayjs(certificate.dateOfIssue) : null,
                 freelancerId: freelancerData.id
-            }))
+            })),
+            academicInfos: freelancerData.academicInfos
         };
     };
 
@@ -68,6 +67,8 @@ function FreelancerInfo() {
                 resSkills.data,
                 resLanguage.data
             );
+            console.log(formattedData);
+            debugger;
             setInitialValues(formattedData);
         } catch (error) {
             console.error("Error fetching freelancer data:", error);
@@ -112,6 +113,11 @@ function FreelancerInfo() {
             freelancerId: freelancer.id
         })) : [];
 
+        const formattedAcademicInfos = values.academicInfos.map(academicInfo => ({
+        ...academicInfo, freelancerId: freelancer.id
+        }));
+        
+
         const freelancerDTO = {
             id: freelancer.id,
             introduce: values.introduce,
@@ -119,9 +125,10 @@ function FreelancerInfo() {
             profileId: freelancer.profileId,
             skillIds: values.skills.map(skill => skill.value),
             freelancerLanguages,
-            certificates: formattedCertificates
-        };
-
+            certificates: formattedCertificates,
+            academicInfos: formattedAcademicInfos
+        }; 
+        console.log(freelancerDTO);
         try {
             const res = await freelancerApi.update(freelancer.id, freelancerDTO);
             if (res.status === 200) {

@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import scss from "./FreelancerInfo.module.scss";
 import { Button, Divider, Tag, Skeleton, Space, Typography, Card, Col, Row } from "antd";
 import formater from "@utils/formater";
@@ -33,49 +34,52 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                 ))}
             </div>
             <Divider />
-            <div className={scss.part}>
-                <p className={scss.title}>Chứng chỉ</p>
-                {freelancer?.certificates?.map(c => {
-                    return (
-                        <Row className={scss.certificate}>
-                            <Col span={20}>
-                                <p className={scss.name}>{c?.name}</p>
-                                <p className={scss.by}>
-                                    Tổ chức cấp:<span> {c?.providedBy}</span>
-                                </p>
-                                <p className={scss.note}>{c?.note}</p>
-                            </Col>
-                            <Col span={4}>
-                                <p className={scss.date}>{formater.formatDate(c?.dateOfIssue)}</p>
-                            </Col>
-                        </Row>
-                    );
-                })}
-            </div>
-            {/* <Divider />
+
             <div className={scss.part}>
                 <p className={scss.title}>Học vấn</p>
-                <Row className={scss.education}>
-                    <Col span={18}>
-                        <p className={scss.name}>Trường Cao Đẳng FPT Polytechnic cơ sở cần thơ</p>
-                        <p className={scss.branch}>
-                            Ngành:<span> Công nghệ thông tin</span>
-                        </p>
-                        <p className={scss.branch}>
-                            Chuyên ngành:<span> Phát triển phần mềm</span>
-                        </p>
-                        <p className={scss.note}>Ghi chú cho học vấn</p>
-                    </Col>
-                    <Col span={6}>
-                        <p className={scss.date}>
-                            12/2022 <span>-</span> 21/2022
-                        </p>
-                        <p className={scss.gpa}>
-                            GPA:<span> 3.75/4</span>
-                        </p>
-                    </Col>
-                </Row>
-            </div> */}
+                {(!freelancer?.academicInfos || freelancer.academicInfos.length === 0) && (
+                    <p>Chỉnh sửa để thêm học vấn</p>
+                )}
+                {freelancer?.academicInfos?.map(academic => (
+                    <Row key={academic.id} className={scss.education}>
+                        <Col span={18}>
+                            <p className={scss.name}>{academic.schoolName}</p>
+                            <p className={scss.branch}>
+                                Chuyên ngành:<span> {academic.major}</span>
+                            </p>
+                            <p className={scss.note}>{academic.note}</p>
+                        </Col>
+                        <Col span={6}>
+                            <p className={scss.gpa}>
+                                GPA:<span> {academic.gpa}/4</span>
+                            </p>
+                        </Col>
+                    </Row>
+                ))}
+            </div>
+            <Divider />
+
+            <div className={scss.part}>
+                <p className={scss.title}>Chứng chỉ</p>
+                {(!freelancer?.certificates || freelancer.certificates.length === 0) && (
+                    <p>Chỉnh sửa để thêm chứng chỉ</p>
+                )}
+                {freelancer?.certificates?.map(c => (
+                    <Row key={c.id} className={scss.certificate}>
+                        <Col span={20}>
+                            <p className={scss.name}>{c?.name}</p>
+                            <p className={scss.by}>
+                                Tổ chức cấp:<span> {c?.providedBy}</span>
+                            </p>
+                            <p className={scss.note}>{c?.note}</p>
+                        </Col>
+                        <Col span={4}>
+                            <p className={scss.date}>{formater.formatDate(c?.dateOfIssue)}</p>
+                        </Col>
+                    </Row>
+                ))}
+            </div>
+
             <Button className="ms-auto d-block" type="primary" onClick={() => setIsEditing(true)}>
                 Chỉnh sửa
             </Button>
