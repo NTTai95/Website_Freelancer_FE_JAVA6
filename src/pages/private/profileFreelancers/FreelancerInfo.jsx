@@ -68,7 +68,6 @@ function FreelancerInfo() {
                 resLanguage.data
             );
             console.log(formattedData);
-            debugger;
             setInitialValues(formattedData);
         } catch (error) {
             console.error("Error fetching freelancer data:", error);

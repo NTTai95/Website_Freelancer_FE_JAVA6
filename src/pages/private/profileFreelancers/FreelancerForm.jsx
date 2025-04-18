@@ -1,17 +1,48 @@
-import { Form, Input, InputNumber, Button, Spin, Row, Col, DatePicker } from "antd";
-import scss from "./FreelancerInfo.module.scss";
+import { MinusCircleOutlined, PlusOutlined, UploadOutlined } from "@ant-design/icons";
 import DebounceSelect from "@components/ui/select/DebounceSelect";
-import { MinusCircleOutlined, PlusOutlined } from "@ant-design/icons";
+import {
+    Button,
+    Col,
+    DatePicker,
+    Form,
+    Input,
+    InputNumber,
+    Radio,
+    Row,
+    Spin,
+    Upload,
+    message
+} from "antd";
+import scss from "./FreelancerInfo.module.scss";
 
 const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLanguage, onCancel }) => {
     const [form] = Form.useForm();
     form.setFieldsValue(initialValues);
 
+    const [messageApi, contextHolder] = message.useMessage();
+
     const isLoading =
-        initialValues.introduce === "" || !initialValues?.skills || !initialValues?.languages;
+        initialValues?.introduce === "" || !initialValues?.skills || !initialValues?.languages;
+
+    const props = {
+        name: "file",
+        customRequest: async ({ file }) => {
+            const formData = new FormData();
+            formData.append("image", file);
+
+            messageApi.open({
+                key: "uploading",
+                type: "loading",
+                content: "Đang tải hình ảnh...",
+                duration: 0
+            });
+        },
+        showUploadList: false
+    };
 
     return (
         <Spin spinning={isLoading}>
+            {contextHolder}
             <Form
                 className={scss.form}
                 layout="vertical"
@@ -106,6 +137,27 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
+                                                    name={[name, "educationLevel"]}
+                                                    label={<b>Trình độ</b>}
+                                                    rules={[
+                                                        {
+                                                            required: true,
+                                                            message:
+                                                                "Vui lòng chọn trình độ học vấn"
+                                                        }
+                                                    ]}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Radio.Group>
+                                                        <Radio value="Cao đẳng">Cao đẳng</Radio>
+                                                        <Radio value="Đại học">Đại học</Radio>
+                                                        <Radio value="Thạc sĩ">Thạc sĩ</Radio>
+                                                        <Radio value="Tiến sĩ">Tiến sĩ</Radio>
+                                                        <Radio value="Khác">Khác</Radio>
+                                                    </Radio.Group>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
                                                     name={[name, "major"]}
                                                     label={<b>Chuyên ngành</b>}
                                                     validateFirst={true} // Hiển thị lỗi đầu tiên
@@ -180,6 +232,28 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                         step={0.1}
                                                     />
                                                 </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "image"]}
+                                                    label={<b>Hình ảnh</b>}
+                                                    valuePropName="fileList"
+                                                    getValueFromEvent={e =>
+                                                        Array.isArray(e) ? e : e?.fileList
+                                                    }
+                                                    className={scss.formItem}
+                                                >
+                                                    <Upload
+                                                        beforeUpload={() => false} // Ngăn không cho tự upload (giữ trong form thôi)
+                                                        listType="picture"
+                                                        maxCount={2}
+                                                        accept="image/*"
+                                                        multiple
+                                                    >
+                                                        <Button icon={<UploadOutlined />}>
+                                                            Chọn hình ảnh
+                                                        </Button>
+                                                    </Upload>
+                                                </Form.Item>
                                             </Col>
                                         </Row>
                                         <Button
@@ -221,7 +295,7 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                         key={key}
                                     >
                                         <Row className={scss.body} gutter={16}>
-                                            <Col span={20}>
+                                            <Col span={18}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "id"]}
@@ -260,12 +334,16 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                     {...restField}
                                                     name={[name, "note"]}
                                                     label={<b>Ghi chú</b>}
+                                                    rows={4}
                                                     className={scss.formItem}
                                                 >
-                                                    <Input.TextArea placeholder="Ghi chú..." />
+                                                    <Input.TextArea
+                                                        placeholder="Ghi chú..."
+                                                        rows={9}
+                                                    />
                                                 </Form.Item>
                                             </Col>
-                                            <Col span={4}>
+                                            <Col span={6}>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "dateOfIssue"]}
@@ -279,6 +357,60 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                     className={scss.formItem}
                                                 >
                                                     <DatePicker format="YYYY-MM-DD" />
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    {...props}
+                                                    name={[name, "image1"]}
+                                                    label={<b>Hình ảnh chứng chỉ (Mặt trước)</b>}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Upload className={scss.upload}>+ Thêm</Upload>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "image2"]}
+                                                    label={<b>Hình ảnh chứng chỉ (Mặt sau)</b>}
+                                                    valuePropName="fileList"
+                                                    getValueFromEvent={e =>
+                                                        Array.isArray(e) ? e : e?.fileList
+                                                    }
+                                                    className={scss.formItem}
+                                                >
+                                                    <Upload
+                                                        className={scss.upload}
+                                                        listType="picture-card"
+                                                        beforeUpload={() => false}
+                                                        accept="image/*"
+                                                        maxCount={1}
+                                                        showUploadList={false} // Ẩn danh sách mặc định
+                                                    >
+                                                        {(
+                                                            form.getFieldValue([
+                                                                "certificates",
+                                                                name,
+                                                                "image2"
+                                                            ]) || []
+                                                        ).length > 0 ? (
+                                                            <img
+                                                                src={URL.createObjectURL(
+                                                                    form.getFieldValue([
+                                                                        "certificates",
+                                                                        name,
+                                                                        "image2"
+                                                                    ])[0].originFileObj
+                                                                )}
+                                                                alt="Hình chứng chỉ"
+                                                                style={{
+                                                                    width: "100%",
+                                                                    height: "100%",
+                                                                    objectFit: "cover"
+                                                                }}
+                                                            />
+                                                        ) : (
+                                                            <div>+ Thêm</div>
+                                                        )}
+                                                    </Upload>
                                                 </Form.Item>
                                             </Col>
                                         </Row>
