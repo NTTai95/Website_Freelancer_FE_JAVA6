@@ -6,6 +6,11 @@ import formater from "@utils/formater";
 const { Paragraph } = Typography;
 
 const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
+    const formatGPA = (gpa) => {
+        if (!gpa && gpa !== 0) return null;
+        return Number(gpa).toFixed(2);
+    };
+
     const renderContent = () => (
         <div>
             <div className={scss.part}>
@@ -42,35 +47,17 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                 )}
                 {freelancer?.academicInfos?.map(academic => (
                     <Row key={academic.id} className={scss.education}>
-                        <Col span={20}>
+                        <Col span={18}>
                             <p className={scss.name}>{academic.schoolName}</p>
-                            <p className={scss.level}>
-                                Trình độ:<span> {academic.educationLevel}</span>
-                            </p>
                             <p className={scss.branch}>
                                 Chuyên ngành:<span> {academic.major}</span>
                             </p>
                             <p className={scss.note}>{academic.note}</p>
                         </Col>
-                        <Col span={4}>
+                        <Col span={6}>
                             <p className={scss.gpa}>
-                                GPA:<span> {academic.gpa}/4</span>
+                                GPA:<span> {formatGPA(academic.gpa)}</span>
                             </p>
-                            {/* Hình ảnh học vấn */}
-                            {academic?.image?.length > 0 ? (
-                                <div className={scss.image}>
-                                    {academic.image.slice(0, 2).map((imgUrl, index) => (
-                                        <img
-                                            key={index}
-                                            src={imgUrl}
-                                            alt={`Học vấn ${index + 1}`}
-                                            className={scss.image}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className={scss.noImage}>Chưa có hình ảnh</p>
-                            )}
                         </Col>
                     </Row>
                 ))}
@@ -93,21 +80,6 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                         </Col>
                         <Col span={4}>
                             <p className={scss.date}>{formater.formatDate(c?.dateOfIssue)}</p>
-                            {/* Hình ảnh chứng chỉ */}
-                            {c?.image?.length > 0 ? (
-                                <div className={scss.image}>
-                                    {c.image.slice(0, 2).map((imgUrl, index) => (
-                                        <img
-                                            key={index}
-                                            src={imgUrl}
-                                            alt={`Chứng chỉ ${index + 1}`}
-                                            className={scss.image}
-                                        />
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className={scss.noImage}>Chưa có hình ảnh</p>
-                            )}
                         </Col>
                     </Row>
                 ))}
