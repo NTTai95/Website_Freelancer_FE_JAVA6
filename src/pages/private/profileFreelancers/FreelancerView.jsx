@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import scss from "./FreelancerInfo.module.scss";
-import { Button, Divider, Tag, Skeleton, Space, Typography, Card, Col, Row } from "antd";
+import { Button, Divider, Tag, Skeleton, Space, Typography, Card, Col, Row, Image } from "antd";
 import formater from "@utils/formater";
 
 const { Paragraph } = Typography;
@@ -40,40 +40,67 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                 {(!freelancer?.academicInfos || freelancer.academicInfos.length === 0) && (
                     <p>Chỉnh sửa để thêm học vấn</p>
                 )}
-                {freelancer?.academicInfos?.map(academic => (
-                    <Row key={academic.id} className={scss.education}>
-                        <Col span={20}>
-                            <p className={scss.name}>{academic.schoolName}</p>
-                            <p className={scss.level}>
-                                Trình độ:<span> {academic.educationLevel}</span>
-                            </p>
-                            <p className={scss.branch}>
-                                Chuyên ngành:<span> {academic.major}</span>
-                            </p>
-                            <p className={scss.note}>{academic.note}</p>
-                        </Col>
-                        <Col span={4}>
-                            <p className={scss.gpa}>
-                                GPA:<span> {academic.gpa}/4</span>
-                            </p>
-                            {/* Hình ảnh học vấn */}
-                            {academic?.image?.length > 0 ? (
-                                <div className={scss.image}>
-                                    {academic.image.slice(0, 2).map((imgUrl, index) => (
-                                        <img
-                                            key={index}
-                                            src={imgUrl}
-                                            alt={`Học vấn ${index + 1}`}
-                                            className={scss.image}
-                                        />
-                                    ))}
+                {freelancer?.academicInfos?.map(academic => {
+                    return (
+                        <Row key={academic.id} className={scss.education}>
+                            <Col span={20}>
+                                <p className={scss.name}>{academic.schoolName}</p>
+                                <p className={scss.level}>
+                                    Trình độ:<span> {academic.educationLevel}</span>
+                                </p>
+                                <p className={scss.branch}>
+                                    Chuyên ngành:<span> {academic.major}</span>
+                                </p>
+                                <p className={scss.note}>{academic.note}</p>
+                            </Col>
+                            <Col span={4}>
+                                <p className={scss.gpa}>
+                                    GPA:<span> {academic.gpa}/4</span>
+                                </p>
+                                <div className="w-50 ms-auto">
+                                    <Image.PreviewGroup>
+                                        {academic?.image1?.length > 0 &&
+                                            academic?.image2?.length === 0 && (
+                                                <Image
+                                                    src={academic.image1[0]?.url}
+                                                    alt="Hình ảnh học vấn"
+                                                    className={scss.image}
+                                                />
+                                            )}
+                                        {academic?.image1?.length === 0 &&
+                                            academic?.image2?.length > 0 && (
+                                                <Image
+                                                    src={academic.image2[0]?.url}
+                                                    alt="Hình ảnh học vấn"
+                                                    className={scss.image}
+                                                />
+                                            )}
+                                        {academic?.image1?.length > 0 &&
+                                            academic?.image2?.length > 0 && (
+                                                <>
+                                                    <Image
+                                                        src={academic.image1[0]?.url}
+                                                        alt="Hình ảnh học vấn"
+                                                        className={scss.image}
+                                                    />
+                                                    <Image
+                                                        src={academic.image2[0]?.url}
+                                                        alt="Hình ảnh học vấn"
+                                                        hidden={true}
+                                                        className={scss.image}
+                                                    />
+                                                </>
+                                            )}
+                                        {academic?.image1?.length === 0 &&
+                                            academic?.image2?.length === 0 && (
+                                                <p>Chưa có hình ảnh</p>
+                                            )}
+                                    </Image.PreviewGroup>
                                 </div>
-                            ) : (
-                                <p className={scss.noImage}>Chưa có hình ảnh</p>
-                            )}
-                        </Col>
-                    </Row>
-                ))}
+                            </Col>
+                        </Row>
+                    );
+                })}
             </div>
             <Divider />
 
@@ -93,21 +120,42 @@ const FreelancerView = ({ freelancer, skills, languages, setIsEditing }) => {
                         </Col>
                         <Col span={4}>
                             <p className={scss.date}>{formater.formatDate(c?.dateOfIssue)}</p>
-                            {/* Hình ảnh chứng chỉ */}
-                            {c?.image?.length > 0 ? (
-                                <div className={scss.image}>
-                                    {c.image.slice(0, 2).map((imgUrl, index) => (
-                                        <img
-                                            key={index}
-                                            src={imgUrl}
-                                            alt={`Chứng chỉ ${index + 1}`}
+                            <div className="w-50 ms-auto">
+                                <Image.PreviewGroup>
+                                    {c?.image1?.length > 0 && c?.image2?.length === 0 && (
+                                        <Image
+                                            src={c.image1[0]?.url}
+                                            alt="Hình ảnh học vấn"
                                             className={scss.image}
                                         />
-                                    ))}
-                                </div>
-                            ) : (
-                                <p className={scss.noImage}>Chưa có hình ảnh</p>
-                            )}
+                                    )}
+                                    {c?.image1?.length === 0 && c?.image2?.length > 0 && (
+                                        <Image
+                                            src={c.image2[0]?.url}
+                                            alt="Hình ảnh học vấn"
+                                            className={scss.image}
+                                        />
+                                    )}
+                                    {c?.image1?.length > 0 && c?.image2?.length > 0 && (
+                                        <>
+                                            <Image
+                                                src={c.image1[0]?.url}
+                                                alt="Hình ảnh học vấn"
+                                                className={scss.image}
+                                            />
+                                            <Image
+                                                src={c.image2[0]?.url}
+                                                alt="Hình ảnh học vấn"
+                                                hidden={true}
+                                                className={scss.image}
+                                            />
+                                        </>
+                                    )}
+                                    {c?.image1?.length === 0 && c?.image2?.length === 0 && (
+                                        <p>Chưa có hình ảnh</p>
+                                    )}
+                                </Image.PreviewGroup>
+                            </div>
                         </Col>
                     </Row>
                 ))}

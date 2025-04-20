@@ -51,8 +51,6 @@ function FreelancerInfo() {
             const { id, isStaff } = res.data;
 
             const resFreelancer = await freelancerApi.getByAccountId(id);
-            setFreelancer(resFreelancer.data);
-            console.log(resFreelancer.data);
 
             const resSkills = await skillApi.getByIds(resFreelancer.data.skillIds);
             setSkills(resSkills.data);
@@ -62,12 +60,25 @@ function FreelancerInfo() {
             );
             setLanguages(resLanguage.data);
 
+            resFreelancer.data.academicInfos.map(ai => {
+                ai.image1 = ai.image1 ? [{ id: `${ai.id}-image1`, url: ai.image1 }] : [];
+                ai.image2 = ai.image2 ? [{ id: `${ai.id}-image2`, url: ai.image2 }] : [];
+                return ai;
+            });
+
+            resFreelancer.data.certificates.map(ce => {
+                ce.image1 = ce.image1 ? [{ id: `${ce.id}-image1`, url: ce.image1 }] : [];
+                ce.image2 = ce.image2 ? [{ id: `${ce.id}-image2`, url: ce.image2 }] : [];
+                return ce;
+            });
+
+            setFreelancer(resFreelancer.data);
+
             const formattedData = formatDataForForm(
                 resFreelancer.data,
                 resSkills.data,
                 resLanguage.data
             );
-            console.log(formattedData);
             setInitialValues(formattedData);
         } catch (error) {
             console.error("Error fetching freelancer data:", error);
@@ -97,25 +108,34 @@ function FreelancerInfo() {
     };
 
     const onFinish = async values => {
+        setIsLoading(true);
         const freelancerLanguages = values.languages.map(language => ({
             freelancerId: freelancer.id,
             languageId: language.value,
             level: 1
         }));
 
-        const formattedCertificates = values.certificates ? values.certificates.map(certificate => ({
-            id: certificate.id || null,
-            name: certificate.name,
-            providedBy: certificate.providedBy,
-            note: certificate.note || '',
-            dateOfIssue: certificate.dateOfIssue ? certificate.dateOfIssue.format('YYYY-MM-DD') : null,
-            freelancerId: freelancer.id
-        })) : [];
+        const formattedCertificates = values.certificates
+            ? values.certificates.map(certificate => ({
+                  id: certificate.id || null,
+                  name: certificate.name,
+                  providedBy: certificate.providedBy,
+                  note: certificate.note || "",
+                  dateOfIssue: certificate.dateOfIssue
+                      ? certificate.dateOfIssue.format("YYYY-MM-DD")
+                      : null,
+                  freelancerId: freelancer.id,
+                  image1: certificate.image1?.length > 0 && certificate.image1[0]?.thumbUrl,
+                  image2: certificate.image2?.length > 0 && certificate.image2[0]?.thumbUrl
+              }))
+            : [];
 
         const formattedAcademicInfos = values.academicInfos.map(academicInfo => ({
-        ...academicInfo, freelancerId: freelancer.id
+            ...academicInfo,
+            freelancerId: freelancer.id,
+            image1: academicInfo?.image1?.length > 0 && academicInfo?.image1[0]?.thumbUrl,
+            image2: academicInfo?.image2?.length > 0 && academicInfo?.image2[0]?.thumbUrl
         }));
-        
 
         const freelancerDTO = {
             id: freelancer.id,
@@ -126,7 +146,7 @@ function FreelancerInfo() {
             freelancerLanguages,
             certificates: formattedCertificates,
             academicInfos: formattedAcademicInfos
-        }; 
+        };
         console.log(freelancerDTO);
         try {
             const res = await freelancerApi.update(freelancer.id, freelancerDTO);
@@ -135,6 +155,8 @@ function FreelancerInfo() {
             }
         } catch (error) {
             console.error("Error updating freelancer:", error);
+        } finally {
+            setIsLoading(false);
         }
     };
 

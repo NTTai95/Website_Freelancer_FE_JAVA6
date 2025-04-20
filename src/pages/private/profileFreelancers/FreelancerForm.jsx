@@ -24,22 +24,6 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
     const isLoading =
         initialValues?.introduce === "" || !initialValues?.skills || !initialValues?.languages;
 
-    const props = {
-        name: "file",
-        customRequest: async ({ file }) => {
-            const formData = new FormData();
-            formData.append("image", file);
-
-            messageApi.open({
-                key: "uploading",
-                type: "loading",
-                content: "Đang tải hình ảnh...",
-                duration: 0
-            });
-        },
-        showUploadList: false
-    };
-
     return (
         <Spin spinning={isLoading}>
             {contextHolder}
@@ -234,20 +218,64 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
-                                                    name={[name, "image"]}
-                                                    label={<b>Hình ảnh</b>}
+                                                    name={[name, "image1"]}
+                                                    label={<b>Hình ảnh học vấn (Mặt trước)</b>}
                                                     valuePropName="fileList"
-                                                    getValueFromEvent={e =>
-                                                        Array.isArray(e) ? e : e?.fileList
-                                                    }
+                                                    getValueFromEvent={e => {
+                                                        return Array.isArray(e?.fileList)
+                                                            ? e.fileList
+                                                            : e
+                                                            ? [e]
+                                                            : [];
+                                                    }}
                                                     className={scss.formItem}
                                                 >
                                                     <Upload
-                                                        beforeUpload={() => false} // Ngăn không cho tự upload (giữ trong form thôi)
+                                                        beforeUpload={() => false}
                                                         listType="picture"
-                                                        maxCount={2}
+                                                        maxCount={1}
                                                         accept="image/*"
-                                                        multiple
+                                                        onPreview={file => {
+                                                            const imageUrl =
+                                                                file.url ||
+                                                                URL.createObjectURL(
+                                                                    file.originFileObj
+                                                                );
+                                                            window.open(imageUrl, "_blank");
+                                                        }}
+                                                    >
+                                                        <Button icon={<UploadOutlined />}>
+                                                            Chọn hình ảnh
+                                                        </Button>
+                                                    </Upload>
+                                                </Form.Item>
+                                                <Form.Item
+                                                    {...restField}
+                                                    name={[name, "image2"]}
+                                                    label={<b>Hình ảnh học vấn (Mặt sau)</b>}
+                                                    valuePropName="fileList"
+                                                    getValueFromEvent={e => {
+                                                        return Array.isArray(e?.fileList)
+                                                            ? e.fileList
+                                                            : e
+                                                            ? [e]
+                                                            : [];
+                                                    }}
+                                                    className={scss.formItem}
+                                                >
+                                                    <Upload
+                                                        beforeUpload={() => false}
+                                                        listType="picture"
+                                                        maxCount={1}
+                                                        accept="image/*"
+                                                        onPreview={file => {
+                                                            const imageUrl =
+                                                                file.url ||
+                                                                URL.createObjectURL(
+                                                                    file.originFileObj
+                                                                );
+                                                            window.open(imageUrl, "_blank");
+                                                        }}
                                                     >
                                                         <Button icon={<UploadOutlined />}>
                                                             Chọn hình ảnh
@@ -360,56 +388,68 @@ const FreelancerForm = ({ initialValues, onFinish, onSearchSkill, onSearchLangua
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
-                                                    {...props}
                                                     name={[name, "image1"]}
                                                     label={<b>Hình ảnh chứng chỉ (Mặt trước)</b>}
+                                                    valuePropName="fileList"
+                                                    getValueFromEvent={e => {
+                                                        return Array.isArray(e?.fileList)
+                                                            ? e.fileList
+                                                            : e
+                                                            ? [e]
+                                                            : [];
+                                                    }}
                                                     className={scss.formItem}
                                                 >
-                                                    <Upload className={scss.upload}>+ Thêm</Upload>
+                                                    <Upload
+                                                        beforeUpload={() => false}
+                                                        listType="picture"
+                                                        maxCount={1}
+                                                        accept="image/*"
+                                                        onPreview={file => {
+                                                            const imageUrl =
+                                                                file.url ||
+                                                                URL.createObjectURL(
+                                                                    file.originFileObj
+                                                                );
+                                                            window.open(imageUrl, "_blank");
+                                                        }}
+                                                    >
+                                                        <Button icon={<UploadOutlined />}>
+                                                            Chọn hình ảnh
+                                                        </Button>
+                                                    </Upload>
                                                 </Form.Item>
                                                 <Form.Item
                                                     {...restField}
                                                     name={[name, "image2"]}
                                                     label={<b>Hình ảnh chứng chỉ (Mặt sau)</b>}
                                                     valuePropName="fileList"
-                                                    getValueFromEvent={e =>
-                                                        Array.isArray(e) ? e : e?.fileList
-                                                    }
+                                                    getValueFromEvent={e => {
+                                                        return Array.isArray(e?.fileList)
+                                                            ? e.fileList
+                                                            : e
+                                                            ? [e]
+                                                            : [];
+                                                    }}
                                                     className={scss.formItem}
                                                 >
                                                     <Upload
-                                                        className={scss.upload}
-                                                        listType="picture-card"
                                                         beforeUpload={() => false}
-                                                        accept="image/*"
+                                                        listType="picture"
                                                         maxCount={1}
-                                                        showUploadList={false} // Ẩn danh sách mặc định
+                                                        accept="image/*"
+                                                        onPreview={file => {
+                                                            const imageUrl =
+                                                                file.url ||
+                                                                URL.createObjectURL(
+                                                                    file.originFileObj
+                                                                );
+                                                            window.open(imageUrl, "_blank");
+                                                        }}
                                                     >
-                                                        {(
-                                                            form.getFieldValue([
-                                                                "certificates",
-                                                                name,
-                                                                "image2"
-                                                            ]) || []
-                                                        ).length > 0 ? (
-                                                            <img
-                                                                src={URL.createObjectURL(
-                                                                    form.getFieldValue([
-                                                                        "certificates",
-                                                                        name,
-                                                                        "image2"
-                                                                    ])[0].originFileObj
-                                                                )}
-                                                                alt="Hình chứng chỉ"
-                                                                style={{
-                                                                    width: "100%",
-                                                                    height: "100%",
-                                                                    objectFit: "cover"
-                                                                }}
-                                                            />
-                                                        ) : (
-                                                            <div>+ Thêm</div>
-                                                        )}
+                                                        <Button icon={<UploadOutlined />}>
+                                                            Chọn hình ảnh
+                                                        </Button>
                                                     </Upload>
                                                 </Form.Item>
                                             </Col>
